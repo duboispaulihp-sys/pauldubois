@@ -14,19 +14,16 @@ and how this scaffold handles them.
 
 | File | Status | Content |
 | --- | --- | --- |
-| `Perelman/Barrier.lean` | **compiled & kernel-checked** (Lean v4.36.0, no Mathlib, no project axioms) | The arithmetic core of the finite-extinction barrier [III §1.2–1.3]: `bound_of_steps`, `exists_negative_index`, `no_eternal_survival` |
-| `Perelman/SurgeryFlow.lean` | **compiled & kernel-checked** (Lean v4.36.0, no Mathlib, no project axioms) | The constant-`r/κ/δ̄` surgery-flow interface [II §4.1–4.7, §5.1–5.3]: `SurgeryControls`, `SurgeryOutcome`, `redefinedTo`/`redefinedTo_anti` (the retroactive "redefining δ̄ᵢ = δ̄ᵢ₊₁" step), `SurgerySequences`/`stageControls`, and the surgery-volume audit theorems `surgery_volume_bound`, `surgery_count_bound` ("every surgery reduces the volume by at least h³, hence the sequence of surgery times is discrete"), `drop_chain`, `stage_budget`, `cumulative_drops`, `total_surgery_budget` |
-| `Perelman/Skeleton.lean` | compiled & kernel-checked | The manuscript dependency ledger `PerelmanInputs` — one `Prop` field per landmark theorem, with exact section references, incl. the two corrections Perelman made to his own [I §11.7] in [II §1] |
+| `Perelman.lean` | **compiled & kernel-checked** (Lean v4.36.0, no Mathlib, no project axioms) | The unified whole, in three parts. **Part I** — the manuscript dependency ledger `PerelmanInputs`: one `Prop` field per landmark theorem, with exact section references, incl. the two corrections Perelman made to his own [I §11.7] in [II §1]. **Part II** — the arithmetic core of the finite-extinction barrier [III §1.2–1.3], proved in full: `bound_of_steps`, `exists_negative_index`, `no_eternal_survival`. **Part III** — the constant-`r/κ/δ̄` surgery-flow interface [II §4.1–4.7, §5.1–5.3]: `SurgeryControls`, `SurgeryOutcome`, `redefinedTo`/`redefinedTo_anti` (the retroactive "redefining δ̄ᵢ = δ̄ᵢ₊₁" step), `SurgerySequences`/`stageControls`, and the surgery-volume audit theorems `surgery_volume_bound`, `surgery_count_bound` ("every surgery reduces the volume by at least h³, hence the sequence of surgery times is discrete"), `drop_chain`, `stage_budget`, `cumulative_drops`, `total_surgery_budget` |
 | `MATHLIB_LAYER.md` | reference only (not compiled here) | The Mathlib-level end statements (smooth/topological Poincaré, geometrization) and the analytic obligations, in verified Mathlib statement shapes |
 | `ERRATA.md` | — | Error log of the manuscripts |
 
-`#print axioms` for every compiled theorem (both `Perelman/Barrier.lean` and
-`Perelman/SurgeryFlow.lean`) shows only `[propext, Quot.sound]` or `[propext]`
-(verified during authoring: no `sorryAx`, no `Classical.choice`, no project
-axioms; `Perelman.div_mul_le` is `private` and appears only inside the
-closure of `exists_negative_index`). The surgery flow module documents in its
-header the integer-unit encoding used for the (real-valued) manuscript
-constants `ε, r, δ, δ̄, h, κ`.
+`#print axioms` for every compiled theorem of `Perelman.lean` shows only
+`[propext, Quot.sound]` or `[propext]` (verified during authoring: no
+`sorryAx`, no `Classical.choice`, no project axioms; `Perelman.div_mul_le`
+is `private` and appears only inside the closure of
+`exists_negative_index`). The file header documents the integer-unit
+encoding used for the (real-valued) manuscript constants `ε, r, δ, δ̄, h, κ`.
 
 ## Build
 
@@ -67,7 +64,7 @@ no longer ships its olean cache as GitHub release assets).
    [I §11.7].
 6. **[II §3–4]** Structure at the first singular time; δ-cutoff surgery —
    the constant-`r/κ/δ̄` interface and the surgery-volume audit
-   (`Perelman/SurgeryFlow.lean`) are done above; the geometric content
+   (Part III of `Perelman.lean`) are done above; the geometric content
    (Ω-decomposition, the conformal-factor cap) is ledger work.
 7. **[II §5–7]** A priori assumptions by induction (constants suffice for
    the extinction route, per [III §1.4]) — the staged audit theorems

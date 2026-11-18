@@ -74,7 +74,9 @@ do not need it ([III §1], [II §8.2-type classification]).
   item 5.
 
 ## Verification boundary of this repo
-- `Perelman/Barrier.lean`, `Perelman/Skeleton.lean`: kernel-checked in Lean
+- `Perelman.lean` (the unified document; formerly split as
+  `Perelman/Barrier.lean` + `Perelman/Skeleton.lean` +
+  `Perelman/SurgeryFlow.lean`): kernel-checked in Lean
   v4.36.0 during authoring; `#print axioms` on the public theorems lists
   `[propext, Quot.sound]` only.
 - `MATHLIB_LAYER.md`: mathematical shapes verified against Mathlib usage in

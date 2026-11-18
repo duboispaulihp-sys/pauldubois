@@ -37,10 +37,10 @@ instantiated against the surgery-flow structure of [II §4, §6.1]. -/
 def FiniteTimeExtinction (ManuscriptManifoldShape : Type → Type) : Prop :=
   ∀ (M : Type) (_ : ManuscriptManifoldShape M),
     Nonempty (T : ℕ → Type) -- placeholder: to be typed by the surgery-flow
-                            -- interface; see Perelman/Skeleton.lean ledger.
+                            -- interface; see the ledger (Part I) of Perelman.lean.
 
 /-- Analytic obligations to be discharged (manuscript references in
-`Perelman/Skeleton.lean`):
+`Perelman.lean`, Part I):
 - [I §3.4]      W-entropy monotonicity — needs weighted Gaussian log-Sobolev
                 (Gross) on the conjugate heat equation; missing from Mathlib.
 - [I §4.1]      no local collapsing I — test function `f = −log φ(d/r) + c`.
@@ -53,6 +53,6 @@ def FiniteTimeExtinction (ManuscriptManifoldShape : Type → Type) : Prop :=
 - [III §2-3]    curve shortening in `M × S¹_λ` (Altschuler–Grayson);
                 minimal-disk area barrier `dA/dt ≤ −2π − ½ R^min A`.
 Of these, only the arithmetic skeleton of the last item's conclusion is
-proved in this repo (`Perelman.Barrier`).
+proved in this repo (`Perelman.lean`, Part II).
 -/
 ```
