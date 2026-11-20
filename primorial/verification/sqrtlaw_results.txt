@@ -1,0 +1,11 @@
+sqrtlaw.py -- census of  p_{k+1} = log N_k + c (log N_k)^(1/2)
+strip: consecutive primes [2038074751, 2069999969]  (N = 1488557)
+X transported from the certified anchor vartheta(p_{K+1}); tau_K = 11.1953
+gate 1 (ratio census):   c_k = e'/sqrt(X): min 0.8063  max 1.2178  mean 1.0266  rms 0.0871
+gate 2 (law residual):   p - (X + c^.sqrt X) in [-9976.7, 8680.0];  max |res|/gap 4983.6298
+gate 3 (propagation):    plug-in 2nd-order law reproduces s to rel. 2.732e-01; s<0 predicted in 1488557/1488557
+gate 4 (sign law):       0 counterexamples asserted per prime (s<0 iff e'>tau)
+verdict: constant-c = 1.0266 fits the strip, but c_k itself swings 0.80..1.23;
+Littlewood (Omega+ at prime endpoints) makes c_k = Omega+-(logloglog X):
+limsup = +infty, liminf = -infty -> no fixed c exists (rem:sqrtlaw).
+total 4.9 s
