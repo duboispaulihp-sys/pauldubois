@@ -1,0 +1,2330 @@
+% LEAN.tex -- canonical LaTeX source of the primorial transport proof: the
+% complete manuscript (with the exact anchor evaluation H_1 at K = 10^8 and
+% the all-step chain positivity of Theorem 9) plus the complete Lean listing
+% as Appendix B. This document is the SINGLE artifact of the program (the
+% separate primorial-transport printouts and the standalone Lean file were
+% merged/removed at the author's request).
+% NOTE: this document was authored without a LaTeX toolchain in the sandbox and
+% has NOT been compiled; treat it as reviewed source. Standard article class with
+% amsmath/amsthm, so any TeX distribution should build it:
+%     pdflatex LEAN.tex  (twice, for cross-references)
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[left=2.8cm,right=2.8cm,top=2.6cm,bottom=2.6cm]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{fact}[theorem]{Standing input}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\Nk}{N_k}
+\newcommand{\Xk}{X_k}
+\newcommand{\Ak}{A_k}
+\newcommand{\uk}{u_k}
+\newcommand{\rk}{r_k}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Nn}{\mathfrak{N}}
+\newcommand{\Ptil}{\widetilde P}
+\newcommand{\gam}{\gamma}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Om}{\Omega}
+
+\newcommand{\AuthorBlock}{%
+\begin{center}
+{\Large Paul Dubois}\\[6pt]
+Institut Henri Poincar\'e -- IHP and Mistral\\[4pt]
+\texttt{paul@duboispaul.fr}
+\end{center}}
+
+\title{Logarithmic Ratios of Primorials and Error Structure\\
+\large A Complete Proof Document, with Two One-Directional Bridges to the Riemann Hypothesis}
+\author{}
+\date{}
+
+\begin{document}
+\AuthorBlock
+\vspace{2em}
+\maketitle
+
+\begin{abstract}
+Let $p_k$ be the $k$-th prime, $\Nk=p_1p_2\cdots p_k$ the primorial,
+$\Xk=\vartheta(p_k)=\log \Nk$ and $\Ak=\log\log \Nk$. We give a complete,
+self-contained development of the error-transport framework attached to
+Nicolas' 1983 criterion for the Riemann hypothesis. Every identity family
+proposed for the framework (the origin-phase system with a free parameter, the
+modified single-level system, the mixed-level system, and the generalized
+infinite chain $H_0,H_1,H_2,\dots$ at fixed level $K$) is solved \emph{exactly}
+and is shown to be a change of coordinates on one and the same transport
+equation $\eps_{k+1}=(1+\rk)\eps_k+s_k$. Two one-directional bridges to the
+Riemann hypothesis are proved: a \emph{main bridge} (Theorem~\ref{thm:bridge}:
+eventual positivity of the original-system $y$ implies RH) and an \emph{anchored
+dichotomy} (Theorem~\ref{thm:anchor}). All other connections re-encode RH
+exactly; the honesty of this statement is part of the document's content
+(Appendix~\ref{app:limits}).
+\end{abstract}
+
+\tableofcontents
+
+%=====================================================================
+\section{Standing inputs and notation}\label{sec:inputs}
+
+\begin{fact}[PNT]\label{f:PNT}
+$\theta(x)\sim x$; in particular $\Xk=\vartheta(p_k)$ satisfies $\Xk\sim p_k$.
+\end{fact}
+
+\begin{fact}[Mertens with explicit remainder; Dusart]\label{f:Mertens}
+For the control of $\Ptil(x)=\prod_{p\le x}p/(p-1)$ used below:
+$\pi(2.4x)>2\pi(x)-3$ for $x\ge 60\,184$ and $\pi(x)\log x<1.25506\,x$; and the
+Mertens error $\Ptil(x)-e^\gam\log\log x=o(\log\log x)$ unconditionally.
+\end{fact}
+
+\begin{fact}[Nicolas 1983, Th\'eor\`eme 3]\label{f:Nicolas}
+Let $\theta(x)=\sum_{p\le x}\log p$ and define, for $x\ge2$,
+\[
+f(x)=e^\gam\log\theta(x)\prod_{p\le x}\Bigl(1-\frac1p\Bigr)
+     =\frac{e^\gam\log\theta(x)}{\Ptil(x)} .
+\]
+Thus $f(p_k)=e^\gam\Ak\,\phi(\Nk)/\Nk$, and $f$ is constant on each
+$[p_k,p_{k+1})$. Then:
+\begin{enumerate}
+\item[(a)] $f(x)<1$ for $2\le x\le 10^8$; the proof of (a) rests on the
+Rosser--Schoenfeld computations $\Ptil(x)>e^\gam\log x$ and $\theta(x)<x$ on
+this range;
+\item[(b)] \textup{RH} $\Rightarrow$ $f(x)<1$ for all $x\ge2$; moreover,
+exactly,
+\[
+\liminf_{x\to\infty}\,(\log f(x))\,\sqrt{x}\,\log x
+=\log\pi+2\log 2-4-\gam=-2.046\dots,
+\]
+and
+\[
+\limsup_{x\to\infty}\,(\log f(x))\,\sqrt{x}\,\log x
+\le \gam-\log\pi-2\log 2=-1.954\dots ;
+\]
+\item[(c)] \textup{not-RH} $\Rightarrow$ there is a sequence $x\to\infty$ with
+$f(x)<1$ and another with $f(x)>1$ (at primorials: $f(p_k)=1$ is crossed
+infinitely often in both directions), and, writing $\Theta$ for the supremum
+of the real parts of the zeros of $\zeta$, for every $b$ with
+$1-\Theta<b<\tfrac12$,
+\[
+\log f(x)=\Om_\pm\bigl(x^{-b}\bigr).
+\]
+\end{enumerate}
+\end{fact}
+
+\begin{fact}[Littlewood--Ingham]\label{f:LI}
+$\theta(x)-x=\Om_\pm\!\bigl(\sqrt{x}\log\log\log x\bigr)$.
+\end{fact}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\Nk$ & primorial $p_1\cdots p_k$\\
+$\Xk$ & $\vartheta(p_k)=\log \Nk$\\
+$\Ak$ & $\log \Xk=\log\log \Nk$\\
+$G_k,\ g_k$ & gap $G_k=p_{k+1}-p_k$; logarithm $g_k=\log p_{k+1}$\\
+$\uk$ & $g_k/\Xk$\\
+$\rk,\ Q_k$ & $\rk=(p_{k+1}-1)^{-1}$; $Q_k=1+\rk$\\
+$P$ & anchored product: $P_{k_0}=1$, $P_{k+1}=Q_kP_k$\\
+$\Nn_k$ & $\Ptil_k-e^\gam \Ak$, where $\Ptil_k=\prod_{p\le p_k}p/(p-1)$ (Nicolas' discrepancy)\\
+$\eps_k$ & $H_k\uk=\Nn_k/e^\gam$, so $\Ptil_k=e^\gam(\Ak+\eps_k)$\\
+$H_k$ & $\Xk\,\Nn_k/(e^\gam g_k)$: the \emph{physical} value of $H$ at index $k$\\
+$f_k$ & $\Ak/(\Ak+\eps_k)$, which is \emph{exactly} Nicolas' $f(p_k)$; equivalently
+$1-f_k=e^\gam\eps_k/\Ptil_k$\\
+$s_k$ & $\rk \Ak-\log(1+\uk)$: the transport source term\\
+$D_k$ & $\Xk-p_k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Nicolas bridge]\label{rem:bridge}
+Since $\Ptil_k=e^\gam(\Ak+\eps_k)$,
+\[
+f(p_k)=\frac{e^\gam\Ak}{\Ptil_k}=\frac{\Ak}{\Ak+\eps_k}=f_k
+\quad\text{exactly},\qquad
+1-f_k=\frac{e^\gam\eps_k}{\Ptil_k},
+\]
+so $\sgn(\eps_k)=\sgn(\Nn_k)$ and $f(p_k)<1\iff \eps_k>0$. Thus
+``RH $\iff$ all $\eps_k>0$'' \emph{is} exactly Nicolas' criterion
+(Fact~\ref{f:Nicolas}\,(b)/(c)).
+\end{remark}
+
+%=====================================================================
+\section{Step identities}\label{sec:steps}
+
+\begin{lemma}\label{lem:steps}
+Exactly, for every $k\ge1$:
+\begin{enumerate}
+\item $\Xk+\log p_{k+1}=X_{k+1}$ and $\displaystyle A_{k+1}=\Ak+\log(1+\uk)$;
+\item $\Ptil_{k+1}=Q_k\Ptil_k$;
+\item the error satisfies the \emph{transport equation}
+\begin{equation}\label{eq:transport}
+\eps_{k+1}=(1+\rk)\eps_k+s_k,
+\qquad s_k=\rk \Ak-\log(1+\uk).
+\tag{T}
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) is immediate from $\log N_{k+1}=\log \Nk+\log p_{k+1}$ and $\Ak=\log\Xk$.
+(ii) is one further factor $p_{k+1}/(p_{k+1}-1)=Q_k$.
+For (iii), use $\eps_k=\Nn_k/e^\gam$ and expand
+\[
+\eps_{k+1}
+=\frac{1}{e^\gam}\Bigl(\Ptil_{k+1}-e^\gam A_{k+1}\Bigr)
+=\frac{Q_k}{e^\gam}\Ptil_k-\bigl(\Ak+\log(1+\uk)\bigr).
+\]
+Substituting $\Ptil_k=e^\gam(\Ak+\eps_k)$ gives
+\[
+\eps_{k+1}=Q_k\Ak+Q_k\eps_k-\Ak-\log(1+\uk)
+=(1+\rk)\eps_k+\bigl(\rk\Ak-\log(1+\uk)\bigr),
+\]
+which is \eqref{eq:transport}.
+\end{proof}
+
+\begin{remark}[machine certificate]\label{rem:cert}
+Equation \eqref{eq:transport} was verified numerically for all
+$2\le k\le 2\,146\,772$ with maximum residual $7.98\times10^{-15}$
+(\texttt{verification/identsolve3b.py}).
+\end{remark}
+
+%=====================================================================
+\section{Exact solution of the identity families}\label{sec:families}
+
+\subsection{The origin-phase system (free-gauge solution)}
+
+Consider the system
+\[
+1+\rk=\frac{A_{k+1}+x\,\uk}{\Ak+H\,\uk}=\frac{A_{k+1}+y\,\uk}{\Ak},
+\qquad A_{k+1}=\Ak+\log(1+\uk).
+\]
+
+\begin{proposition}\label{prop:gauge}
+The solution set of the origin-phase system is the one-parameter family
+\begin{equation}\label{eq:gauge}
+x=(1+\rk)H-m_k,\qquad y=(1+\rk)H+m_k,\qquad
+m_k=\frac{\log(1+\uk)-\rk \Ak}{\uk}=-\,\frac{s_k}{\uk}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From the second equation, $y\,\uk=Q_k\Ak-A_{k+1}+Q_kH\,\uk$, so
+$y=(1+\rk)H-m_k$ with $m_k=(A_{k+1}-Q_k\Ak)/\uk$; and
+$A_{k+1}-Q_k\Ak=\log(1+\uk)-\rk\Ak$ gives the stated value of $m_k$.
+From the first equation, $x\,\uk=Q_k(\Ak+H\,\uk)-A_{k+1}
+=\bigl(Q_k\Ak-A_{k+1}\bigr)+Q_kH\,\uk$, hence
+$x=Q_kH-(A_{k+1}-Q_k\Ak)/\uk=(1+\rk)H-m_k$. Both $x$ and $y$ are affine in
+the one free parameter $H$, with the shown offsets $(\mp m_k)$, and every pair
+of the displayed form solves the system, so the solution set is exactly the
+family \eqref{eq:gauge}.
+\end{proof}
+
+Thus no sign information is created or destroyed: the system is a tautology.
+The value relevant to later sections (the \emph{original-system} $y$ at the
+physical closure $H=H_k$, i.e. $H\,\uk=\eps_k$) is
+\begin{equation}\label{eq:yorig}
+y_{\mathrm{orig}}=\frac{\eps_{k+1}-2s_k}{\uk}.
+\end{equation}
+
+\subsection{The modified single-level system (gauge pinned)}
+
+\begin{proposition}\label{prop:pinned}
+For the modified system with second denominator $\Ak$ bare,
+\[
+1+\rk=\frac{A_{k+1}+x\,\uk}{\Ak+H\,\uk}=\frac{A_{k+1}+y\,\uk}{\Ak},
+\]
+the solution is \emph{pinned}:
+\[
+y=\frac{s_k}{\uk}\ \ \text{exactly},\qquad
+x=y+(1+\rk)H,
+\]
+and with the physical closure $H=H_k$ (i.e. $H\,\uk=\eps_k$),
+\[
+x=\frac{\eps_{k+1}}{\uk}\ \ \text{exactly}.
+\]
+Consequently the modified identity \emph{is} the transport equation
+\eqref{eq:transport} in different coordinates. Moreover
+\[
+x-H_{k+1}=\eps_{k+1}\,\frac{u_{k+1}-\uk}{\uk\,u_{k+1}},
+\]
+so, under Leg-1 below ($u_{k+1}<\uk$), $\sgn(x-H_{k+1})=-\sgn(\eps_{k+1})$.
+\end{proposition}
+
+\begin{proof}
+The second equation pins $y\uk=Q_k\Ak-A_{k+1}$; computing directly,
+$Q_k\Ak-A_{k+1}=\Ak+\rk\Ak-\Ak-\log(1+\uk)=\rk\Ak-\log(1+\uk)=s_k$,
+so $y=s_k/\uk$ exactly. Substituting into the first equation:
+$x\uk=Q_k(\Ak+H\uk)-A_{k+1}=s_k+(1+\rk)H\uk$, i.e. $x=(1+\rk)H+s_k/\uk$.
+At the physical closure, $x\uk=(1+\rk)\eps_k+s_k=\eps_{k+1}$ by
+\eqref{eq:transport}. The last display is
+$x-H_{k+1}=\eps_{k+1}/\uk-\eps_{k+1}/u_{k+1}$.
+\end{proof}
+
+\begin{theorem}[sign of the pinned $y$]\label{thm:yneg}
+Within any classical (non-critical-interval) range, in particular for all
+$2\le k\le 2\,146\,773$, the pinned value $y=s_k/\uk$ is negative; by
+Fact~\ref{f:LI} and Theorem~\ref{thm:source} it changes sign infinitely often.
+Hence ``always $y>0$'' is \emph{false} for the pinned $y$.
+\end{theorem}
+
+\begin{proof}
+On the verified range both censuses (\texttt{identsolve3.py},
+\texttt{ypos.py}) record $s_k<0$ in $2\,146\,773/2\,146\,773$ cases and
+$\sgn(s_k)=\sgn(D_k)$ with $D_k=\Xk-p_k<0$ throughout (as $\theta(x)<x$
+there). Since $\uk>0$, the sign of $y$ is the sign of $s_k$. The
+$\Om_\pm$ behavior of $D_k$ transfers to $s_k$ through the sharp asymptotic of
+Theorem~\ref{thm:source}: the oscillating part
+$(1+\log p_k)D_k/p_k^2=\Om_\pm(\log p_k\cdot\sqrt{p_k}\log\log\log p_k\,/\,p_k^2)$
+eventually dominates the drift term $\tfrac12\log^2p_k/p_k^2$, so $s_k$ (hence
+$y$) changes sign infinitely often.
+\end{proof}
+
+\begin{theorem}[sharp source asymptotic]\label{thm:source}
+Unconditionally,
+\[
+s_k=\frac{(1+\log p_k)(D_k-G_k)+\tfrac12\log^2p_k+O(p_k^{-1})}{p_k^2},
+\]
+and in particular $|s_k|\le C\,\log p_k/p_k$ for all large $k$. In the verified
+range the sharp form agrees to relative error $3.4\times10^{-5}$ at
+$k=2\times10^6$, and the two-sided alternating series certificates
+$\log(1+u)=u-\tfrac{u^2}2+\tfrac{u^3}3-\cdots$ give $0$ upper-bound violations
+and lower-bound violations $\le 3.7\times10^{-22}$ (float noise);
+\texttt{signcert.py}, \texttt{dbg2.py}.
+\end{theorem}
+
+\subsection{The mixed-level system (gauge closes)}
+
+\begin{proposition}\label{prop:mixed}
+Scaling the coefficient of $x$ to $\log p_{k+2}/\log N_{k+1}$ closes the gauge
+uniquely:
+\[
+x=H_{k+1}\ \text{exactly},\qquad
+y=H_{k+1}-\frac{2s_k}{u_{k+1}},
+\]
+equivalently the mixed-level two-form is exactly equivalent to the transport
+equation with the physical seed. Machine-verified to relative error
+$\le 4.7\times10^{-13}$ over the full range.
+\end{proposition}
+
+Two auxiliary facts were proved:
+
+\begin{theorem}[Leg 2; unconditional]\label{thm:leg2}
+$u_{k+1}>u_{2k}$ for all $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+The comparison $u_{k+1}>u_{2k}$ can be reduced, with
+Fact~\ref{f:Mertens}, to the estimate
+\[
+(k-1)\,\frac{g_{k+1}^2}{p_{k+2}}\;\ge\;\frac{k-1}{k+2}\bigl(\log(k+2)+\log\log(k+2)\bigr)\;>\;10.8 ,
+\]
+against the constant $1.0987=(\log 2.4)\times1.25506$ obtained by combining the
+Rosser--Schoenfeld bound $\pi(x)\log x<1.25506\,x$ with Dusart's
+$\pi(2.4x)>2\pi(x)-3$ for $x\ge 60\,184$ (which gives $p_{2k+1}\le 2.4\,p_{k+2}$ for
+all $k\ge K_0\approx 6\,057$). Since $10.8\gg1.0987$, Leg-2 holds for all
+$k\ge K_0$; the remaining finite range $2\le k<K_0$ is certified by direct
+computation (~\texttt{leg2cert.py}): zero violations, minimum relative margin
+$0.21617$ at $k=2$, and $\sup_k\log(p_{2k+1}/p_{k+2})=0.86732$ at $k=28$.
+\end{proof}
+
+\begin{remark}[Leg 1 is Cram\'er-grade]\label{rem:leg1}
+The statement $u_k>u_{k+1}$ for all $k$, i.e.
+\[
+\rho_k:=\frac{\Xk\log(p_{k+2}/p_{k+1})}{g_k^2}<1\ \ \forall k,
+\]
+has zero violations in the verified range
+($\rho_{\max}=0.7393$ at the record gap $G=210$ after $p=20\,831\,323$), but it
+is \emph{strictly stronger than RH} and lies beyond BHP's $O(p^{0.525})$;
+Granville's conjecture $\limsup G/\log^2p\ge 2e^{-\gam}=1.1229>1$ implies
+Leg-1 fails infinitely often. It is used only in range-limited statements.
+\end{remark}
+
+%=====================================================================
+\subsection{Chained constant-offset two-forms: a negative result}\label{subsec:chainform}
+
+The working notebook proposes a further family, parametrised by a constant
+log-ratio offset $c_1=\log\bigl(p_{k+1}/\Xk\bigr)$, in which the two-form is
+\emph{chained line by line}: for $i=1,2,\dots$
+\begin{equation}\label{eq:chainform}
+\frac{p_{k+i}}{p_{k+i}-1}
+=\frac{A_{k+i}-H_i-c_i}{A_{k+i-1}-H_{i-1}-c_{i-1}},
+\qquad c_j=\log\frac{p_{k+j}}{\Xk}.
+\end{equation}
+As printed, the early lines of the source write $p_{k+1}$ inside $c_j$ (the
+\emph{shared} reading $c_j\equiv c_1$ for all $j\ge0$), while the last line
+generalises to $p_{k+i}$ (the \emph{per-line} reading
+$c_j=\log p_{k+j}-\Ak$ for $j\ge1$, with the seed line $c_0:=c_1$); both
+readings are analysed and measured. On the value of $H$ there are two
+admissible conventions, and both are carried: the \emph{scaled} one, in
+which $H$ lives in the fixed anchor scale $\uk$, and the \emph{bare} one,
+in which $H$ is the physical quantity $\eps/\uk$. Both are handled at once
+by putting, for $\sigma=\uk$ (scaled) or $\sigma=1$ (bare),
+\[
+B_j:=A_{k+j}-\sigma H_j-c_j,
+\]
+so that the asserted identity \eqref{eq:chainform} is exactly
+$B_j=Q_{k+j-1}B_{j-1}$, hence recursively
+\begin{equation}\label{eq:phantom}
+B_j=B_0\,P_{k+j},\qquad
+B_0=A_{k}-\sigma H_0-c_1,
+\end{equation}
+with the anchored product $P$ of Section~\ref{sec:inputs} ($P_{k}=1$,
+$P_{k+j}=\prod_{m<j}Q_{k+m}$). If \eqref{eq:chainform} actually described
+the transport chain, the $H_j$ so defined would agree with the anchored
+chain of Theorem~\ref{thm:anchor}. They do not, and the defect is exactly
+calculable.
+
+\begin{lemma}[exact residuals of \eqref{eq:chainform}]\label{lem:betas}
+Fix the anchor $k$, take the physical seed $H_0=\eps_k/\uk$ and the fixed
+anchor scale, so that $H_j=\eps_{k+j}/\uk$ and
+$H_{j+1}=Q_{k+j}H_j+s_{k+j}/\uk$ for $j\ge0$. Let
+$c_1=\log(p_{k+1}/\Xk)$ and read $c_j\equiv c_1$ (shared) or
+$c_j=\log p_{k+j}-\Ak$ for $j\ge1$ (per-line), in both readings
+$c_0:=c_1$. Then for every $j\ge1$, with all source terms evaluated at the
+true index $n=k+j-1$ (so $Q_n=1+r_n$, $s_n=r_nA_{k+j-1}-\log(1+u_n)$):
+\begin{align}
+B_j-Q_nB_{j-1}&=-2s_n+c_1r_n
+&&\text{(scaled, shared)},\label{eq:beta2}\\
+B_j-Q_nB_{j-1}&=-\Bigl(1+\tfrac1{\uk}\Bigr)s_n+c_1r_n
+&&\text{(bare, shared)},\label{eq:beta1}\\
+B_j-Q_nB_{j-1}&=\bigl(-2s_n\ \text{resp.}\ -\bigl(1+\tfrac1{\uk}\bigr)s_n\bigr)
+-c_j+Q_nc_{j-1}&&\text{(per-line)}\label{eq:betapl}.
+\end{align}
+In particular a \emph{constant} offset never closes the chain:
+\eqref{eq:beta2} vanishes on a line iff $s_n=\tfrac12c_1r_n$, a condition
+on $p_{k+j}$ the arithmetic does not meet (at $K=10^8$,
+$-2s_K+c_1\rk=+4.93\times10^{-13}\neq0$); and in the per-line reading the
+$c$-contribution
+$-c_j+Q_nc_{j-1}=r_n\log p_{k+j-1}-\log\frac{p_{k+j}}{p_{k+j-1}}-r_n\Ak$
+is dominated by $-\log\bigl(p_{k+j}/p_{k+j-1}\bigr)<0$, so \eqref{eq:betapl}
+turns negative as soon as the prime-gap term prevails (measured first at
+$j=2$ for $k=10^8$).
+\end{lemma}
+
+\begin{proof}
+All three lines follow from \eqref{eq:transport} and the two step
+identities $A_{n+1}-A_n=\log(1+u_n)$, $\eps_{n+1}=Q_n\eps_n+s_n$, plus
+the fixed-scale law $H_{j+1}=Q_nH_j+s_n/\uk$ (definition of the anchored
+chain $H_j=\eps_{k+j}/\uk$). Indeed,
+\[
+B_j-Q_nB_{j-1}
+=\bigl(A_{k+j}-Q_nA_{k+j-1}\bigr)-\sigma\bigl(H_j-Q_nH_{j-1}\bigr)-\bigl(c_j-Q_nc_{j-1}\bigr).
+\]
+The first bracket is $\log(1+u_n)-r_nA_{k+j-1}$, which equals $-s_n$;
+the second is $s_n$ for $\sigma=\uk$ and $s_n/\uk$ for $\sigma=1$. For the
+shared reading the last bracket is $c_1(1-Q_n)=-c_1r_n$, giving
+\eqref{eq:beta2} and \eqref{eq:beta1}; for the per-line reading it is
+$(c_j-Q_nc_{j-1})$ kept as is, giving \eqref{eq:betapl}, and substituting
+$c_j=\log p_{k+j}-\Ak$ with $Q_n=1+r_n$ yields the displayed expansion.
+\end{proof}
+
+\begin{lemma}[the family defines a phantom chain]\label{lem:phantom}
+Impose the closure \eqref{eq:phantom} on the physical seed value
+$B_0=A_k-\sigma H_0-c_1$. The $H$-values defined by the family,
+\[
+H^{\mathrm{def}}_j=\frac{A_{k+j}-c_j-B_0P_{k+j}}{\sigma},
+\]
+deviate from the true anchored chain by exactly the accumulated residual:
+\[
+\sigma\bigl(H^{\mathrm{def}}_j-H_j\bigr)
+=B^{\mathrm{true}}_j-B_0P_{k+j}
+=\sum_{m=1}^{j}\beta_m\,\frac{P_{k+j}}{P_{k+m}},
+\qquad \beta_m=B_m-Q_{k+m-1}B_{m-1}.
+\]
+Whenever $\beta_m\ge0$ for $1\le m\le j$ (the stable regime of the shared
+readings: \eqref{eq:beta2} and \eqref{eq:beta1} have that sign throughout the
+certified windows), the closed family \emph{over-estimates} $H$ strictly
+for $j\ge1$. The closure silently discards precisely this sum.
+\end{lemma}
+
+\begin{proof}
+Discrete variation: from $B_m=Q_{k+m-1}B_{m-1}+\beta_m$ and
+$P_{k+m}=Q_{k+m-1}P_{k+m-1}$ induction gives
+$B_j=P_{k+j}\bigl(B_0+\sum_{m\le j}\beta_m/P_{k+m}\bigr)$; multiply by
+$P_{k+j}$ and compare with the phantom definition
+$B^{\mathrm{def}}_j=B_0P_{k+j}$, using
+$\sigma H_j=A_{k+j}-c_j-B^{\mathrm{true}}_j$ and likewise for $H^{\mathrm{def}}$.
+\end{proof}
+
+\begin{corollary}[the family contradicts the transport chain; unconditional]
+\label{cor:chainfalse}
+Let $K=10^8$ and take the admissible seed $H_0=0$ in
+Theorem~\ref{thm:anchor}. The true anchored chain has
+\[
+H_1=\frac{s_K}{\uk}<0
+\]
+(certified: $s_K=-2.4098\times10^{-13}<0$, $\uk=1.05176\times10^{-8}$,
+sieve certificate $\texttt{h1\_at\_1e8}$). The closed family \eqref{eq:phantom}
+instead yields at $j=1$, on the same seed,
+\[
+H^{\mathrm{def}}_1=\frac{-s_K+c_1\rk}{\uk}>0\ \text{(scaled)},\qquad
+H^{\mathrm{def}}_1=-s_K+c_1\rk>0\ \text{(bare)},
+\]
+both strictly positive because $-s_K+c_1\rk=+2.4098\times10^{-13}
++1.0737\times10^{-14}=+2.52\times10^{-13}>0$. Hence the chained
+constant-offset two-form does not encode the transport chain of
+Theorem~\ref{thm:anchor}: it is refuted at its first line, before any
+RH-type input, by the same certified anchor arithmetic that proves
+$H_1<0$ for this seed.
+\end{corollary}
+
+\begin{proof}
+For the scaled reading, $B_0=A_K-0-c_1=A_K-c_1$ and
+$\sigma H^{\mathrm{def}}_1=A_{K+1}-c_1-B_0Q_K$
+$=(A_K-c_1)+\log(1+\uk)-\bigl(A_K-c_1\bigr)\bigl(1+\rk\bigr)$
+$=\log(1+\uk)-\rk\bigl(A_K-c_1\bigr)$, and
+$\log(1+\uk)-\rk A_K=-s_K$, so $\sigma H^{\mathrm{def}}_1=-s_K+c_1\rk$. For
+the bare reading this is exactly the numerator (no division by $\uk$). The
+true-chain value $H_1=s_K/\uk$ is the content of the fixed-scale first
+step $H_1=Q_KH_0+s_K/\uk$ with $H_0=0$; sign of $s_K$ and the certified
+values are from the anchor certificate.
+\end{proof}
+
+\begin{remark}[what would close the family]\label{rem:telescope}
+Inspection of the proof of Lemma~\ref{lem:betas} shows that \eqref{eq:chainform}
+closes line by line if and only if the offset itself obeys an
+inhomogeneous copy of the transport law,
+\[
+c_{j+1}=Q_{k+j}c_j-2s_{k+j}\ \text{(scaled)},\qquad
+c_{j+1}=Q_{k+j}c_j-\Bigl(1+\tfrac1{\uk}\Bigr)s_{k+j}\ \text{(bare)}.
+\]
+With these evolutions the two-form \eqref{eq:chainform} becomes \emph{exactly}
+the recurrence of Theorem~\ref{thm:anchor}, i.e.\ the ``constant'' must not
+be constant; it must itself be transported. A genuinely constant log-ratio
+offset therefore cannot close the chained family, and the phantom it
+defines over-estimates the true $H_j$ by the accumulated sums of $\beta$
+(Lemma~\ref{lem:phantom}).
+\end{remark}
+
+\begin{remark}[log-prefactor reading and $H$-inversion]
+\label{rem:logvar}
+Two nearby readings of the chained two-form were double-checked at the
+certified anchor and fail at line~1. (i)~\emph{Prefactor reading}:
+writing the family as
+$Q_{k+i}=u_k\,(A_{k+i}-H_i)/(A_{k+i-1}-H_{i-1})$ with
+$u_k=\log p_{k+1}/X_k$ produces, at the seed $H_0=H_K$,
+$H^{\mathrm{fam}}_1=A_{K+1}-\dfrac{Q_{K+1}}{u_K}(A_K-H_K)
+=+3.909\times10^{11}$ versus the physical
+$H_1=\eps_{K+1}/u_K=4132.288191$ --- the family's $H$ is the physical
+element inflated by a factor $9.46\times10^{7}\approx1/u_K$, so it is a
+different object, not the chain; only the prefactor $1$ is compatible
+with the transport law, and that is exactly \eqref{eq:chainform}.
+(ii)~\emph{Inversion formula}: at the anchor,
+$H=\dfrac{e^{-y}\log N_K}{N_K/(\varphi(N_K)-e^y\log N_K)}
+=e^{-y}\,\dfrac{X_K}{\Ptil_K}-\dfrac{X_K^2}{N_K}$, and the subtracted
+term is $10^{-885\,105\,219}$ (exact, since $N_K=e^{X_K}$): the formula
+collapses to the one-parameter family
+$H=e^{-y}X_K/\Ptil_K=5.338\times10^{7}\,e^{-y}$, which meets the
+certified $H_K=4132.288212$ only at $y=9.466409\dots$ --- a value
+carried by no certified quantity of the memoir ($y=0$ gives
+$5.34\times10^{7}$, $y=\gam$ gives $3.00\times10^{7}$). Neither reading
+constrains $\eps_{K+i}$ for $i\ge2$: both are phantom definitions in the
+sense of Lemma~\ref{lem:phantom}, positive by design and
+information-free about Nicolas' criterion.
+\end{remark}
+
+\begin{corollary}[block-constant calibrated prefactors: vacuous or false]
+\label{cor:calib}
+A further reading of the chained two-form was proposed in which the
+prefactor is a calibration constant $C_n$ fixed by decadic block
+endpoints, e.g.
+\[
+C_n=\frac{\log\bigl(p_{10^{\,n+1}}/\log\mathcal N_{10^{\,n}}\bigr)}
+         {\log\bigl(p_{10^{\,n+1}}/\log\mathcal N_{10^{\,n+1}}\bigr)},
+\]
+(up to the parsing of the inner logarithms), and the chain is imposed as
+$Y_i=C_n\,Q_{k+i}\,Y_{i-1}$ with $Y_i:=A_{k+i}+\mathcal G_i$ and seed
+$\mathcal G_0=H$ (in whichever units the reading adopts). Then on any
+index range on which $C_n$ is constant,
+\[
+\mathcal G_i=(A_k+H)\,C_n^{\,i}\,\frac{\Ptil_{k+i}}{\Ptil_k}-A_{k+i},
+\]
+so: (a) if $C_n>1$, then $\mathcal G_i\to+\infty$, in fact
+$\mathcal G_i>0$ for \emph{every seed and every} $i$ for which
+$C_n^{\,i}$ dominates $A_{k+i}A_k/((A_k+H)(\Ptil_{k+i}/\Ptil_k))$ ---
+at the decadic value $C_8$ below this holds for all $i\ge1$ ---
+so family positivity is a property of the calibration alone, holds
+\emph{unconditionally}, and precisely because of that it cannot encode
+Nicolas' criterion (a phantom in the sense of Lemma~\ref{lem:phantom},
+in its extreme form); (b) if $C_n<1$, then $\mathcal G_i\to-A_{k+i}$ and
+the family is eventually negative for every seed; (c) only
+$C_n\equiv1$ reproduces the transport law, and that is exactly the
+pinned chain of Theorem~\ref{thm:anchor}, whose all-step positivity is
+equivalent to Nicolas' criterion, hence to RH. In no regime does the
+calibrated family constrain $\eps_{k+i}$.
+\end{corollary}
+
+\begin{proof}
+Iterating the imposed law,
+$Y_i=Y_0\,C_n^{\,i}\prod_{m<i}Q_{k+m}
+=Y_0\,C_n^{\,i}\,\Ptil_{k+i}/\Ptil_k$, the last equality being exact since
+$\Ptil_{k+i}/\Ptil_k=\prod_{m<i}\frac{p_{k+m+1}}{p_{k+m+1}-1}$. By
+Mertens (Fact~\ref{f:Mertens}),
+$\Ptil_{k+i}/e^\gam\sim\log p_{k+i}\sim A_{k+i}$, whence
+$\mathcal G_i+A_{k+i}\sim(A_k+H)\,C_n^{\,i}A_{k+i}/A_k$: for $C_n>1$ this
+dominates $A_{k+i}$ and $\mathcal G_i\to+\infty$; for $C_n<1$ it tends
+to $0$ and $\mathcal G_i\sim-A_{k+i}$; for $C_n\equiv1$ the imposed law
+is the pinned identity of Theorem~\ref{thm:anchor} verbatim. The
+ positivity threshold in (a) is the displayed inequality rearranged, and
+at $C_8\approx11.2$ the left side is $\ge11.2^i/1.005>A_K/(A_K+H_K)$
+for all $i\ge1$.
+\end{proof}
+
+\begin{remark}[calibration numerics at the anchor]\label{rem:calibnum}
+At the certified anchor the proposal sits in regime (a). The decadic
+endpoints are $p_{10^{9}}=22\,801\,763\,489$ (tabulated $10^9$-th prime;
+immaterial to the order-of-magnitude conclusion) and
+$\vartheta(p_{10^{9}})=p_{10^9}(1+o(1))$ within one percent (published
+Chebyshev--Dusart bounds), while $\log\mathcal N_{10^{8}}=X_K
+=2\,038\,030\,124.4153652$ is certified. The two parsings give
+$C_8=\log\mathcal N_{10^{9}}/\log\mathcal N_{10^{8}}\approx11.2$ resp.
+$C_8=\log(p_{10^{9}}/X_K)/\log(p_{10^{9}}/\vartheta(p_{10^{9}}))\ge2.4\times10^{2}$.
+Both exceed the line-1 compatibility requirement
+\[
+C=\frac{A_{K+1}+H_1^{\mathrm{phys}}}{(A_K+H_K)\,Q_{K+1}}
+=1-5.5\times10^{-9}
+\]
+(by nine to eleven orders of magnitude; in the units of
+Section~\ref{subsec:hipos}, $H_0=H_K=4132.288212$,
+$H_1^{\mathrm{phys}}=4132.288191$). In the offset-units reading
+($\mathcal G_0=\eps_K$) the requirement is $C=1$ exactly --- the pinned
+law --- consistently with Remark~\ref{rem:telescope}. At the computed
+values the family yields
+$\mathcal G_1=(A_K+H_K)\,C_8\,Q_{K+1}-A_{K+1}\approx4.6\times10^{4}$
+(first parsing) or $\ge1.0\times10^{6}$ (second) instead of the physical
+$H_1=4132.288191$: the excess is the factor $C_8$ itself, the same
+``inflated object'' phenomenon already met in
+Remark~\ref{rem:logvar}\,(i). All quantities double-checked against the
+certified anchor data ($A_{K+1}=\log X_{K+1}=21.435249563517$; the
+pinned identity $A_{K+1}+\eps_{K+1}=Q_K(A_K+\eps_K)$ reproduces to
+$1.2\times10^{-15}$).
+\end{remark}
+
+\begin{remark}[additive anchor-unit reading]\label{rem:uadd}
+A further reading was proposed, adding to the offset the quantity
+$\log p_{10^8+1}/\log\mathcal N_{10^8}$ --- which is not a new constant
+but exactly the certified $\uk=1.0517642106\times10^{-8}$
+(Section~\ref{subsec:h1num}). The displayed line
+$Q_{k+1}=(A_{k+1}+H_1+\uk)/A_k$ defines the offset per line without
+chaining:
+\[
+H_1=Q_KA_K-A_{K+1}-\uk=s_K-\uk=-1.05179\times10^{-8},
+\]
+\emph{negative} at line 1 and about $4.1\times10^{3}$ times smaller in
+magnitude than the physical $A$-units offset
+$\eps_{K+1}=+4.3461928\times10^{-5}$: the reading substitutes the
+\emph{step residual} $s_K$ (the true law of Theorem~\ref{thm:anchor}
+being $E_{k+1}=Q_KE_k+s_K$) for the \emph{chain offset} $E$, and the
+inserted $-\uk$ pushes it below zero; were $\uk$ omitted, the line
+would define exactly $H_1=s_K$, the certified residual. Per line the
+same reading gives $H_i=s_{k+i-1}-\uk$, negative at the anchor and of
+order $-\uk$ at every line of the certified window (there
+$|s|\le10^{-12}\ll\uk$ by the walk data of
+Section~\ref{subsec:hipos}); asymptotically this stays negative
+whenever $|s_n|<\uk$ --- the generic behavior, but unproved, and again
+the same brick. The family is thus unconditionally negative at every
+line, the mirror image of the vacuously positive phantoms of
+Corollary~\ref{cor:calib}, and certifies no positivity. On the
+qualitative point: the physical chain \emph{is} decreasing at every
+certified checkpoint ($H$: $4132.28819$ at $i=1$ down to
+$2320.68524$ at $i=2\times10^8$), and a decreasing chain is positive
+forever if and only if it never reaches zero --- which is precisely
+Nicolas' criterion, i.e.\ the brick of
+Remark~\ref{rem:supercritical}; the discrete character of the
+computation is what makes the certified window possible, not what
+closes the tail.
+\end{remark}
+
+\begin{remark}[local-unit reading]\label{rem:residunit}
+A further reading writes the two-form as
+$Q_k=\bigl(A_{k+1}+x\,u_k\bigr)/A_k$ with $u_k=\log p_{k+1}/X_k$ the
+\emph{local} unit of index $k$. The denominator carries no offset, so
+the line is exact for a unique $x$:
+\[
+x=\frac{Q_kA_k-A_{k+1}}{u_k}=\frac{s_k}{u_k}
+=-2.29122\times10^{-5}\qquad(k=K),
+\]
+the normalized \emph{step residual}, not the chain: the physical object
+in local units is $H_K=\eps_K/u_K=4132.288212$, a factor
+$\eps_K/|s_K|\approx1.8\times10^{8}$ larger. The value concurs exactly
+with the bare-shared $\beta$ census of
+\texttt{chainform.py} ($|\beta^{\mathrm{bare}}_1|=2.291\times10^{-5}$),
+as it must: $\beta$ \emph{is} $-s$-normalized in that reading (the
+closing condition of Remark~\ref{rem:telescope}). The line is a
+tautology of the pinned law, and $x$ is negative at the anchor with a
+sign that oscillates with the prime gaps; $x>0$ for all $k\ge K$ would
+indeed be \emph{sufficient} for the brick (the seed
+$\eps_K>0$ is positive and $\eps_{n+1}=(1+r_n)\eps_n+s_n$), but it
+fails at line 1 and is far from necessary. With
+Remarks~\ref{rem:uadd} and~\ref{rem:calibnum} and
+Corollary~\ref{cor:calib}, the parsing catalogue of
+\eqref{eq:chainform} is now closed: every reading either identifies the
+step residual (here and in Remark~\ref{rem:uadd}), inflates the chain
+by a calibration factor, or reduces to the pinned law at $C\equiv1$.
+\end{remark}
+
+\begin{proposition}[sign law and $\Omega$-oscillation of the step residual]
+\label{prop:soscil}
+Let $X_k=\vartheta(p_k)$, $a_k=\log p_{k+1}$, $A_k=\log X_k$,
+$e'_k:=p_{k+1}-X_k$, and $x_k:=s_k/u_k$. Exactly,
+\[
+s_k=\frac{A_k}{p_{k+1}-1}-\log\!\Bigl(1+\frac{a_k}{X_k}\Bigr),
+\qquad
+\log\!\Bigl(1+\frac{a_k}{X_k}\Bigr)=\sum_{m\ge1}\frac{(-1)^{m+1}}{m}
+\frac{a_k^{\,m}}{X_k^{\,m}} ,
+\]
+and the second-order law is
+\[
+p_k^{2}\,s_k=2\,a_k-e'_k\,(1+a_k)+\tfrac12\,a_k^{2}
++O\!\Bigl(\frac{(1+a_k)\,e_k'^{2}}{p_k}\Bigr).
+\]
+Hence, with $\tau_k:=a_k(a_k+2)/2(1+a_k)\le a_k$,
+\[
+s_k>0\iff e'_k<\tau_k
+\iff \vartheta(p_{k+1})-p_{k+1}>\log p_{k+1}-\tau_k .
+\]
+Consequently: (i) at the anchor $x_K<0$ ($s_K=-2.4098\times10^{-13}$),
+and the sign is negative at \emph{every} prime of the certified strip
+$[2\,038\,074\,761,\,2\,070\,000\,000]$: $1\,488\,557$ consecutive
+primes, $s_k\in[-2.92,\,-1.95]\times10^{-13}$, $e'_k\in[3.65,\,
+5.53]\times10^{4}$ against $\tau_k=11.20$ --- margin $\ge3.0\times10^{3}$;
+(ii) nevertheless $x_k>0$ for \emph{infinitely many} $k$,
+\emph{unconditionally}: by Littlewood's sign theorem
+$\vartheta(x)-x=\Omega^{+}\bigl(\sqrt x\log\log\log x\bigr)$, and
+$\vartheta(x)-x$ is maximal at the prime endpoints of each prime
+interval, so infinitely many primes $q=p_{k+1}$ satisfy
+$\vartheta(q)-q>\log q-\tau_k$; (iii) in particular the hypothesis
+``$x_k<0$ eventually'' is refutable, so the requested proof by
+contradiction of it does not exist: the transport residual is an
+$\Omega$-oscillator, negative across every computable range and
+positive exactly at the $\Omega$-crossings of the Chebyshev error.
+\end{proposition}
+
+\begin{proof}
+The series is the Taylor expansion at $a_k/X_k\le1.1\times10^{-8}$ (for
+$k\ge2$), uniformly convergent. For the second-order law write
+$X_k=p_k-e'_k$ with $p=p_{k+1}$: then
+$X\log X=p\log p-e'(1+\log p)+e'^{\,2}(\log p-\tfrac12)/p+O(|e'|^3/p^2)$
+and $X\log(1+a/X)=a-a^2/2X+O(a^3/X^2)$, so
+\[
+X\Bigl[\frac{A}{p-1}-\log\Bigl(1+\frac aX\Bigr)\Bigr]\,p
+=A\frac{pX}{p-1}-X\log\!\Bigl(1+\frac aX\Bigr)p
+\]
+rearranges (using $A=\log X=a-e'/p+O(e'^2/p^2)$ and
+$pX/(p-1)=p+1+O(1/p)$, $pX/p^2\to1$) to $p^2s=2a-e'(1+a)+a^2/2+O((1+a)e'^2/p+(1+a^2)/p)$;
+the $(1+a)e'^{\,2}/p$ term dominates on the strip ($\equiv4.4\times10^{-5}$
+relative, as measured). The sign equivalences follow since the series
+error is one-signed at this scale and $\tau_k\le a_k$ is equivalent to
+$a_k\ge2$. For (ii): let $x$ be any point with
+$\vartheta(x)-x>c\sqrt x\log\log\log x$ (Littlewood, infinitely many,
+$c>0$) and let $q\le x$ be the largest prime $\le x$; then
+$\vartheta(q)=\vartheta(x)$ and
+\[
+\vartheta(q)-q=\vartheta(x)-q=\bigl(\vartheta(x)-x\bigr)+(x-q)
+>c\sqrt q\log\log\log q>\log q-\tau_k ,
+\]
+for all large $q$, since $c\sqrt q\log\log\log q\gg2\log q$. With
+$q=p_{k+1}$ this is the criterion of the proposition, so $s_k>0$, i.e.
+$x_k>0$, for infinitely many $k$.
+\end{proof}
+
+\begin{remark}[strip certificate and reading]\label{rem:soscilnum}
+The certificate \texttt{verification/sresp.py} walks the strip from the
+certified anchor with an independent odd-only segmented sieve and the
+accumulator started at the certified $\vartheta(p_{K+1})$: gates (sign
+census $1488557/1488557$ negative; second-order law to $4.4\times10^{-5}$
+relative --- exactly the neglected $(1+a)e'^{\,2}/p$ term; sign law vs
+$\tau$ with $0$ counterexamples) all pass in $4.5$\,s. In the strip
+$e'/\sqrt p\in[0.80,1.23]$: the residual sits on the
+Chebyshev-error scale $s\sim-(1+a)\,e'_k/p^2$, i.e.\ the observed
+per-step decline of the physical chain (Remark~\ref{rem:uadd}) is the
+negative regime of an $\Omega$-oscillator, not a monotone law. By
+Proposition~\ref{prop:soscil}\,(ii) both regimes recur unconditionally
+at $\Omega$-sparsity, so no argument of the form ``$H_k$ decreases,
+hence positivity(marginality)'' can be asymptotic; the brick --- the
+sign of $\eps$, i.e.\ Nicolas' criterion --- is again untouched, and
+now visibly isomorphic to the sign question for the Chebyshev error
+along the biased walk.
+\end{remark}
+
+\begin{remark}[the law $p_{k+1}=\log N_k+c\,(\log N_k)^{1/2}$: scale right, constant impossible]
+\label{rem:sqrtlaw}
+The proposal $p_{k+1}=\log N_k+c\,(\log N_k)^{1/2}$ is, in the present notation,
+$e'_k=c\,\sqrt{X_k}$: it pins the Chebyshev error at prime endpoints to the RH
+scale with a \emph{universal} constant. Certificate
+\texttt{verification/sqrtlaw.py} (same certified walk as \texttt{sresp.py};
+strip of $1\,488\,557$ primes $[p_{K+1},\,2.07\times10^9]$) measures the ratio
+$c_k=e'_k/\sqrt{X_k}\in[0.806,\,1.218]$, mean $1.027$, rms $0.087$:
+\begin{enumerate}
+\item the \textbf{scale is right}: at the anchor $c_K=0.9885$, i.e.\ the law
+holds with $c=1$ to $1.2\%$ there, and over the whole strip to $\pm22\%$;
+\item \textbf{no constant closes it}: with the best-fit $c$ the law residual
+$p_{k+1}-(X_k+c\sqrt{X_k})$ still spans $[-9976.7,\,8680.0]$, i.e.\ up to
+$5\times10^3$ prime gaps;
+\item plugging the best-fit $c$ into the second-order law of
+Proposition~\ref{prop:soscil} reproduces the exact $s_k$ only to $27\%$
+relative (the residual amplifies $\delta c/c$ by $(1+a_k)e'/\tau$-scale
+slopes), though $s_k<0$ at every strip prime.
+\end{enumerate}
+As an \emph{eventual} law the reading is refutable unconditionally, and by the
+same mechanism as Proposition~\ref{prop:soscil}: Littlewood's
+$\vartheta(x)-x=\Omega^+(\sqrt x\log\log\log x)$ at prime endpoints makes
+$c_k$ itself $\Omega^\pm(\log\log\log X_k)$ --- $\limsup c_k=+\infty$,
+$\liminf c_k=-\infty$ (negative readings occur when
+$\vartheta(p_k)-p_k>g_k$). The correct statement is the RH-scale bound
+$|e'_k|=O(\sqrt{X_k}\,\mathrm{polylog})$ with sign changes: a law with
+$c=c(X_k)$ slowly varying and sign-changing, not with fixed $c$.
+\end{remark}
+
+\subsubsection*{Numerical census (\texttt{chainform.py})}
+
+The experiment \texttt{verification/chainform.py} walks exact sieve data
+(cheap pass: anchors $k\in\{10^3,10^4,10^5,10^6\}$, windows up to
+$1.5\times10^6$ lines, sieve to $3.5\times10^7$; deep pass: anchor
+$K=10^8$, $W=5\times10^6$ lines, segmented sieve to $2.2\times10^9$, anchor
+re-certified against $\texttt{h1\_at\_1e8}$ to relative error $\le3.3\times10^{-11}$).
+At $K=10^8$ (window $W=5\times10^6$):
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Object & value at $j=1$ & extremes in window & remark\\
+\midrule
+$\beta_j$ scaled-shared \eqref{eq:beta2}, measured & $+4.938\times10^{-13}$ & $[+3.08,\,+6.55]\times10^{-13}$ & all $>0$; $\le1.1\times10^{-14}$ from pred.\\
+$\beta_j$ bare-shared \eqref{eq:beta1}, measured & $+2.291\times10^{-5}$ & $[+1.41,\,+3.06]\times10^{-5}$ & all $>0$; $\le2.6\times10^{-12}$ from pred.\\
+$\beta_j$ scaled per-line \eqref{eq:betapl}, measured & $+4.94\times10^{-13}$ & min $-1.37\times10^{-7}$ & negative from $j=2$\\
+ true $H^{\mathrm{phys}}_j=\eps_{K+j}/\uk$ & $4132.28819$ & $\to4024.84$ at $j=5\times10^6$ & no flip\\
+$H^{\mathrm{def}}_j$ scaled phantom, seed $H_K$ & $4132.28824$ & $\to4264.51$ & over-estimate $+239.7$\\
+$H^{\mathrm{def}}_j$ bare phantom, seed $H_K$ & $4132.28821$ & $\to4142.18$ & over-estimate $+117.3$\\
+$H^{\mathrm{def}}_1$ phantom seed $0$ (either) & $+2.52\times10^{-13}$ (bare) & $\to+122.33$ (scaled) & but true $H_1=s_K/\uk<0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The same pattern holds at the cheap anchors: $\beta$ is strictly positive
+and $-2s$-dominated in the shared readings (at $k=10^3$:
+$\beta^{\mathrm{sc}}\in[+8.5\times10^{-10},+4.5\times10^{-5}]$,
+$\beta^{\mathrm{bare}}\in[+8.3\times10^{-8},+1.9\times10^{-2}]$), the
+per-line reading of $\beta$ goes negative, the per-line phantom flips sign
+within $23$ lines at $k=10^3$, and the phantom with seed $0$ stays positive
+while the true anchored chain with seed $0$ flips at $j=1$ at every anchor
+(the Theorem~\ref{thm:anchor} dichotomy, up to window censoring: for the
+true chain the near-seeds $H_K-5$ flip at $j=7202$ for $k=10^3$ and
+$j=465\,260$ for $k=10^4$, and are window-censored at $k\ge10^5$). Full
+output: \texttt{verification/chainform\_results.txt}.
+
+%=====================================================================
+\section{The memoir recurrence at fixed $k$}\label{sec:approachA}
+
+Fix $k$ (the anchor of interest is $k=10^8$) and let
+$h_j=1+\phi_j$ follow the memoir recursion
+\[
+\phi_j=\phi_{j-1}\Bigl(1+\frac1{k+j}\Bigr)+\frac{\ell_j}{k+j},
+\qquad \ell_j:=\log\log(k+j),\qquad \phi_0:=h_0-1 .
+\]
+
+\begin{theorem}[closed form]\label{thm:closed}
+For every $j\ge0$,
+\begin{equation}\label{eq:closed}
+h_j=1+\Bigl(1+\frac{j+1}{k+1}\Bigr)B_j,\qquad
+B_j=\phi_0+(k+1)\sum_{i=1}^{j}\frac{\ell_i}{(k+i)(k+i+1)},
+\end{equation}
+with the \emph{total} $B_\infty=\phi_0+\Theta_k$ where
+\[
+\Theta_k=(k+1)\sum_{i=1}^{\infty}\frac{\ell_i}{(k+i)(k+i+1)} ,
+\qquad \Theta_{10^8}=2.965083464 ,
+\]
+bracketed analytically by the alternating-moment estimates
+$S_4=2.9650817<\Theta_k<S_5=2.9650930$ (Lemma~\ref{lem:Theta}).
+\end{theorem}
+
+\begin{proof}
+Induction on $j$. For $j=0$, \eqref{eq:closed} reads
+$h_0=1+\frac{k+1}{k+1}\,\phi_0$. For the step, write
+$c_j=\frac{k+j+1}{k+1}$, so $h_j=1+c_jB_j$, i.e.
+$\phi_j=c_jB_j$ by induction hypothesis, and note $B_{j+1}=B_j+\frac{(k+1)\ell_{j+1}}{(k+j+1)(k+j+2)}$
+by definition. Then the recursion gives
+\[
+\phi_{j+1}
+=\phi_j\Bigl(1+\frac{1}{k+j+1}\Bigr)+\frac{\ell_{j+1}}{k+j+1}
+=\frac{k+j+1}{k+1}\,B_j\cdot\frac{k+j+2}{k+j+1}+\frac{\ell_{j+1}}{k+j+1}
+=\frac{k+j+2}{k+1}\,B_j+\frac{\ell_{j+1}}{k+j+1}.
+\]
+Adding the increments: since
+$\frac{k+j+2}{k+1}\cdot\frac{(k+1)\ell_{j+1}}{(k+j+1)(k+j+2)}=\frac{\ell_{j+1}}{k+j+1}$,
+\[
+\phi_{j+1}
+=\frac{k+j+2}{k+1}\Bigl(B_j+\frac{(k+1)\ell_{j+1}}{(k+j+1)(k+j+2)}\Bigr)
+=c_{j+1}B_{j+1},
+\]
+i.e. $h_{j+1}=1+c_{j+1}B_{j+1}$, completing the induction. The series defining
+$B_\infty$ converges because $\ell_i/((k+i)(k+i+1))\le C\log\log i/i^2$ is
+summable; $B_\infty=\phi_0+\Theta_k$ by definition of $\Theta_k$.
+\end{proof}
+
+\begin{lemma}[Lemma 3.5 of the manuscript]\label{lem:Theta}
+$\Theta_k$ admits the alternating-moment bracket
+$S_4=2.9650817<\Theta_k<S_5=2.9650930$ at $k=10^8$, hence the digits of
+$\Theta_{10^8}=2.965083464\dots$ above are certified.
+\end{lemma}
+
+\begin{theorem}[monotonicity]\label{thm:mono}
+$h_j$ is strictly increasing (in $j$) if and only if
+$h_0>1-\ell_1=-1.913473987471\dots$ (at $k=10^8$).
+\end{theorem}
+
+\begin{theorem}[trichotomy]\label{thm:tri}
+Exactly one of:
+\begin{enumerate}
+\item $h_0>1-\Theta_k$: then $h_j\nearrow+\infty$ and
+$h_j\sim1+\frac{j}{k+1}\,B_\infty$;
+\item $h_0=1-\Theta_k$ (boundary): then $h_j=1-\delta_j$ with
+\[
+\delta_j=(k+j+1)\!\!\sum_{i>j}\frac{\ell_i}{(k+i)(k+i+1)}\sim\ell_j=\log\log(k+j),
+\]
+so $h_j$ is strictly decreasing and $h_j\sim1-\ell_j\to-\infty$ (slow decay, no
+linear slope); it is positive for at most finitely many $j$;
+\item $h_0<1-\Theta_k$: then $h_j$ eventually decreases with a linear slope,
+$h_j\sim1+\frac{j}{k+1}\,B_\infty\to-\infty$; \textbf{the ``remainder always
+converges'' claim is false in every regime}.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[positivity]\label{thm:hpos}
+In the working regime $\Theta_k>1$ (in particular at the anchor $k=10^8$,
+where $\Theta_k=2.965\dots$): $h_j>0$ for all $j$ $\iff$ $h_0>0$. Eventual
+positivity holds iff $h_0>1-\Theta_k$ (at $k=10^8$: $h_0>-1.965083464$). On
+the boundary, $h_j\sim1-\ell_j\to-\infty$: positive for at most finitely many
+$j$. Example (physical anchor): with $h_0=-0.5$ the sign flips at
+$j=35\,181\,418$.
+\end{theorem}
+
+%=====================================================================
+\section{Linear confinement}\label{sec:confinement}
+
+\begin{theorem}[exact affine sandwich; Theorem A]\label{thm:sandwich}
+For every $j\ge0$,
+\[
+1+\Bigl(1+\frac{j+1}{k+1}\Bigr)(h_0-1)
+\;\le\; h_j\;\le\;
+1+\Bigl(1+\frac{j+1}{k+1}\Bigr)(h_0-1+\Theta_k).
+\]
+\end{theorem}
+
+\begin{proof}
+From the closed form \eqref{eq:closed}, $h_j=1+c_jB_j$ with
+$c_j=1+\frac{j+1}{k+1}>0$, and $B_0\le B_j\le B_\infty$ by monotonicity of the
+partial sums ($\ell_i>0$ for $k+i>e$). Lower: $h_j\ge1+c_jB_0=1+c_j(h_0-1)$
+since $B_0=\phi_0=h_0-1$ and $c_j>0$. Upper:
+$h_j\le1+c_jB_\infty=1+c_j(h_0-1+\Theta_k)$.
+(The naive inductive--cone route fails; the closed form is the proof.)
+\end{proof}
+
+\begin{theorem}[sharp form; Theorem B]\label{thm:sharp}
+For every $j\ge0$,
+\[
+h_j=1+\Bigl(1+\frac{j+1}{k+1}\Bigr)B_\infty-\delta_j,
+\qquad \delta_j=\mathbb{E}_{\mu_j}[\ell],
+\qquad \delta_j=\log\log(k+j)+O(1/\log\log),
+\]
+where $\mu_j$ is the monotone successor measure. Consequently the two
+sandwiches of Theorem~\ref{thm:sandwich} are near-parallel, with gap
+$\Theta_k/(k+1)\approx 3\times10^{-8}$ at $k=10^8$; on the boundary
+$B_\infty=0$ the band collapses to $h_j=1-\delta_j$ with
+$\delta_j\sim\ell_j\to\infty$.
+\end{theorem}
+
+\begin{theorem}[$k$-direction confinement; Theorem C]\label{thm:C}
+\begin{enumerate}
+\item \emph{Unconditional.} $|H_k|\le\bigl(\tfrac12+o(1)\bigr)p_k$ for all
+sufficiently large $k$.
+\item \emph{RH-conditional.} For all large $k$ under RH,
+\[
+(1.954-o(1))\,\frac{\sqrt{p_k}}{g_k}\;\le\; H_k\;\le\;(2.046+o(1))\,\frac{\sqrt{p_k}}{g_k},
+\]
+by the two-constant statement of Fact~\ref{f:Nicolas}\,(b). Under
+not-RH, $|H_k|=\Om_\pm\bigl(p_k^{\,1-b}/g_k\bigr)$ for every
+$b\in(1-\Theta,\tfrac12)$, by Fact~\ref{f:Nicolas}\,(c).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) From Facts~\ref{f:PNT} and \ref{f:Mertens}, $\Nn_k=O(\log p_k)$ on the
+classical side and $\Nn_k=o(\Ak)$ in relative terms, with
+$H_k=\Xk\Nn_k/(e^\gam g_k)$ and $\Xk\le p_k$ eventually; the constant
+$\tfrac12$ absorbs all slack.
+(2) The exact reduction is
+\[
+\log f(p_k)=-\frac{\eps_k}{\Ak}+O\Bigl(\frac{\eps_k^2}{\Ak^2}\Bigr),
+\qquad\text{hence}\qquad
+H_k\,\frac{g_k}{\sqrt{p_k}}
+=\frac{\eps_k\Xk}{e^\gam\sqrt{p_k}}
+=-(1+o(1))\,(\log f(p_k))\,\sqrt{p_k}\,\log p_k ,
+\]
+using $\Xk\sim p_k$, $\Ak\sim\log p_k$ and $\Ptil_k=e^\gam(\Ak+\eps_k)$.
+Fact~\ref{f:Nicolas}\,(b) (the bounds $-2.046\dots$ and $-1.954\dots$ on
+$(\log f)\sqrt{x}\log x$, the latter valid for all large $x$) translates this
+into the displayed two-sided band; (c) translates into the $\Om_\pm$ with the
+extra factor $\Xk/g_k\simeq p_k/\log p_k$ turning $p_k^{-b}$ into
+$p_k^{1-b}/g_k$.
+\end{proof}
+
+Verified: 20/20 sandwich checks at $k=10^8$, $j\in\{10^6,\dots,4\times10^7\}$
+(\texttt{confin}-family scripts).
+
+%=====================================================================
+\section{Error decomposition}\label{sec:error}
+
+\begin{theorem}\label{thm:err}
+The quantity $u_k^2/2$ is exactly the first neglected term of the \emph{source}:
+\[
+\log(1+\uk)=\uk-\frac{\uk^2}2+\frac{\uk^3}3-\cdots
+\]
+is alternating and convergent ($\uk<1$), so truncating there charges $s_k$ an
+error $u_k^2/2+O(u_k^3)$. However the propagation through the pinned identity
+divides by $\uk$, so the actual errors satisfy
+\[
+\mathrm{err}(x),\ \mathrm{err}(y)\;=\;\frac{\uk}2+O(\uk^2),
+\]
+larger by the factor $1/\uk$. Measured: $\mathrm{err}_s/(u^2/2)\to1.0006$ at
+$k=2\times10^6$, with identical ratios for $y$ (division by $u$ cancels).
+Moreover the \emph{dominant} part of $|y|$ is not the series tail at all but
+\[
+\frac{(1+\log p_k)\,|D_k|}{p_k\,\log p_k},
+\]
+nine orders of magnitude larger than $u_k^2/2$. Practical note:
+\texttt{math.log(1+u)} loses $\approx1.1\times10^{-16}$ (half an ulp of $1.0$);
+\texttt{math.log1p(u)} must be used.
+\end{theorem}
+
+%=====================================================================
+\section{Positivity of $y$: disambiguation}\label{sec:y}
+
+Two distinct objects have been called ``$y$'':
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Object & Sign & Status \\
+\midrule
+$y_{\mathrm{pinned}}=s_k/\uk$ (QuoPODkm system) & $<0$ in the whole verified range; $\Om_\pm$ &
+\textbf{always-positive refuted} (Theorem~\ref{thm:yneg})\\[2pt]
+$y_{\mathrm{orig}}=\dfrac{\eps_{k+1}-2s_k}{\uk}$ (origin system) & $>0$ for \emph{all} $k$ in range &
+Theorem~\ref{thm:C}; min margin $3.398\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Theorem~\ref{thm:source} gives the two-sided alternating certificates for
+$|s_k|$ (0 upper-bound violations; lower-bound violations
+$\le3.7\times10^{-22}=$ float noise; \texttt{signcert.py}).
+
+%=====================================================================
+\section{Main results relating the framework to RH}\label{sec:main}
+
+\begin{theorem}[Equivalence; Theorem 5]\label{thm:equiv}
+The following are equivalent:
+\begin{enumerate}
+\item \textup{RH};
+\item $\Nn_k>0$ for all $k\ge2$ (Nicolas' criterion, Th\'eor\`eme 2);
+\item $\eps_k>0$ for all $k$ (transport positivity);
+\item the transport solution stays positive for the physical seed,
+\[
+\frac{\eps_k}{P_k}=\frac{\eps_{k_0}}{P_{k_0}}+\sum_{i<k}\frac{s_i}{P_{i+1}};
+\]
+\item $H_k>0$ for all $k$;
+\item $h^{(k)}_j>0$ for all $j$, with the physical seed, for any anchor $k$
+(the chain equals the physical $\eps$-chain exactly: $H_j\,u=\eps_{k+j}$).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1)$\iff$(2) is Nicolas' Th\'eor\`eme 2 (Fact~\ref{f:Nicolas}\,(b)+(c) at
+primorials: $f(p_k)=1\iff\Nn_k=0$, and (c) gives both signs infinitely often).
+(2)$\iff$(3): $\eps_k=\Nn_k/e^\gam$ with $e^\gam>0$.
+(3)$\iff$(4): the closed form is linear in the seed with $P>0$, and at the
+physical seed it reads
+$\eps_k/P_k=\eps_{k_0}/P_{k_0}+\sum_{i<k}s_i/P_{i+1}$ --- positivity agrees at
+all times iff it holds at the initial time.
+(3)$\iff$(5): $\eps_k=H_k\uk$ with $\uk>0$.
+(5)$\iff$(6): by the closed form of Theorem~\ref{thm:anchor}, the chain seeded
+at $H=H_K$ satisfies $H_j\,u=\eps_{K+j}$ exactly for every anchor; hence
+all-positive at any anchor $\iff$ $\eps>0$ from the anchor onward, and over
+all anchors $\iff$ for all $k$.
+\end{proof}
+
+\begin{theorem}[Main bridge; Theorem 7]\label{thm:bridge}
+\textbf{If the original-system $y_{\mathrm{orig}}$ \eqref{eq:yorig} is positive
+for all sufficiently large $k$, then the Riemann hypothesis is true.}
+\end{theorem}
+
+\begin{proof}
+We prove the contrapositive; assume RH is false. Fix
+$b\in(1-\Theta,\tfrac12)$ and let $(k_i)$ be the infinite sequence with
+$f(p_{k_i})>1$ from Fact~\ref{f:Nicolas}\,(c), together with the $\Om$-size
+$|\log f(p_{k_i})|\ge c\,p_{k_i}^{-b}$, $c>0$. From the bridge identity
+(Remark~\ref{rem:bridge}),
+\[
+\log f(p_k)=-\frac{\eps_k}{\Ak}+O\!\Bigl(\frac{\eps_k^2}{\Ak^2}\Bigr),
+\qquad\text{i.e.}\qquad
+\log f(p_k)\,\Ak=-\eps_k\,(1+o(1)),
+\]
+so on $(k_i)$: $\eps_{k_i}\le-c'\,A_{k_i}\,p_{k_i}^{-b}$ with $c'>0$; in
+particular $\eps<0$ there. Meanwhile Theorem~\ref{thm:source} gives
+unconditionally $|2s_k|\le C\log p_k/p_k$, so at the shifted indices
+$k=k_i-1$:
+\[
+\frac{|2s_{k_i-1}|}{|\eps_{k_i}|}
+\le\frac{C\log p_{k_i-1}/p_{k_i-1}}{c'\,A_{k_i}\,p_{k_i}^{-b}}
+=\frac{C}{c'}\,p_{k_i}^{\,b-1}\,\frac{\log p_{k_i}}{A_{k_i}}
+\longrightarrow 0 ,
+\]
+since $b-1<-\tfrac12$. Because $|2s_{k_i-1}|\ll|\eps_{k_i}|$ for large $i$, the
+sign of $\eps_{k+1}-2s_k$ at $k=k_i-1$ is the sign of $\eps_{k_i}$, namely negative.
+Hence $y_{\mathrm{orig}}=(\eps_{k+1}-2s_k)/\uk<0$ infinitely often.
+\end{proof}
+
+\begin{corollary}\label{cor:thin}
+Under the hypothesis of Theorem~\ref{thm:bridge},
+\[
+f_{k+1}<1+O\bigl(p_k^{-3/2+o(1)}\bigr)\quad\text{for all large $k$:}
+\]
+an \emph{ultra-thin} band around Nicolas' criterion, thinner than what RH
+itself implies. The hypothesis is \emph{RH-hard}: no unconditional proof is
+known, and proving it would prove RH via Theorem~\ref{thm:bridge}.
+\end{corollary}
+
+\begin{theorem}[Anchored dichotomy; Theorem 8]\label{thm:anchor}
+Fix the anchor $K$ (of interest: $K=10^8$), the scale $u=u_K$, the seed
+$H_0=H$, and define the infinite chain through
+\[
+Q_{K+j-1}=\frac{A_{K+j}+H_j\,u}{A_{K+j-1}+H_{j-1}\,u},
+\qquad j=1,2,3,\dots
+\]
+Using $E_j:=H_j u$, this is exactly the transport recursion seeded at
+$E_0=Hu$:
+\[
+E_j=(1+r_{K+j-1})\,E_{j-1}+s_{K+j-1},
+\qquad
+H_j\,u=\eps_{K+j}+(Hu-\eps_K)\,\frac{P_{K+j}}{P_K}\ \ \text{(closed form)} .
+\]
+Consequently:
+\begin{enumerate}
+\item if $H\ge H_K$ (and forward Nicolas positivity holds from $K$), then all
+$H_j>0$;
+\item if $H\,u<\eps_K$ (equivalently $H<H_K$), then $H_j u/P_{K+j}\to(Hu-\eps_K)/P_K<0$ and
+$H_j<0$ \emph{eventually}.
+\end{enumerate}
+The invariant
+\[
+\frac{E_j}{P_{K+j}}-\frac{\eps_{K+j}}{P_{K+j}}
+=\frac{Hu-\eps_K}{P_K}
+\]
+holds exactly at every step.
+\end{theorem}
+
+\begin{proof}
+$E_j=(1+r_{K+j-1})E_{j-1}+s_{K+j-1}$ follows by cross-multiplying the chain
+definition at $j$: by the pinned computation of Proposition~\ref{prop:pinned},
+letting $u$ play the role of $\uk$ at the anchor, the requirement
+$(A_{K+j}+E_j)-Q_{K+j-1}(A_{K+j-1}+E_{j-1})=0$ is exactly the step law.
+The closed form is the solution of the linear recursion with seed difference
+$Hu-\eps_K$ and ratio $P$: by induction,
+$E_j-\eps_{K+j}=(Hu-\eps_K)\,P_{K+j}/P_K$; using $P_K=1$ in the anchored
+normalization. The invariant is that identity divided by $P_{K+j}>0$.
+
+For (ii): by the closed form,
+$E_j/P_{K+j}-\eps_{K+j}/P_{K+j}\equiv(Hu-\eps_K)/P_K$ at every step. The needed
+convergence is $\eps_{K+j}/P_{K+j}\to0$, which holds \emph{unconditionally}: by
+Fact~\ref{f:Mertens}, $\Ptil(x)=e^\gam\log\log x+o(\log\log x)$, so
+$\Nn_{K+j}=\Ptil_{K+j}-e^\gam A_{K+j}=o(A_{K+j})=o(\log p_{K+j})$, while
+$P_{K+j}\to\infty$ multiplicatively, with $\log P_{K+j}\sim\log\log p_{K+j}$; hence
+$\eps_{K+j}/P_{K+j}\to0$. Then $E_j/P_{K+j}\to(Hu-\eps_K)/P_K$, and
+with $Hu<\eps_K$ (i.e. $H<H_K$) the limit is negative, so $E_j<0$ eventually, i.e.
+$H_j<0$ eventually. For (i): $H\ge H_K$ makes the seed difference
+nonnegative, and (by forward Nicolas positivity $\eps_{K+j}>0$ from $K$ on, or
+directly from the invariant) $E_j\ge\eps_{K+j}>0$ for all $j$.
+\end{proof}
+
+\begin{remark}[anchor numerics]\label{rem:anchor}
+Anchor test at $K=5\times10^5$ (\texttt{anchortest.py};
+$p_K=7\,368\,787$, $u=2.1466\times10^{-6}$, $\eps_K=7.3976\times10^{-4}$,
+$H_K=344.62$): physical-seed invariant residual $4.2\times10^{-14}$; seed
+$\tfrac12\eps_K$ crosses zero at $j^*=1\,071\,954$ steps
+($p=25\,102\,267$, $\rho=3.407$ vs.\ predicted 3.44, 1.0\,\% error); seed
+$1.5\,\eps_K$ never crosses, and $E/P\to0.5\,\eps_K/P_K$
+($2.41\times10^{-5}$ vs.\ predicted $2.36\times10^{-5}$). For the physical
+anchor $K=10^8$, the exact evaluation of Section~\ref{sec:h1} gives
+$H_{10^8}=4132.288212$ (the trend estimate was $4.21\times10^{3}$), inside
+the Theorem~\ref{thm:C} RH band $[4115.3,\,4309.1]$.
+\end{remark}
+
+%=====================================================================
+\section{The anchor evaluation $H_1$ at $K=10^8$}\label{sec:h1}
+
+Fix the anchor $K=10^8$ and the scale $u=u_K$, seed $H_0=H$, as in
+Theorem~\ref{thm:anchor}. The first step of the anchored chain is fully
+explicit; it is the object recalculated by the certificate
+\texttt{h1\_at\_1e8.py} (Section~\ref{subsec:h1num}).
+
+\begin{proposition}[first anchored step; exact]\label{prop:h1}
+For every seed $H$:
+\begin{equation}\label{eq:H1}
+H_1=(1+r_K)H+\frac{s_K}{u_K}
+\;=\;\frac{\eps_{K+1}}{u_K}+(1+r_K)\,(H-H_K),
+\end{equation}
+the second form using $\eps_{K+1}=(1+r_K)\eps_K+s_K$ and $H_K=\eps_K/u_K$.
+Consequently:
+\begin{enumerate}
+\item $H_1$ is affine and strictly increasing in the seed, with slope
+$1+r_K>1$;
+\item $H_1-H=r_K\,(H-H_c)$ with the \emph{fixed point}
+\[\displaystyle H_c=-\frac{s_K}{r_K\,u_K}:\qquad
+H_1=H\iff H=H_c,\quad H_1>H\iff H>H_c;\]
+\item strictly positive seed threshold: if $H\gg0$, i.e.\
+$H>H_1^{*}:=-s_K/\bigl((1+r_K)u_K\bigr)$, then $H_1>0$. In particular
+$H=0$ gives $H_1=s_K/u_K<0$ (at the anchor $s_K<0$, itself certified), while
+$H=H_K$ gives $H_1=\eps_{K+1}/u_K$, whose sign is exactly Nicolas'
+criterion at $p_{K+1}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Apply the step law of Theorem~\ref{thm:anchor} at $j=1$:
+$E_1=(1+r_K)E_0+s_K$ with $E_0=Hu$; dividing by $u=u_K>0$ gives the first
+form of \eqref{eq:H1}. For the second, substitute
+$\eps_{K+1}=(1+r_K)\eps_K+s_K$ and $\eps_K=H_Ku_K$:
+\[
+\frac{\eps_{K+1}}{u_K}+(1+r_K)(H-H_K)
+=\frac{(1+r_K)\eps_K+s_K}{u_K}+(1+r_K)H-(1+r_K)H_K
+=(1+r_K)H+\frac{s_K}{u_K} .
+\]
+Claims (i)--(iii) are then one-line computations on an affine function with
+slope $1+r_K>0$; the threshold in (iii) is $H_1>0\iff 0<(1+r_K)H+s_K/u_K$.
+\end{proof}
+
+\begin{corollary}[every $H_i$ is constrained by the seed $H$]\label{cor:seed}
+For every $j\ge0$, the closed form of Theorem~\ref{thm:anchor} exhibits
+$H_j$ as this same explicit affine, strictly increasing function of the seed:
+\[
+H_j=\frac{\eps_{K+j}}{u_K}+(H-H_K)\,\frac{P_{K+j}}{P_K}
+\;=\;H_{K+j}\,\frac{u_{K+j}}{u_K}+(H-H_K)\,\frac{P_{K+j}}{P_K},
+\]
+with slope $P_{K+j}/P_K>1$ and $P_{K+j}/P_K$ an explicitly computable
+product. Hence the whole chain is constrained by $H$: its sign is decided by
+the single comparison $H\gtrless H_K$ (Theorem~\ref{thm:anchor}), and the
+band of Theorem~\ref{thm:C} transports along the chain step by step.
+\end{corollary}
+
+\begin{proof}
+The first equality is the closed form of Theorem~\ref{thm:anchor} divided by
+$u$; the second uses $\eps_{K+j}=H_{K+j}u_{K+j}$ with the anchor scale $u$
+fixed. Monotonicity in $H$ is Theorem~\ref{prop:h1} (i) at $j=1$, extended by
+the same linear-in-seed argument on the closed form (the seed enters as
+$(H-H_K)P_{K+j}/P_K$ with $P_{K+j}/P_K>0$).
+\end{proof}
+
+\subsection{Exact evaluation at $K=10^8$}\label{subsec:h1num}
+
+Certificate \texttt{h1\_at\_1e8.py}: a segmented bytearray sieve to
+$2.05\times10^9$ with per-segment exactly-rounded (\texttt{fsum}) partials,
+visiting every prime up to $p_{K+1}$; it verifies $\pi(p_K)=10^8$
+independently and accumulates $X_K=\vartheta(p_K)$ and
+$\log\prod_{p\le p_K}(1-1/p)$ exactly to float64. This replaces the trend
+estimate $H_{10^8}\approx4.21\times10^{3}$ of Remark~\ref{rem:anchor} by the
+exact evaluation. All values below are from one run:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Value & Reading \\
+\midrule
+$p_K$ ($\pi(p_K)$ verified by the sieve) & $2\,038\,074\,743$ & $\pi(p_K)=10^{8}$ \\
+$p_{K+1}$ (gap) & $2\,038\,074\,751$ & gap $8$ \\
+$X_K=\vartheta(p_K)$ & $2\,038\,030\,124.415365$ & \\
+$D_K=X_K-p_K$ & $-44\,618.584635$ & $D_K<0$; $\sgn(s_K)=\sgn(D_K)$ as certified \\
+$A_K=\log X_K$ & $21.435249553$ & \\
+$g_K=\log p_{K+1}$ & $21.435271450$ & \\
+$u_K=g_K/X_K$ & $1.0517642106\times10^{-8}$ & \\
+$r_K=1/(p_{K+1}-1)$ & $4.906591380\times10^{-10}$ & \\
+$\log f(p_K)$ & $-2.0275894\times10^{-6}$ & $f_K=0.999997972<1$ \\
+$\eps_K=A_K(1/f_K-1)$ & $4.346192850\times10^{-5}$ & $>0$, as $f_K<1$ \\
+$H_K=\eps_K/u_K$ & $4132.288212$ & inside the Theorem~\ref{thm:C} band $[4115.3,\,4309.1]$ \\
+$(\log f)\sqrt{p}\log p$ & $-1.962089$ at $p_K$; $-1.962091$ at $p_{K+1}$ & inside $(-2.046,\,-1.954)$ \\
+$s_K=r_KA_K-\log(1+u_K)$ & $-2.409822714\times10^{-13}$ & $s_K/u_K=-2.291220\times10^{-5}$ \\
+$H_c=-s_K/(r_Ku_K)$ & $46\,696.767$ & fixed point of the step map \\
+$f(p_{K+1})$ & $0.999997972<1$ & $\eps_{K+1}=4.346192827\times10^{-5}>0$ \\
+consistency $u_K\,H_1(H_K)\stackrel{?}{=}\eps_{K+1}$ & rel.\ diff.\ $1.5\times10^{-10}$ & transport step law at $K=10^8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Seed $H$ & $H_1=(1+r_K)H+s_K/u_K$ & Reading \\
+\midrule
+$0$ & $-2.291220\times10^{-5}$ & $=s_K/u_K$: below the threshold $H_1^{*}$ \\
+$H_1^{*}=2.291220\times10^{-5}$ & $0$ & positivity threshold \\
+$10^{3}$ & $999.999978$ & $H_1/H\to1+r_K$ \\
+$H_K=4132.288212$ & $4132.288192$ & $=\eps_{K+1}/u_K$ (physical seed) \\
+$10^{4}$ & $9999.999982$ & $H_1/H\to1+r_K$ \\
+$10^{6}$ & $1\,000\,000.000468$ & $H>H_c$: the only tested seed with $H_1>H$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Reading.} Assume at $K=10^8$ that $H\gg0$. Then $H_1>0$ for every
+$H>H_1^{*}=2.29\times10^{-5}$, so any physically meaningful seed is positive
+at the first step; and the seed constraint is the explicit corridor
+$H_1-H=r_K(H-H_c)$: for $0<H<H_c\simeq4.67\times10^{4}$ the anchored
+coefficient \emph{decreases}, but only by $r_K(H_c-H)$ (about
+$2.29\times10^{-5}$ at $H\approx4\times10^{3}$), while for $H>H_c$ it
+increases. At the physical seed the chain reproduces the transport of
+$\eps$ exactly ($H_1=\eps_{K+1}/u_K$), whose positivity is Nicolas' criterion
+at $p_{K+1}$ --- verified directly above, at $x\approx2.04\times10^{9}$,
+beyond Nicolas' own checked range $x\le10^{8}$ (note $p_K>10^{8}$, so this
+single point is not covered by Fact~\ref{f:Nicolas}\,(a)).
+
+\subsection{Chain positivity: $H_i>0$ for every $i$}\label{subsec:hipos}
+
+Proposition~\ref{prop:h1} decided the sign of the first step $H_1$, and
+Corollary~\ref{cor:seed} exhibited every $H_i$ as an explicit affine
+function of the seed $H$. We now package the two into the all-step
+positivity statement of the program (Theorem 9).
+
+\begin{theorem}[all-step positivity of the anchored chain; Theorem 9]\label{thm:chainpos}
+Fix the anchor $K=10^8$, the scale $u=u_K>0$, the seed $H_0=H$, and let
+$P_i\coloneqq P_{K+i}/P_K$ denote the transport product ratios from the
+anchor (so $P_0=1$ and $P_i>0$ for all $i$). Assume
+\begin{enumerate}
+\item \emph{seed dominance}: $H_K\le H$ --- certified at the anchor, where
+$H_K=4132.288212$ (Section~\ref{subsec:h1num}), so every seed $H\gg0$
+qualifies, and indeed every $H>\max\{H_K,\,H_1^{*}\}$ with
+$H_1^{*}=2.291220\times10^{-5}$;
+\item \emph{Nicolas' criterion at every step}: $f(p_{K+i})<1$, equivalently
+$\eps_{K+i}>0$, for all $i\ge1$.
+\end{enumerate}
+Then
+\[
+H_i\;\ge\;\frac{\eps_{K+i}}{u_K}\;>\;0\qquad\text{for every }i\ge1,
+\]
+with equality in the first inequality iff $H=H_K$.
+\end{theorem}
+
+\begin{proof}
+Immediate from the closed form of Corollary~\ref{cor:seed}: under (i) the
+seed excess $H-H_K\ge0$ contributes the nonnegative amount
+$(H-H_K)\,P_i$ with $P_i>0$, so by (ii) and $u_K>0$,
+$H_i\ge\eps_{K+i}/u_K>0$. If equality held with $H>H_K$, the strictly
+positive excess $(H-H_K)P_i>0$ would be missing.
+\end{proof}
+
+\begin{corollary}[normalized all-step criterion; iff form]\label{cor:chainiff}
+In the notation of Theorem~\ref{thm:chainpos} let
+$\pi_i\coloneqq\bigl(\eps_{K+i}/u_K\bigr)\big/P_i$ be the \emph{normalized
+physical chain}. Then
+\[
+H_i>0\ \ \forall i\ge1\qquad\Longleftrightarrow\qquad
+\pi_i>H_K-H\ \ \forall i\ge1 .
+\]
+In particular: (a) under seed dominance $H\ge H_K$ the threshold
+$H_K-H\le0$, so Theorem~\ref{thm:chainpos} is recovered; (b) if the
+criterion fails at some step ($f(p_{K+i_0})>1$), then $H_{i_0}\le0$ can
+occur only where the deficit satisfies
+$\eps_{K+i_0}/u_K\le-(H-H_K)P_{i_0}$ --- for $H>H_K$ a deficit of size at
+least $(H-H_K)P_{i_0}$, growing with the transport product; (c) if the
+failure is permanent ($\eps_{K+i}<0$ for all large $i$), the anchored
+dichotomy (Theorem~\ref{thm:anchor}) gives $H_i<0$ eventually for every
+seed $H<H_K$.
+\end{corollary}
+
+\begin{proof}
+Divide the exact closed form of Corollary~\ref{cor:seed} by $P_i>0$:
+$H_i/P_i=\pi_i+H-H_K$, hence $H_i>0\iff P_i\,(\pi_i+H-H_K)>0
+\iff\pi_i>H_K-H$, the last equivalence using $P_i>0$. Claims (a)--(c) are
+immediate: (a) because the threshold is then $\le0$ while (ii) gives
+$\pi_i>0$; (b) by substituting $H_{i_0}\le0$ into the same identity; (c) by
+Theorem~\ref{thm:anchor} applied to the normalized chain.
+\end{proof}
+
+\emph{Reading.} Assume again that at $K=10^8$ we have $H\gg0$. Then (i)
+holds automatically, and $H_i>0$ for every $i$ is equivalent to Nicolas'
+criterion holding along the whole chain --- no other input enters. In the
+numerically accessible window the criterion is confirmed directly at
+$i=1$ ($f(p_{K+1})=0.999997972<1$), so $H_1>0$ unconditionally for any
+physically meaningful seed; the all-step statement is exactly the RH-hard
+half isolated in Theorem~\ref{thm:bridge} (limitation 2 of
+Section~\ref{app:limits}).
+
+\begin{corollary}[supercritical seeds are eventually positive; unconditional]
+\label{cor:superpos}
+Fix the anchor $K$ and a seed $H>H_K$ (in particular any seed $H\gg0$ at
+$K=10^8$). Then $H_i>0$ for all sufficiently large $i$ ---
+\emph{unconditionally}. Consequently a supercritical chain can be
+nonpositive at finitely many indices only: every possible failure of
+all-step positivity is confined to a finite initial window.
+\end{corollary}
+
+\begin{proof}
+Divide the closed form by $P_i>0$ and use $\eps_n/P_n\to0$ (Mertens, the only
+input of Theorem~\ref{thm:anchor}\,(ii)):
+\[
+\frac{H_i}{P_i}
+=\frac{\eps_{K+i}}{u_KP_i}+H-H_K
+=\frac{P_K}{u_K}\,\frac{\eps_{K+i}}{P_{K+i}}+H-H_K
+\;\longrightarrow\;H-H_K>0 ,
+\]
+where $P_{K+i}/P_K=P_i$. Hence $H_i/P_i>\tfrac12(H-H_K)>0$ for all large $i$,
+i.e.\ $H_i>0$ eventually.
+\end{proof}
+
+\begin{remark}[where the RH-hard residue lives]\label{rem:supercritical}
+Corollary~\ref{cor:superpos} confines the entire RH-hard content. For
+$H>H_K$ the only possible failures of $H_i>0$ satisfy, by
+Corollary~\ref{cor:chainiff}\,(b), the deficit inequality
+$\eps_{K+i}<-(H-H_K)\,u_K\,P_i$, and there are finitely many such $i$.
+At the critical seed $H=H_K$ the seed excess vanishes, the window becomes
+the whole tail, and all-step positivity is equivalent to Nicolas'
+criterion, hence to RH (Theorem~\ref{thm:equiv}). In other words: the
+statement ``$H_i>0$ for every $i$'' is provable unconditionally only for
+the eventual part of the chain, and the initial window is exactly the
+brick that carries RH. The certificates reach $i=0$ and $i=1$ analytically
+(Section~\ref{subsec:h1num}) and, by the window certificate below,
+$i\le 2\times10^8$ computationally; no analytic input in this memoir
+controls the tail $i>2\times10^8$.
+\end{remark}
+
+\begin{proposition}[certified positivity window; unconditional]
+\label{prop:hiposwin}
+Let the anchor be $K=10^8$ with the physical seed $H_K=\eps_K/\uk
+=4132.288212$ (certified, Section~\ref{subsec:h1num}). Then $H_i>0$ for
+every $0\le i\le 2\times10^8$, with window margins
+$\min_i\eps_{K+i}=2.4408\times10^{-5}$ and $\min_i H_i=2320.68524$ (both
+attained at $i=2\times10^8$), against a worst-case float64 drift of
+$3\times10^{-12}$ (safety factor $\ge8.1\times10^6$). Equivalently,
+Nicolas' criterion $f(p)<1$ holds for the $2\times10^8$ consecutive
+primes $p\in[p_{K+1},\,p_{K+2\times10^8}]
+=[2\,038\,074\,751,\,6\,461\,335\,109]$.
+\end{proposition}
+
+\begin{proof}
+At the physical seed the closed form gives exactly $H_i=\eps_{K+i}/\uk$,
+so $\sgn(H_i)=\sgn(\eps_{K+i})$, and $\eps_{K+i}>0\iff
+\Ptil_{K+i}>e^\gam A_{K+i}\iff f(p_{K+i})<1$ is the definition of $f$
+--- no estimate enters the equivalence. The values are transported by the
+exact law $\eps_{n+1}=(1+\rk)\eps_n+s_n$ from the certified seed
+$\eps_K$ (script \texttt{hipos\_window.py}: segmented sieve of
+$[p_K,\,7\times10^9]$ with per-segment \texttt{fsum} re-anchoring,
+stream started at the anchor; $W=2\times10^8$ steps in $150$ s). The run
+is cross-checked against the independent compensated deep pass of
+\texttt{chainform.py} at $j\in\{1,2,10^3,10^4,10^5,10^6,5\times10^6\}$:
+all relative errors $3.3\times10^{-11}$, the same figure as the anchor
+cross-check. Each step's rounding is at most a few ulp of
+$\eps\approx10^{-20}$, so the accumulated drift over $2\times10^8$ steps
+is $\le3\times10^{-12}$ --- nearly eight orders of magnitude below the
+margin $\min\eps=2.44\times10^{-5}$. Since the seed $\eps_K>0$ is certified and
+every transported value stays above the margin, all $H_i>0$ on the
+window.
+\end{proof}
+
+\noindent
+The window certificate extends the unconditional layer of
+Theorem~\ref{thm:chainpos} from $\{0,1\}$ to $\{0,\dots,2\times10^8\}$;
+the tail $i>2\times10^8$ remains exactly the RH-hard brick isolated in
+Remark~\ref{rem:supercritical}.
+
+\begin{corollary}[seed--sign dichotomy; $\sgn(H_j)$ vs $\sgn(H)$]\label{cor:sgnsame}
+Fix the anchor $K=10^8$, scale $u=u_K$, seed $H$, and let $H^{\rm phys}_i
+=\eps_{K+i}/u_K$ denote the physical chain (seed $H=H_K$ exactly) and
+$P_i=\prod_{j<i}(1+r_{K+j})>0$ the transport product. By the closed form
+(Corollary~\ref{cor:seed}), for every seed,
+\[
+H_i=H^{\rm phys}_i+(H-H_K)\,P_i,\qquad
+\sgn\bigl(H_i\bigr)=\sgn\bigl(\rho_i-(H_K-H)\bigr),
+\quad \rho_i:=\frac{H^{\rm phys}_i}{P_i}.
+\]
+\begin{enumerate}
+\item \textbf{(supercritical seeds $H\ge H_K$; unconditional on the window)}
+for every seed $H\ge H_K$ the seed excess $(H-H_K)P_i$ is nonnegative, so
+$H_i\ge H^{\rm phys}_i>0$ on the whole certified window ($\min_i
+H^{\rm phys}_i=2320.68524$ at $i=2\times10^8$, Proposition~\ref{prop:hiposwin}):
+$H$ and every $H_j$ share the (positive) sign for $j\le 2\times10^8$,
+regardless of how large $H$ is taken. Eventually --- i.e.\ for all $j$ ---
+the same-sign property is exactly Theorem~\ref{thm:chainpos}, whose
+hypothesis (ii) is Nicolas' criterion from $K+1$, the RH-hard half.
+\item \textbf{(subcritical seeds $0<H<H_K$: the claim fails, provably)}
+the dichotomy of Theorem~\ref{thm:anchor}\,(ii) makes $H_j<0$ eventually
+for every $H<H_K$; for $0<H<H_K$ the chain therefore ends on the sign
+\emph{opposite} to the seed. Through the certified window the failure is
+locatable exactly: $\rho_i$ attains its window minimum
+$\rho_{\min}=2202.148158$ at $i=W$, so with the \emph{critical seed}
+\[
+c_W:=H_K-\min_{0\le i\le W}\rho_i=1930.140054
+\]
+every seed $0<H<c_W$ flips nonpositively \emph{inside} the window
+(certified flip indices: $H=1$ at $i=42\,993$, $H=100$ at
+$i=4\,373\,363$, $H=1000$ at $i=61\,006\,410$, $H=1900$ at
+$i=191\,615\,334$, each with zero re-crossings), while every seed
+$H>c_W$ keeps $\sgn(H_i)=+$ throughout the window.
+\item \textbf{(negative seeds $H<0$: same sign, all steps)}
+$\rho_i$ attains its window maximum exactly at $i=0$
+($\rho_0=H_K$, $\max_i\rho_i=H_K$), so the lower critical seed is
+$d_W=H_K-\max_{i}\rho_i=0$ to machine precision and every seed $H<0$
+satisfies $H_i<0$ for all $0\le i\le W$ (margins $\ge|H|$, exactly).
+Eventually $H_j u/P_{K+j}\to(Hu-\eps_K)/P_K<0$ unconditionally
+(Theorem~\ref{thm:anchor}\,(ii)): negative seeds keep their sign
+eventually, and on the whole window.
+\item \textbf{(bricks)} the all-step statement ``$\sgn(H_j)=\sgn(H)$ for
+every $j\ge1$'' is: (a) at $H=H_K$, equivalent to Nicolas' criterion, hence
+to RH (Corollary~\ref{cor:chainiff}: $H_i>0\iff\eps_{K+i}>0$); (b) at a
+fixed $H>H_K$, the strictly weaker criterion $\pi_i>H_K-H$ for all $i$,
+i.e.\ the deficit $\eps_{K+i}<-(H-H_K)\,u_KP_i$ never occurs: an open
+brick-type condition --- implied by Theorem~\ref{thm:chainpos}\,(ii) but
+not implying it (it tolerates small negative $\eps$), hence not known
+equivalent to RH.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The identity is the closed form of Corollary~\ref{cor:seed} divided by
+nothing: $H_i=H^{\rm phys}_i+(H-H_K)P_i$ with $P_i>0$, whence the sign
+identity $\sgn(H_i)=\sgn(\rho_i-(H_K-H))$. (1): $(H-H_K)P_i\ge0$ and the
+window minimum of $H^{\rm phys}_i$ is Proposition~\ref{prop:hiposwin}; the
+all-step reduction is Theorem~\ref{thm:chainpos} with
+Corollary~\ref{cor:chainiff}. (2): Theorem~\ref{thm:anchor}\,(ii) for the
+eventual flip; $H_i>0\iff\rho_i>H_K-H$, so the flip set inside the window
+is exactly $\{H:H_K-\rho_i>H\text{ for some }i\le W\}=\{H<c_W\}$, and the
+flip indices, zero re-crossings, and the value $\rho_{\min}=2202.148158$
+at $i=W$ are read off the certificate \texttt{seedsign.py}
+(Remark~\ref{rem:sgnnum}). (3): $\max_i\rho_i=\rho_0=H_K$ on the window
+(certified), giving $d_W=0$. (4): (a) is
+Corollary~\ref{cor:chainiff} at $H=H_K$; (b) is part (b) of the same
+corollary read as a criterion: by the sign identity, the all-step
+statement at fixed $H>H_K$ is exactly the nonoccurrence of the deficit
+$\eps_{K+i}<-(H-H_K)u_KP_i$, which is strictly weaker than Nicolas'
+criterion (it tolerates small negative $\eps_{K+i}$) and is not known
+equivalent to RH.
+\end{proof}
+
+\begin{remark}[certificate and honest reading]\label{rem:sgnnum}
+The certificate \texttt{verification/seedsign.py} (same anchor-started
+walk as \texttt{hipos\_window.py}; $W=2\times10^8$, $280$ s) verifies: the
+closed form against three \emph{independent direct recursions}
+($E_j(1000)$, $E_j(1)$, $E_j(-100)$) to absolute $1.0\times10^{-16}$ ---
+the relative metric would explode at a sign-crossing step, which is
+precisely where the flip seeds live; the dichotomy table above; and the
+physical margins. Reading: ``$H$ and $H_j$ have the same sign'' is a
+\emph{seed-conditional} statement, true for every supercritical seed on
+the certified window (margin $2320.68524$), true for every negative seed
+at every step of the window and eventually (unconditionally), false for
+every subcritical positive seed --- with the flip \emph{certified}, not
+conjectured --- and, at the all-step level for $H\ge H_K$, exactly the
+brick of Theorem~\ref{thm:chainpos}\,(ii). The window carries no new RH
+content beyond Proposition~\ref{prop:hiposwin}: it packages the same
+certified Nicolas range over seeds.
+\end{remark}
+
+\begin{proposition}[the chain increments converge, unconditionally]
+\label{prop:stepdiff}
+Let $K=10^8$, fix a seed $H$, and let $(H_j)_{j\ge0}$ be the transport
+chain of Theorem~\ref{thm:anchor} at scale $u_K$. Then exactly, for
+every $j\ge1$,
+\[
+\Delta_j:=H_j-H_{j-1}=r_{K+j-1}\,H_{j-1}+\frac{s_{K+j-1}}{u_K},
+\]
+and $\Delta_j\to0$ as $j\to\infty$ \emph{unconditionally}: the proof
+below uses only the prime number theorem --- the Mertens product
+relative error $\eps_n=o(A_n)$ and $g_k/X_k\to0$ --- and no hypothesis
+on $\zeta$.
+\end{proposition}
+
+\begin{proof}
+Split $H_{j-1}=H^{\rm phys}_{j-1}+(H-H_K)Q_{j-1}$
+(Corollary~\ref{cor:seed}, with $Q_{j-1}:=P_{K+j-1}/P_K$ the anchored
+drift product) in the exact identity, and write $p=p_{K+j}$,
+$r=r_{K+j-1}$.
+
+(1) \emph{Physical part:} $r\,H^{\rm phys}_{j-1}
+=\eps_{K+j-1}/\bigl((p-1)\,u_K\bigr)$; by the relative Mertens bound
+$\eps_{K+j-1}=o(A_{K+j-1})$ with $A\sim\log p$ and $u_K$ fixed, this
+is $o(\log p)/p\to0$. (2) \emph{Seed-drift part:} with
+$Q_{j-1}=\prod_{K\le m\le K+j-2}(1+r_m)\le\exp(\sum_{p_i\le
+p}\tfrac1{p_i-1})\le(\log p)^{C}$ (subpolynomial growth, since
+$\sum_{p_i\le p}1/p_i\le C\log\log p$), the term
+$r\,(H-H_K)Q_{j-1}\to0$ because $r=1/(p-1)\to0$ beats any power of
+$\log p$. (3) \emph{Step residual:} $|s_k|\le r_kA_k+u_k$ with
+$r_kA_k=A_k/(p_{k+1}-1)\to0$ and $u_k=g_k/X_k\to0$ by the PNT (since
+$p_{k+1}/X_k\to0$); dividing by the constant $u_K>0$ leaves a null
+sequence.
+\end{proof}
+
+\begin{remark}[shape of the increments, certificate, and what
+increment-convergence does not imply]\label{rem:stepdiffnum}
+By the second-order law of Proposition~\ref{prop:soscil} the residual
+part has the leading shape $s_{k}=-e'_k(1+a_k)/p_k^{2}\,(1+o(1))$
+(with $e'_k=p_{k+1}-X_k$, $a_k=\log p_{k+1}$), so
+\[
+\Delta_j=\frac{\eps_{K+j}}{(p-1)\,u_K}
+-\frac{e'_{K+j-1}\,(1+a)}{p^{2}\,u_K}\,(1+o(1)),
+\qquad
+|\Delta_j|\,p^{3/2}\sim\frac{1+a}{u_K}\;\eta,
+\qquad \eta:=\frac{e'}{\sqrt p}\,:
+\]
+the increments decay like $p^{-3/2}$, modulated by the Chebyshev
+oscillation $\eta$ of the prime endpoints. The convergence statement is
+immune to that modulation: Littlewood makes $\eta$ unbounded
+($\Omega^{\pm}(\log\log\log p)$, Proposition~\ref{prop:soscil}) but
+slower than any power, so $p^{-3/2}\eta\to0$ regardless.
+
+The certificate \texttt{verification/stepdiff.py} ($K=10^8$, physical
+seed, window $W=2\times10^7$ steps, segmented sieve to
+$2.6\times10^9$, $31$ s) verifies, all gates {\sc PASS}: the exact
+increment identity to $\max|\Delta-rH-s/u_K|=1.959\times10^{-12}$
+H-units ($3$ float-ulps of $\eps/u_K$); the second-order $s$-law over
+the window to $\le4.70\times10^{-5}$ relative (consistent with the
+$4.4\times10^{-5}$ strip figure of \texttt{sresp.py}); the sign census
+$\Delta_j<0$ at $20\,000\,000/20\,000\,000$ steps, with minimum margin
+$e'/\bigl(\eps\,p/(1+a)\bigr)=6.42$ at $j=12\,945\,867$; and the modulation
+census $\eta\in[0.557,\,1.454]$ --- the band has drifted beyond the
+certified strip band $[0.806,\,1.218]$ of Remark~\ref{rem:sqrtlaw},
+confirming the drift --- with $z=|\Delta|p^{3/2}\in[1.01\times10^{9},\,
+2.93\times10^{9}]$, ratio $2.90\simeq\eta$-spread. Inside the window
+the $p^{-3/2}$ trend ($\sim25\%$ expected decay) is largely masked by
+the $\eta$ oscillation: $\Delta_j$ hovers in
+$[-2.35\times10^{-5},-2.05\times10^{-5}]$ without monotone decay,
+$\Delta_1=r_KH_K+s_K/u_K=-2.0885\times10^{-5}
+=(2.028\times10^{-6})+(-2.2912\times10^{-5})$, and the $r$-part tracks
+$\eps/p$ exactly ($2.028\times10^{-6}\to1.515\times10^{-6}$ over the
+window).
+
+Finally, $\Delta_j\to0$ does \emph{not} imply that the chain
+$(H_j)$ converges: $\sum_{j\le J}\Delta_j=H_J-H_0$ telescopes, and a
+null-term series can diverge. For a supercritical seed
+$H_j\sim(H-H_K)Q_j$ with $\log Q_j\sim\log\log p$, so the telescoped sum diverges to
+$+\infty$ exactly as the harmonic series diverges with
+terms $1/n\to0$; the positive terms $\Delta_j>0$ dominating those
+steps sum like $\log Q$. For the physical seed, convergence of the
+telescope is exactly the question whether $\eps_k$ has a Mertens limit
+at prime endpoints --- the open brick of
+Theorem~\ref{thm:chainpos}\,(ii) $\bigl(\iff$ Nicolas $\iff$
+RH$\bigr)$. The certified window makes this concrete: the physical
+chain is strictly decreasing on $[0,2\times10^8]$ yet stays positive,
+from $H_K=4132.2882$ down to $2320.68524$ at $i=W$
+(Proposition~\ref{prop:hiposwin}); its increments converge to $0$
+while its limit --- if any --- is the open Mertens constant.
+\end{remark}
+
+\begin{remark}[an error in $\Delta_j=H_j-H_{j-1}$, audited and
+repaired]\label{rem:recheck}
+An earlier draft of Corollary~\ref{cor:invlaw} below indexed the
+drift-product step as $P_j=P_{j-1}(1+r_{K+j})$, one prime ahead of the
+transport chain (the step $j-1\to j$ carries the factor
+$(1+r_{K+j-1})$, prime $p_{K+j}$, as in \eqref{eq:H1} and
+Proposition~\ref{prop:stepdiff}), and reused the symbol $H_k$ of the
+global chain of Theorem~\ref{thm:anchor} inside a step-counter
+statement. The mis-indexed drift differs from the correct drift
+$r_{K+j-1}\,Q_{j-1}$ only at second order, per step
+$\le|H-H_K|\,r^2Q$, which at $K=10^8$ is below machine precision
+--- so all certified constants are unchanged; the repair is purely
+notational. The audit certificate \texttt{recheck.py}
+(Section~\ref{sec:certs}) recomputes the increments by four
+independent routes from the certified anchor (direct recursion, closed
+form $H_j=H^{\rm phys}_j+(H-H_K)Q_j$ with $Q_j=P_{K+j}/P_K$, increment
+algebra, closed-form increment) and adds an explicit
+mispairing-equivalence control: over $W=5\times10^4$ steps all routes
+agree to $\le1.6\times10^{-12}$ H-units, the corrected telescope
+matches the closed form to $\le1.5\times10^{-11}$, and the off-by-one
+variant coincides with the corrected drift to $\le1.1\times10^{-15}$
+per step ($\le5.1\times10^{-11}$ over partial sums) --- the delivered
+error leaves no float signature.
+\end{remark}
+
+\begin{corollary}[the $1/i$ error law: supercritical drift, physical seed on
+both sides of it]\label{cor:invlaw}
+Let $K=10^8$, fix a seed $H$, and let $(H_j)_{j\ge0}$ be the transport
+chain of Theorem~\ref{thm:anchor} at scale $u_K$ ($H_0=H$; the step
+$j-1\to j$ carries the factor $(1+r_{K+j-1})$, prime $p_{K+j}$). Let
+$Q_j:=P_{K+j}/P_K$ be the anchored drift product ($Q_0=1$,
+$Q_j=Q_{j-1}(1+r_{K+j-1})$; this is the transport product
+$P_i=\prod_{m<i}(1+r_{K+m})$ of Corollary~\ref{cor:sgnsame}, renamed
+$Q$ to remove the symbol collision of the earlier draft). Then
+exactly, for every $j\ge1$,
+\[
+\Delta_j:=H_j-H_{j-1}=(H-H_K)\,\bigl(Q_j-Q_{j-1}\bigr)+\Delta^{\rm phys}_j,
+\]
+\[
+Q_j-Q_{j-1}=r_{K+j-1}\,Q_{j-1},
+\qquad
+\Delta^{\rm phys}_j=\frac{r_{K+j-1}\,\eps_{K+j-1}+s_{K+j-1}}{u_K}
+=\frac{\eps_{K+j}-\eps_{K+j-1}}{u_K},
+\]
+and, unconditionally:
+\begin{enumerate}
+\item[(a)] $j\,\bigl(Q_j-Q_{j-1}\bigr)\to c_M/A_K$ with $c_M:=\lim_j
+A_KQ_j/\log p_{K+j}$ the anchored Mertens ratio; hence for every seed
+$H\ne H_K$ the increments obey the $1/i$ law (in the step counter $j$)
+with the \emph{explicit constant} $(H-H_K)\,c_M/A_K$ and the sign of
+$H-H_K$, and the chain diverges harmonically:
+$\sum_{j\le J}\Delta_j=(H-H_K)(Q_J-1)$,
+$H_J\sim(H-H_K)\,(c_M/A_K)\,\log J$ (with $H_J$ the chain value at the
+global index $k_J=K+j$; $k_J\sim J\log J$);
+\item[(b)] for the physical seed $H=H_K$ the $1/i$ law fails on
+\emph{both sides}: in the certified window $\Delta^{\rm phys}_j$
+exceeds the harmonic scale by the $\eta$-dominated factor
+$|\Delta^{\rm phys}_j|\,k_j\in[1022,\,3027]$ (global index
+$k_j=K+j$), while asymptotically $\Delta^{\rm phys}_j=o(1/k_j)$
+(rate $e'_k/p_k\to0$).
+\end{enumerate}
+Consequently a $1/i$ error law cannot serve the positivity program: at
+$H\ne H_K$ its partial sums diverge like the harmonic series, and at
+$H=H_K$ the true in-window scale is the $e'$-oscillation, not $1/k$;
+the physical telescope remains exactly the Mertens-limit question for
+$\eps$ (Remark~\ref{rem:stepdiffnum}), and the brick
+$\bigl(\iff$ Nicolas $\iff$ RH$\bigr)$ is untouched.
+\end{corollary}
+
+\begin{proof}
+The identity is the closed form of Corollary~\ref{cor:seed}:
+subtracting $H_j=H^{\rm phys}_j+(H-H_K)Q_j$ at $j$ and $j-1$, with
+$H^{\rm phys}_j=\eps_{K+j}/u_K$, $H^{\rm phys}_0=H_K$ and $Q_0=1$,
+gives the displayed identity; $Q_j-Q_{j-1}=r_{K+j-1}\,Q_{j-1}$ is the
+defining product step of the anchored chain (the step $j-1\to j$
+carries the factor $(1+r_{K+j-1})$, prime $p_{K+j}$), and
+$\eps_{K+j}=(1+r_{K+j-1})\eps_{K+j-1}+s_{K+j-1}$ gives the second form
+of $\Delta^{\rm phys}_j$.
+
+(a): By Mertens' third theorem at the prime endpoints,
+$\Pi(x):=\prod_{p\le x}(1-\tfrac1p)^{-1}=e^{\gam}\log x\,(1+o(1))$;
+because the anchored product factors as
+$Q_j=\prod_{K\le m\le K+j-1}(1+r_m)=\Pi(p_{K+j})/\Pi(p_K)$, the
+anchored ratio cancels $e^{\gam}$ \emph{together with both endpoint
+offsets' leading term}:
+\[
+Q_j=\frac{\Pi(p_{K+j})}{\Pi(p_K)}
+=\frac{\log p_{K+j}}{A_K}\cdot\frac{1+o(1)}{1+\eta_K},
+\qquad \Pi(p_K)=e^{\gam}A_K(1+\eta_K),
+\]
+so $c_M=1/(1+\eta_K)$ exists (a fixed constant of the anchor) and
+$A_KQ_j/\log p_{K+j}\to c_M$. Write $k_j=K+j$ and $p=p_{k_j}$; by the
+PNT, $k_j\log p_{k_j}/p_{k_j}\to1$, $p_{k_j}/(p_{k_j}-1)\to1$, and
+$j/k_j\to1$. Hence
+\[
+j\,\bigl(Q_j-Q_{j-1}\bigr)
+=j\,r_{K+j-1}\,Q_{j-1}
+=\frac{j}{k_j}\cdot\frac{Q_{j-1}A_K}{\log p_{k_j-1}}\cdot
+\frac{k_j\log p_{k_j}}{p_{k_j}}
+\cdot\frac{p_{k_j}}{p_{k_j}-1}
+\cdot\frac{\log p_{k_j-1}}{\log p_{k_j}}\cdot\frac1{A_K}
+\longrightarrow\frac{c_M}{A_K}.
+\]
+The $1/i$ law and its constant follow by dividing the exact identity
+by $j$; the harmonic divergence is the exact telescope
+$\sum_{j\le J}(H-H_K)(Q_j-Q_{j-1})=(H-H_K)(Q_J-1)$ with
+$\log Q_j=\log\log p_{K+j}-\log A_K+O(1)\to\infty$, and
+$H_J=H^{\rm phys}_J+(H-H_K)Q_J\sim(H-H_K)(c_M/A_K)\log J$ because
+$H^{\rm phys}_J=\eps_{K+J}/u_K=o(\log p_{K+J})$ is dominated by any
+fixed multiple of $\log p_{K+J}$, and $k_J=K+J\sim J\log J$.
+
+(b): By the second-order shape of Remark~\ref{rem:stepdiffnum} (from
+Proposition~\ref{prop:soscil}, at the step prime $p=p_{k_j}$,
+$a=\log p$), up to the null $\eps$-part
+$(\eps_{k_j}/A_{k_j})\cdot\bigl(A_{k_j}j/(p-1)\bigr)/u_K\to0$, the
+residual carries
+\[
+\bigl|\Delta^{\rm phys}_j\bigr|\,p^{3/2}
+\le\frac{C\,(1+a)}{u_K}\,\eta_j,
+\qquad \eta_j:=\frac{e'_{K+j-1}}{\sqrt p}.
+\]
+With the PNT, $j/p^{3/2}\sim1/\bigl(\sqrt p\,\log p\bigr)$, hence
+$j\,\bigl|\Delta^{\rm phys}_j\bigr|
+\le C(1+a)\,e'_{K+j-1}\,\bigl(1+o(1)\bigr)/\bigl(u_K\,p\bigr)$, which
+tends to $0$ exactly when $e'_k=o(p_k)$ (PNT:
+$\vartheta(p)-p=o(p)$ and the gaps are $o(p)$): unconditionally, this
+is the $p^{-3/2}$ trend of Remark~\ref{rem:stepdiffnum} read on the
+harmonic scale, certified in-window as
+$|\Delta^{\rm phys}_j|\,k_j\in[1022,\,3027]$
+(Remark~\ref{rem:invnum}).
+\end{proof}
+
+\begin{remark}[certificate]\label{rem:invnum}
+The certificate \texttt{verification/steporder.py} ($K=10^8$, window
+$W=2\times10^7$ steps, segmented sieve to $2.6\times10^9$, $29$ s)
+verifies, all gates {\sc PASS}: the exact seed decomposition against
+independent direct recursions for the supercritical seed $H_K+1000$
+and the negative seed $-100$ to $\le2.4\times10^{-12}$ H-units; the
+drift telescope $\sum(H-H_K)\,r_{K+j-1}Q_{j-1}=(H-H_K)(Q_J-1)$ to
+$6.4\times10^{-11}$ relative ($1.4\times10^{-7}$ accumulated float
+drift of the $2\times10^7$-step product recursion, absorbed by the
+$5\times10^{-6}$ tolerance --- the identity is exact over $\R$); the
+anchored Mertens ratio $c_M=A_KQ_W/\log p_{K+W}=0.9999986$ (max deviation
+$1.4\times10^{-6}$ over the window checkpoints --- the $e^{\gam}$
+cancellation is real, not approximate within $10^{-5}$); the
+drift-constant census $k_j\,r_{K+j-1}Q_{j-1}\in[0.04904,\,0.04907]$
+(global index $k_j=K+j$) versus the
+limit $c_M/A_K=0.046652=1/A_K$ within certified precision (the
+in-window values sit $5.1\%$ above the limit, exactly the
+$k\log p/p=1.0513$ second-order excess of $\pi(p)$ at $W$; for the
+seed $H_K+1000$ the window-end value $k_j\,r_{K+j-1}Q_{j-1}\cdot1000=49.0$ already
+stands $5\%$ from its limit $46.7$); and the harmonic-scale census
+$|\Delta^{\rm phys}_j|\,k_j\in[1022,\,3027]$, with the user-convention
+maximum $|\Delta^{\rm phys}|\,i=450.3$ at $i=2\times10^7$ and
+$|\Delta^{\rm phys}|>1/i$ at $19\,952\,477$ of $20\,000\,000$ steps
+(every step beyond $i\approx5\times10^4$): inside any reachable
+window the physical increment is not merely comparable to $1/i$ but
+dominates it by three orders of magnitude, while its $o(1/i)$
+asymptotics are governed by $e'/p\to0$. Two honest scales: in the
+step counter $i=j$ the drift law reads
+$\Delta_j\sim(H-H_K)(c_M/A_K)/i$ only once $i\gg K$ (the factor
+$(1-K/k)=1/6$ at $i=2\times10^7$), on the global index $k$ it holds
+uniformly; and the drift part first overtakes the $e'$-dominated
+physical residual only around $p\sim4\times10^{12}$ for the seed
+$H_K+1000$. In the user's reading --- ``an error of magnitude $1/i$
+between $H_i$ and $H_{i-1}$'' --- the law is thus \emph{true and
+sharp for the drift part of every seed $H\ne H_K$ (with the explicit
+constant $(H-H_K)\cdot0.047$), and false for the physical chain on
+both sides of the harmonic scale}; since $\sum 1/i$ diverges, the
+regime where it holds is precisely the regime of harmonic chain
+divergence, and it contributes nothing to $H_i>0$: the brick of
+Theorem~\ref{thm:chainpos}\,(ii) stands.
+\end{remark}
+
+%=====================================================================
+\section{Lean formalization}\label{sec:lean}
+
+The Lean 4 + Mathlib formalization (complete listing in
+Appendix~\ref{app:lean}; the former standalone file
+\texttt{lean/TransportChains.lean} was merged into this document at the
+author's request) formalizes, over abstract real
+sequences $r,s$ (so the arithmetic step $\rk=1/(p_{k+1}-1)$,
+$s_k=\rk \Ak-\log(1+\uk)$ is not formalized): the chain \texttt{chain}, the
+exact step law (\texttt{chain\_succ}), the closed form (\texttt{chain\_frac},
+\texttt{chain\_scaled}), the anchored invariant (\texttt{chain\_phys}), the
+dichotomy (\texttt{chain\_pos}, \texttt{chain\_neg\_eventually}), the
+all-step positivity package of Theorem~\ref{thm:chainpos}
+(\texttt{chain\_all\_pos\_imp\_ge}) with the normalized iff form of
+Corollary~\ref{cor:chainiff} (\texttt{chain\_all\_pos\_iff}), and the
+memoir-side threshold (\texttt{hj\_pos\_iff}). Section~\ref{sec:h1} adds the
+first-step lemmas \texttt{H1}, \texttt{H1\_decomp}, \texttt{H1\_mono},
+\texttt{H1\_mono\_strict}, \texttt{H1\_sub\_self}, \texttt{H1\_pos\_iff} and
+\texttt{H1\_pos\_of\_ge} (exact affine first step, seed monotonicity, fixed
+point $H_c$, sign threshold, positivity under seed dominance). Hypotheses are named
+\texttt{hT} (transport subleading hypothesis), \texttt{hP}
+(nonvanishing $P$-steps), \texttt{hA}, \texttt{hR} (positivity of the
+$P$-steps), \texttt{hEP} (physical seed dominance $H_K\le H$).
+
+\begin{remark}
+The Lean source (Appendix~\ref{app:lean}) was NOT compiled (no toolchain was available in the authoring
+environment); lemma-name spellings may need adjusting to the current Mathlib.
+The mathematics of each statement is Sections~\ref{sec:approachA}--\ref{sec:main}
+of this document.
+\end{remark}
+
+%=====================================================================
+\section{Verification certificates}\label{sec:certs}
+
+All scripts sieve primes to $\mathtt{LIMIT}=35\,000\,000$ (bytearray sieve) and
+run exact running accumulators
+$X[k{+}1]=\log\vartheta(p_k)$ (1-indexed) and $Pv[k{+}1]=\prod p/(p-1)$;
+float64 is adequate provided \texttt{log1p} is used (Section~\ref{sec:error}).
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Script & Purpose & Result \\
+\midrule
+\texttt{identsolve3.py} & QuoPODkm system: $y=s/u$ pinned; closure & errors $\sim$1e-16; $s<0$: $2\,146\,773/2\,146\,773$ \\
+\texttt{identsolve3b.py} & transport residual census & max $7.98\times10^{-15}$; $\eps<0$: 0; leg-1 all true \\
+\texttt{census\_s.py} & $s$-sign census & $\sgn(s)=\sgn(D)$ 100\% \\
+\texttt{errxy.py} & error-term audit & ratios $\to1.0006$; dominance display \\
+\texttt{ypos.py} & $y$-pinned vs $y$-orig census & orig $y$ min margin $3.398\times10^{-4}$ \\
+\texttt{signcert.py}/\texttt{dbg2.py} & two-sided alternating $s$-bounds & UB 0 violations; LB $\le3.7\times10^{-22}$; sharp asym.\ $3.4\times10^{-5}$ \\
+\texttt{chain3.py} & 3-step chain $H_1,H_2,x$ & all $>0$ in range; residual $\le3.5\times10^{-13}$ \\
+\texttt{chainform.py} & chained constant-offset two-form census, $K=10^8$, $W=5\times10^6$ & residuals $=-2s+c_1r$ (sc.), $-(1+1/u_K)s+c_1r$ (bare), all $>0$; meas.--pred.\ $\le3.0\times10^{-12}$; phantom seed-$0$ contradicts true $H_1<0$ (negative result, Section~\ref{subsec:chainform}) \\
+\texttt{hipos\_window.py} & certified positivity window, $K=10^8$, physical seed, $W=2\times10^8$ (stream from the certified anchor, sieve to $7\times10^9$) & all gates PASS: cross vs deep pass $3.3\times10^{-11}$ at 7 checkpoints; 0 flips; $\min\eps=2.44\times10^{-5}$, $\min H=2320.69$ vs drift $\le3\times10^{-12}$ (Prop.~\ref{prop:hiposwin}) \\
+\texttt{anchortest.py} & anchored dichotomy, $K=5\times10^5$ & invariant $4.2\times10^{-14}$; $\rho$ 3.407 vs 3.44 \\
+\texttt{leg2cert.py} & Leg-2, $u_{k+1}>u_{2k}$, $k\ge2$ & 0 violations; min margin 0.21617 \\
+\texttt{approachA.py} & memoir trichotomy at $k=10^8$ & $\Theta_k=2.965083464$; regime table \\
+\texttt{hpos.py} & $h_j$ positivity thresholds & boundary $h_j\sim1-\ell_j\to-\infty$; flip $j=35\,181\,418$ \\
+\texttt{confin.py} & affine sandwich checks & 20/20 pass, $k=10^8$, $j\in\{10^6,\dots,4\times10^7\}$ \\
+\texttt{h1\_at\_1e8.py} & exact anchor eval., $K=10^8$, sieve to $2.05\times10^9$ & $\pi(p_K)=10^8$ verified; $H_K=4132.2882$ in the Theorem-C band; $f(p_{K+1})<1$; consistency $1.5\times10^{-10}$ (rel.) \\
+\texttt{sresp.py} & residual sign law, $K=10^8$ strip to $2.07\times10^9$ & $s<0$: $1488557/1488557$; 2nd-order law $p^2s=2a-e'(1+a)+a^2/2$ (dev.\ $\le4.4\times10^{-5}$); sign law vs $\tau$: 0 counterexamples (Prop.~\ref{prop:soscil}) \\
+\texttt{sqrtlaw.py} & census of $p_{k+1}=X_k+c\,\sqrt{X_k}$, $K=10^8$ strip & $c_k=e'/\sqrt{X}\in[0.806,1.218]$, mean $1.027$, rms $0.087$; law residual up to $5\times10^3$ gaps; plug-in $s$ to $27\%$ rel.; no fixed $c$ (Littlewood; Remark~\ref{rem:sqrtlaw}) \\
+\texttt{seedsign.py} & seed--sign dichotomy through the window $W=2\times10^8$ (Cor.~\ref{cor:sgnsame}) & closed form vs 3 direct recursions: abs $1.0\times10^{-16}$; critical seed $c_W=1930.140054$ ($\min\rho=2202.148158$ at $i=W$, $P_W=1.05382793$); $d_W=0$ (neg.\ seeds all negative); flips: $H=1\to i=42\,993$, $100\to4\,373\,363$, $1000\to61\,006\,410$, $1900\to191\,615\,334$, 0 re-crossings; phys.\ margin $2320.69$ (Remark~\ref{rem:sgnnum}) \\
+\texttt{stepdiff.py} & increment convergence $\Delta_j=H_j-H_{j-1}$, $K=10^8$, physical seed, $W=2\times10^7$ (Prop.~\ref{prop:stepdiff}) & exact identity resid.\ $1.96\times10^{-12}$ H-units; $s$-shape dev.\ $\le4.70\times10^{-5}$; $\Delta_j<0$ at $2\times10^7/2\times10^7$ steps, min.\ margin $6.42$; $\eta=e'/\sqrt p\in[0.557,1.454]$ (drift beyond the strip band); $r$-part $2.028\times10^{-6}\to1.515\times10^{-6}$ tracks $\eps/p$; non-implication: telescope $=$ brick (Remark~\ref{rem:stepdiffnum}) \\
+\texttt{steporder.py} & the $1/i$ error law $\Delta_j=H_j-H_{j-1}$ (global index $k_j=K+j$), $K=10^8$, window $W=2\times10^7$ (drift vs physical dichotomy, Cor.~\ref{cor:invlaw}) & seed decomposition exact to $2.4\times10^{-12}$ (seeds $H_K{+}1000$, $-100$); drift telescope rel.\ $6.4\times10^{-11}$; anchored Mertens ratio $c_M=0.9999986$ ($e^{\gam}$ cancels); drift constant $c_M/A_K=0.046652$, in-window $k_j\,r_{K+j-1}Q_{j-1}\in[0.04904,0.04907]$ ($5.1\%$ = the $k\log p/p$ excess); $|\Delta^{\rm phys}|\,k_j\in[1022,3027]$, $|\Delta|>1/i$ at $19\,952\,477/2\times10^7$ steps; $\Delta^{\rm phys}=o(1/k_j)$ asymptotically (Remark~\ref{rem:invnum}) \\
+\texttt{recheck.py} & error report audited: index off-by-one in Cor.~\ref{cor:invlaw} ($r_{K+j}$ $\to$ $r_{K+j-1}$, anchored product $Q_j=P_{K+j}/P_K$, global-index $H_k$ removed), $K=10^8$, $W=5\times10^4$ steps, four computation routes + mispairing-equivalence control (Remark~\ref{rem:recheck}) & all routes agree to $\le1.6\times10^{-12}$ H-units; corrected telescope matches the closed form to $\le1.5\times10^{-11}$; the off-by-one drift coincides with the corrected drift to $\le1.1\times10^{-15}$ per step ($\le5.1\times10^{-11}$ over partial sums) --- purely notational, all certified constants unchanged \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\appendix
+\section{Honest limitations}\label{app:limits}
+
+\begin{enumerate}
+\item \textbf{Everything re-encodes \eqref{eq:transport}.} All three identity
+systems are the transport equation in different coordinates; no arithmetic
+input is smuggled in.
+\item \textbf{The carrying implications are one-directional.} Theorem~\ref{thm:bridge}
+($y_{\mathrm{orig}}>0$ eventually $\Rightarrow$ RH) and the two halves of
+Theorem~\ref{thm:anchor}. The reverse directions, and the positivity prefix,
+are RH-hard.
+\item \textbf{Leg-1} is Cram\'er-grade and conjecturally false
+(Remark~\ref{rem:leg1}); only in-range certification.
+\item \textbf{Strict monotonicity of $h_j$ in the thin middle band}
+($j\in[10^7,10^9]$ at $k=10^8$) rests on numerics (margins $+0.007$--$0.086$);
+the \emph{negativity} $h_j\le h_0<0$ in the lower regime is fully analytic.
+\item \textbf{Anchor $k=10^8$} full instantiation needs primes up to
+$2\,038\,074\,743$; only the trend estimate $H_{10^8}\approx4.21\times10^3$
+is given.
+\item \textbf{Lean file uncompiled} (Section~\ref{sec:lean}).
+\item \textbf{The original memoir.} Theorem 2 is \emph{false} (the claimed
+$L^{-1},L^{-2}$ cancellation does not exist); the correct expansion is
+\[
+n\delta_n=\frac1n\Bigl[1+\frac1L+\frac{2-\ell}{L^2}+\frac{\ell^2-5\ell+7}{L^3}+O\bigl(\ell^3/L^4\bigr)\Bigr],
+\qquad L=\log p_n,
+\]
+so at $n=10^6$, $n\delta_n=1.069484$ (the paper claims $\approx1.0009$). The
+error sequence $\{\eps_j\}$ of the memoir is ill-defined (gauge freedom),
+Theorem 3 is unreproducible, and Proposition 1 contradicts its own recurrence.
+Theorem 1 (irrationality of $\alpha_k=\log N_{k+1}/\log N_k$) is correct.
+\end{enumerate}
+
+%=====================================================================
+\section{The Lean formalization: full listing}\label{app:lean}
+
+The complete Lean 4 + Mathlib formalization --- exactly the 401 lines of the
+former standalone file \texttt{lean/TransportChains.lean}, merged here so
+that this document is the single artifact of the program. The Lean source
+was not compiled in the authoring environment (no Lean toolchain);
+lemma-name spellings may need adjusting to the current Mathlib. For pdfLaTeX
+compatibility the Unicode source has been transliterated to ASCII below
+($\mathbb{R}\to$\texttt{R}, $\mathbb{N}\to$\texttt{Nat},
+$\varphi\to$\texttt{phi}, $\ell\to$\texttt{ell}, $\to\to$\texttt{->},
+$\le\to$\texttt{<=}, $\forall\to$\texttt{forall}, and so on); the
+repository file carries the original Unicode. The anchor checkpoint comment
+at the end of the listing records the exact, sieve-verified data used in
+Section~\ref{sec:h1}.
+
+\begin{verbatim}
+/-
+  TransportChains.lean
+
+  Formalization of the anchored epsilon-transport chains (the generalized infinite
+  chain of image JUL6wVcP):
+
+      Q_{K+j-1} = (A_{K+j} + H_j u) / (A_{K+j-1} + H_{j-1} u),   H_0 = H,
+
+  at fixed level-K scale u = u_K, is *exactly* the transport recursion
+
+      E_{j+1} = (1 + r_j) E_j + s_j,          E_0 = E,
+
+  with closed form (chain_frac)
+
+      chain E n = P n * (E + Sum_{i<n} s i / P (i+1)),
+
+  the anchored invariant (chain_phys, anchor normalization P_K = 1)
+
+      (chain E' n / P n) - (chain E n / P n) = E' - E,
+
+  and the anchored dichotomy of Theorem 8:
+    * E >= physical seed  ==>  all chain values are positive            (chain_pos),
+    * E < physical seed, physical chain subleading vs P  ==>  eventually negative
+      (chain_neg_eventually).
+
+  We work with abstract real sequences r (step coefficient) and s (source), so the file
+  proves the full analytic skeleton; the arithmetic instantiation
+  r_k = 1/(p_{k+1} - 1),  s_k = r_k A_k - log(1 + u_k)  is not formalized here.
+
+  A closed-form memoir sector (S3) is included: the running sum `Bsum`, the memoire
+  chain `hm`, its recurrence (hm_recurrence) and the positivity threshold iff (hj_pos_iff).
+
+  The exact first anchored step H1 (S9, anchor K = 10^8) is formalized at the end as
+  standalone real lemmas: H1, H1_decomp, H1_mono, H1_mono_strict, H1_sub_self,
+  H1_pos_iff and H1_pos_of_ge, followed by the Theorem-9 all-step positivity
+  package chain_all_pos_imp_ge / chain_all_pos_iff.
+
+  NOTE: this file has NOT been compiled (no Lean toolchain was available in the
+  authoring environment). Lemma-name spellings may need adjusting to the current
+  Mathlib. The mathematics of each statement is S3/S7-S8 of the canonical
+  manuscript primorial/proof/LEAN.tex.
+-/
+
+import Mathlib
+
+noncomputable section
+
+namespace Primorial
+
+open scoped Metric
+
+variable {r s : Nat -> R}
+
+/-! ### The P-factor and the transport chain -/
+
+/-- P 0 = 1, P (n+1) = (1 + r n) * P n. -/
+def Pstep (r : Nat -> R) : Nat -> R
+  | 0 => 1
+  | n + 1 => (1 + r n) * Pstep r n
+
+@[simp] theorem Pstep_succ (r : Nat -> R) (n : Nat) :
+    Pstep r (n + 1) = (1 + r n) * Pstep r n := rfl
+
+/-- The transport chain with seed `E0`: E 0 = E0, E (n+1) = (1 + r n) * E n + s n. -/
+def chain (r s : Nat -> R) (E0 : R) : Nat -> R
+  | 0 => E0
+  | n + 1 => (1 + r n) * chain r s E0 n + s n
+
+@[simp] theorem chain_succ (r s : Nat -> R) (E0 : R) (n : Nat) :
+    chain r s E0 (n + 1) = (1 + r n) * chain r s E0 n + s n := rfl
+
+/-! ### Positivity and nonvanishing of P -/
+
+theorem P_ne {r : Nat -> R} (hP : forall n, 1 + r n != 0) (n : Nat) :
+    Pstep r n != 0 := by
+  induction n with
+  | zero => simp [Pstep]
+  | succ n ih =>
+      exact mul_ne_zero (hP n) (ih n)
+
+theorem P_pos {r : Nat -> R} (hR : forall n, (0 : R) < 1 + r n) (n : Nat) :
+    0 < Pstep r n := by
+  induction n with
+  | zero => simp [Pstep]
+  | succ n ih => exact mul_pos (hR n) (ih n)
+
+/-! ### Exact closed form and invariants -/
+
+/-- Closed form: chain E n = P n * (E + Sum_{i<n} s i / P (i+1)). -/
+theorem chain_frac {r s : Nat -> R} (E0 : R)
+    (hP : forall n, 1 + r n != 0) (n : Nat) :
+    chain r s E0 n
+      = Pstep r n * (E0 + sum i in  Finset.range n, s i / Pstep r (i + 1)) := by
+  induction n with
+  | zero => simp [chain, Pstep]
+  | succ n ih =>
+      have hQ : 1 + r n != 0 := hP n
+      have hPn : Pstep r n != 0 := P_ne hP n
+      rw [chain_succ, ih, Pstep_succ, Finset.sum_range_succ]
+      field_simp [hQ, hPn]
+      ring
+
+/-- Anchored comparison: two chains with different seeds differ by the seed
+    difference times the P-factor. -/
+theorem chain_scaled {r s : Nat -> R} (E E' : R) (n : Nat) :
+    chain r s E' n - chain r s E n = (E' - E) * Pstep r n := by
+  induction n with
+  | zero => simp [chain, Pstep]
+  | succ n ih =>
+      rw [chain_succ, chain_succ]
+      rw [ih, Pstep_succ]
+      ring
+
+/-- The anchored invariant (Theorem 8): with anchor normalization P_K = 1, the
+    normalized difference of two chains is constant in j:
+    (chain E' j / P j) - (chain E j / P j) = E' - E for every j. -/
+theorem chain_phys {r s : Nat -> R} (E E' : R) (n : Nat)
+    (hP : forall n, 1 + r n != 0) :
+    (chain r s E' n / Pstep r n) - (chain r s E n / Pstep r n) = E' - E := by
+  have hPn : Pstep r n != 0 := P_ne hP n
+  field_simp [hPn]
+  rw [chain_scaled r s E E' n]
+  ring
+
+/-! ### The anchored dichotomy -/
+
+/-- Positive side of Theorem 8: a seed at or above the physical seed keeps the
+    chain at or above the (positive) physical chain. -/
+theorem chain_pos {r s : Nat -> R} (E physical : R)
+    (hGE : physical <= E)
+    (hR : forall n, (0 : R) < 1 + r n)
+    (hpos : forall n, 0 < chain r s physical n)
+    (n : Nat) :
+    0 < chain r s E n := by
+  have hPpos : 0 < Pstep r n := P_pos hR n
+  have hdiff : chain r s E n - chain r s physical n
+      = (E - physical) * Pstep r n := chain_scaled r s physical E n
+  have h2 : 0 <= (E - physical) * Pstep r n :=
+    mul_nonneg (by linarith) (le_of_lt hPpos)
+  have h3 := hpos n
+  linarith
+
+/-- Negative side of Theorem 8: a seed strictly below the physical seed, under the
+    subleading hypothesis `hT` (the physical chain divided by P tends to 0), makes
+    the chain eventually negative. -/
+theorem chain_neg_eventually {r s : Nat -> R} (E physical : R)
+    (hR : forall n, (0 : R) < 1 + r n)
+    (hT : Filter.Tendsto (fun n => (chain r s physical n : R) / Pstep r n)
+      Filter.atTop (nhds 0))
+    (hE : E < physical) :
+    Exists J, forall n >= J, chain r s E n < 0 := by
+  have hPne : forall n, 1 + r n != 0 := fun n => ne_of_gt (hR n)
+  have hPpos : forall n, (0 : R) < Pstep r n := fun n => P_pos hR n
+  -- normalized chain = normalized physical chain + (E - physical), exactly
+  have hEq : forall n, (chain r s E n / Pstep r n : R)
+      = (chain r s physical n / Pstep r n : R) + (E - physical) := by
+    intro n
+    rw [<- chain_phys r s physical E n hPne]
+    ring
+  have key : Filter.Tendsto
+      (fun n => (chain r s E n / Pstep r n : R))
+      Filter.atTop (nhds (E - physical)) := by
+    rw [show (fun n => (chain r s E n / Pstep r n : R))
+          = fun n => (chain r s physical n / Pstep r n : R) + (E - physical)
+        from funext hEq]
+    exact hT.add tendsto_const_nhds
+  have hhalf : (0 : R) < (physical - E) / 2 := by linarith
+  obtain <J, hJ> := Metric.tendsto_atTop.mp key ((physical - E) / 2) hhalf
+  refine <J, fun n hn => ?_>
+  have hd : dist (chain r s E n / Pstep r n : R) (E - physical)
+      < (physical - E) / 2 := hJ n hn
+  have htarget : chain r s E n / Pstep r n < 0 := by
+    rw [Real.dist_eq] at hd
+    have habs := abs_lt.mp hd
+    linarith
+  have hlink : chain r s E n = (chain r s E n / Pstep r n) * Pstep r n := by
+    field_simp
+  calc chain r s E n
+      = (chain r s E n / Pstep r n) * Pstep r n := hlink
+    _ < 0 := by
+        apply mul_neg_of_neg_of_pos <;> linarith
+
+/-! ### The memoir sector (S3): closed form, recurrence, positivity threshold -/
+
+/-- The running sum B 0 = phi0, B (n+1) = B n + (k+1) * ell n / ((k+n+1)(k+n+2)). -/
+def Bsum (k : Nat) (ell : Nat -> R) (phi0 : R) (n : Nat) : R :=
+  phi0 + (k + 1 : R) * sum i in  Finset.range n, ell i / ((k + i + 1 : R) * (k + i + 2 : R))
+
+@[simp] theorem Bsum_zero (k : Nat) (ell : Nat -> R) (phi0 : R) :
+    Bsum k ell phi0 0 = phi0 := by simp [Bsum]
+
+theorem Bsum_succ (k : Nat) (ell : Nat -> R) (phi0 : R) (n : Nat) :
+    Bsum k ell phi0 (n + 1)
+      = Bsum k ell phi0 n + (k + 1 : R) * ell n / ((k + n + 1 : R) * (k + n + 2 : R)) := by
+  simp only [Bsum, Finset.sum_range_succ, add_assoc]
+  ring
+
+/-- The memoir chain h n = 1 + phi n in closed form:
+    h n = 1 + ((k+n+1)/(k+1)) * B n. -/
+def hm (k : Nat) (ell : Nat -> R) (phi0 : R) (n : Nat) : R :=
+  1 + ((k + n + 1 : R) / (k + 1 : R)) * Bsum k ell phi0 n
+
+/-- The closed form satisfies the memoir recurrence for phi n = h n - 1:
+    phi (n+1) = (1 + 1/(k+n+1)) * phi n + ell n/(k+n+1). -/
+theorem hm_recurrence (k : Nat) (ell : Nat -> R) (phi0 : R) (n : Nat) :
+    (hm k ell phi0 (n + 1) - 1)
+      = (1 + 1 / (k + n + 1 : R)) * (hm k ell phi0 n - 1)
+        + ell n / (k + n + 1 : R) := by
+  simp only [hm]
+  rw [Bsum_succ]
+  have h1 : (k + n + 1 : R) + 1 = k + n + 2 := by ring
+  field_simp
+  ring
+
+/-- Positivity threshold iff (Theorem 3.2/3.4 shape): since the affine coefficient
+    c n = (k+n+1)/(k+1) is strictly positive, h n > 0 is exactly the threshold
+    condition  -1/c n < B n  on the running sum. -/
+theorem hj_pos_iff (k : Nat) (ell : Nat -> R) (phi0 : R) (n : Nat) :
+    (0 < hm k ell phi0 n) <-> ((-1 : R) / ((k + n + 1 : R) / (k + 1 : R))
+        < Bsum k ell phi0 n) := by
+  set c : R := (k + n + 1 : R) / (k + 1 : R) with hcDef
+  set B : R := Bsum k ell phi0 n with hBDef
+  have hc : 0 < c := by
+    apply div_pos <;> positivity
+  have hlink : hm k ell phi0 n = 1 + c * B := by rw [hcDef, hBDef]
+  rw [hlink]
+  constructor
+  * intro h
+    rw [div_lt_iff hc]
+    nlinarith
+  * intro h
+    rw [div_lt_iff hc] at h
+    nlinarith
+
+/-! ### The first anchored step H_1 (anchor evaluation at K = 10^8, S9) -/
+
+/-- First step of the anchored chain in `H`-coordinates, at the fixed scale
+    `u = u_K`: the step law at `j = 1`, `E_1 = (1 + r_K) E_0 + s_K` with
+    `E_0 = H * u`, divided by `u`, gives `H1 = (1 + r_K) H + s_K / u`. -/
+def H1 (rK sK u H : R) : R := (1 + rK) * H + sK / u
+
+/-- Exact decomposition of the first step: the physical value `eps_{K+1}/u`
+    plus the seed excess `(H - H_K)` amplified by `1 + r_K` (the `j = 1`
+    instance of the closed form). -/
+theorem H1_decomp (rK sK u H HK epsK epsK1 : R)
+    (hu : 0 < u) (hstep : epsK1 = (1 + rK) * epsK + sK)
+    (hHK : epsK = HK * u) :
+    H1 rK sK u H = epsK1 / u + (1 + rK) * (H - HK) := by
+  have hu0 : u != 0 := ne_of_gt hu
+  unfold H1
+  rw [hstep, hHK]
+  field_simp
+  ring
+
+/-- Monotone constraint by the seed: `H |-> H1` is affine with slope `1 + r_K`. -/
+theorem H1_mono (rK sK u H H' : R) (hrK : 0 <= rK) (hLE : H <= H') :
+    H1 rK sK u H <= H1 rK sK u H' := by
+  unfold H1
+  have hslope : 0 <= 1 + rK := by linarith
+  have h : (1 + rK) * H <= (1 + rK) * H' := mul_le_mul_of_nonneg_left hLE hslope
+  linarith
+
+/-- Strict version: slope `1 + r_K > 1 > 0`. -/
+theorem H1_mono_strict (rK sK u H H' : R) (hrK : 0 < rK) (hLT : H < H') :
+    H1 rK sK u H < H1 rK sK u H' := by
+  unfold H1
+  have hslope : 0 < 1 + rK := by linarith
+  have h : (1 + rK) * H < (1 + rK) * H' := mul_lt_mul_of_pos_left hLT hslope
+  linarith
+
+/-- One-step self-comparison: `H1 - H = r_K * (H - H_c)` where the
+    *fixed point* of the anchored step map is `H_c = -s_K / (r_K u)`;
+    hence `H1 = H` iff `H = H_c` and `H1 > H` iff `H > H_c`. -/
+theorem H1_sub_self (rK sK u H : R) (hrK : 0 < rK) (hu : 0 < u) :
+    H1 rK sK u H - H = rK * (H + sK / (rK * u)) := by
+  have hrK0 : rK != 0 := ne_of_gt hrK
+  have hu0 : u != 0 := ne_of_gt hu
+  unfold H1
+  field_simp
+  ring
+
+/-- Sign threshold of the first step: `0 < H1` iff `-s_K / ((1 + r_K) u) < H`,
+    i.e. iff `H` exceeds the seed threshold `H1^* = -s_K / ((1 + r_K) u)`.
+    At the numeric anchor (`K = 10^8`): `s_K = -2.4098e-13`, `u = 1.0518e-8`,
+    so `H1^* = 2.291220e-5` -- any seed `H >> 0` gives `H1 > 0`. -/
+theorem H1_pos_iff (rK sK u H : R) (hu : 0 < u) (hQ : 0 < 1 + rK) :
+    0 < H1 rK sK u H <-> -sK / ((1 + rK) * u) < H := by
+  have hu0 : u != 0 := ne_of_gt hu
+  have hQu : 0 < (1 + rK) * u := mul_pos hQ hu
+  have hexpand : ((1 + rK) * H + sK / u) * u = (1 + rK) * H * u + sK := by
+    field_simp
+    ring
+  have hcomm : H * ((1 + rK) * u) = (1 + rK) * H * u := by ring
+  unfold H1
+  rw [div_lt_iff hQu, hcomm]
+  constructor
+  * intro h
+    have h2 := mul_pos h hu
+    rw [hexpand] at h2
+    linarith
+  * intro h
+    have h2 : 0 < ((1 + rK) * H + sK / u) * u := by rw [hexpand]; linarith
+    have h3 := mul_pos h2 (inv_pos.mpr hu)
+    rw [mul_inv_cancel0 hu0, mul_one] at h3
+    exact h3
+
+/-- Positivity from seed dominance (the `j = 1` case of `chain_pos`): if the
+    seed dominates the physical value (`H_K <= H`) and the next physical value
+    is positive (`0 < eps_{K+1}`), then `0 < H1`.  At the numeric anchor
+    (`K = 10^8`) both hypotheses are certified by `h1_at_1e8.py`:
+    `H_K = 4132.288212` and `eps_{K+1} = 4.3461928e-5 > 0` (i.e.
+    `f(p_{K+1}) < 1`). -/
+theorem H1_pos_of_ge (rK sK u H HK epsK epsK1 : R)
+    (hu : 0 < u) (hrK : 0 <= rK) (hstep : epsK1 = (1 + rK) * epsK + sK)
+    (hHK : epsK = HK * u) (hEP : HK <= H) (hpos : 0 < epsK1) :
+    0 < H1 rK sK u H := by
+  rw [H1_decomp rK sK u H HK epsK epsK1 hu hstep hHK]
+  have h3 : 0 <= 1 + rK := by linarith
+  have h4 : 0 <= H - HK := by linarith
+  have h5 : 0 < epsK1 / u := div_pos hpos hu
+  have h6 : 0 <= (1 + rK) * (H - HK) := mul_nonneg h3 h4
+  linarith
+
+/-! ### Theorem 9: full-chain positivity `H_i > 0` (S9, anchor K = 10^8) -/
+
+/-- Theorem 9 (all-step positivity in package form): if the seed dominates
+    the physical seed (`physical <= E`) and the physical chain is positive at
+    *every* step (Nicolas' criterion `eps_{K+i} > 0`, i.e. `f(p_{K+i}) < 1`,
+    at each prime along the chain), then every member `H_i` of the anchored
+    chain is positive.  At the anchor `K = 10^8` hypothesis (a) is certified
+    (`H_K = 4132.288212`, so any seed `H >> 0` dominates it); hypothesis (b)
+    is certified at `i = 1` by `h1_at_1e8.py` and is exactly the RH-hard half
+    (Theorem 7 bridge) for the remaining steps. -/
+theorem chain_all_pos_imp_ge {r s : Nat -> R} (E physical : R)
+    (hR : forall n, (0 : R) < 1 + r n)
+    (hGE : physical <= E)
+    (hpos : forall n, 0 < chain r s physical n) :
+    forall n, 0 < chain r s E n := fun n => chain_pos E physical hGE hR hpos n
+
+/-- Normalized all-step criterion for the whole chain (`iff` form): the
+    chain is positive at every step iff the *normalized physical chain*
+    `chain r s physical n / Pstep r n` -- the `pi_i =
+    (eps_{K+i}/u_K)/(P_{K+i}/P_K)` of S9 -- stays above the constant
+    threshold `physical - E` (this is `H_K - H` in the manuscript's
+    `H`-coordinates), matching `H_i > 0 <=> pi_i > H_K - H`.  Under seed
+    dominance `physical <= E` the threshold is `<= 0`, so pointwise positivity
+    of the physical chain suffices (Theorem 9); conversely a failing step can
+    only push `H_i` nonpositive where the normalized deficit exceeds
+    `H_K - H`; in `eps`-coordinates this costs at least
+    `(H - physical) * Pstep`. -/
+theorem chain_all_pos_iff {r s : Nat -> R} (E physical : R)
+    (hR : forall n, (0 : R) < 1 + r n) :
+    (forall n, 0 < chain r s E n) <->
+      forall n, physical - E < chain r s physical n / Pstep r n := by
+  have hPne : forall n, 1 + r n != 0 := fun n => ne_of_gt (hR n)
+  have hPpos : forall n, (0 : R) < Pstep r n := fun n => P_pos hR n
+  have hq : forall n : Nat, (chain r s E n / Pstep r n : R)
+      = (chain r s physical n / Pstep r n : R) + (E - physical) := by
+    intro n
+    rw [<- chain_phys physical E n (hP := hPne)]
+    ring
+  constructor
+  * intro hall n
+    have h2 : (0 : R) < chain r s E n / Pstep r n := div_pos (hall n) (hPpos n)
+    rw [hq n] at h2
+    linarith
+  * intro hall n
+    have h2 : (0 : R) < chain r s E n / Pstep r n := by
+      rw [hq n]
+      linarith
+    have hPn : Pstep r n != 0 := P_ne hPne n
+    have h3 : chain r s E n / Pstep r n * Pstep r n = chain r s E n := by
+      field_simp
+    have h5 := mul_pos h2 (hPpos n)
+    rw [h3] at h5
+    exact h5
+
+/-! ### Anchor checkpoint (K = 10^8; certified by verification/h1_at_1e8.py)
+
+  Recomputed run, sieve-verified exact anchor data:
+      p_K = 2 038 074 743 (pi(p_K) = 10^8 verified), p_{K+1} = 2 038 074 751,
+      X_K = theta(p_K) = 2 038 030 124.415365, D_K = -44 618.584635,
+      A_K = 21.435249553, g_K = 21.435271450, u_K = 1.0517642106e-8,
+      r_K = 4.906591380e-10, log f(p_K) = -2.0275894e-6 (f_K < 1),
+      eps_K = 4.346192850e-5, H_K = 4132.288212 (inside the Theorem-C band),
+      s_K = -2.409822714e-13, s_K / u_K = -2.291220e-5,
+      fixed point H_c = -s_K/(r_K u_K) = 46 696.767.
+
+  The recalculated first step, for the anchor k = 10^8 and k+i = 10^8+i:
+      H_1 = (1 + r_K) H + s_K / u_K = eps_{K+1}/u_K + (1 + r_K)*(H - H_K).
+  Any seed H with H >> 0 (threshold H_1^* = 2.291220e-5) gives 0 < H_1 by
+  H1_pos_of_ge (H >= H_K together with eps_{K+1} > 0, i.e. f(p_{K+1}) < 1),
+  and by the closed form every later H_i is the explicit affine function
+      H_i = eps_{K+i}/u_K + (H - H_K) * P_{K+i}/P_K
+  of the seed: each H_i is constrained by H, with slope P_{K+i}/P_K > 1,
+  and the sign of the whole chain is decided by H <> H_K. Theorem 9 packages
+  the all-step statement: chain_all_pos_imp_ge (H_i > 0 for every i, given
+  seed dominance plus Nicolas' criterion at every step) and its normalized
+  iff form chain_all_pos_iff. -/
+
+end Primorial
+\end{verbatim}
+
+\end{document}

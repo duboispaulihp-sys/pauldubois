@@ -1,0 +1,11 @@
+sresp.py -- sign law and second-order identity of the transport residual
+strip: consecutive primes [2038074761, 2069999969]  (N = 1488557)
+X transported from the certified anchor vartheta(p_{K+1}); tau_K = 11.1953
+gate 1 (sign census):        s < 0 in 1488557/1488557;  s range [-2.919254e-13, -1.947468e-13]
+gate 2 (2nd-order law):      max relative deviation (every 997th) 4.357e-05
+gate 3 (sign law vs tau):    0 counterexamples (asserted per prime)
+e' range [36516.5, 55294.7];  margin over tau = 3.262e+03x
+e'/sqrt(p) range [0.803, 1.225]  (Chebyshev-error scale)
+conclusion: x_k = s_k/u_k < 0 at every strip prime; Omega-side refutation
+is Littlewood's (theta(x)-x = Omega+(sqrt(x) logloglog x)) -- prop:soscil
+total 4.5 s

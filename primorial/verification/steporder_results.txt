@@ -1,0 +1,57 @@
+== the 1/i error law for Delta_k = H_k - H_(k-1), K = 10^8, physical anchor ==
+window W = 20000000 steps, sieve bound 2600000000 (stream from the certified anchor p_K = 2038074743)
+
+self-test: window_primes [3,5000] and [999,2001] match the reference sieve exactly  PASS
+
+== gate 1: anchor continuity ==
+  p_(K+1) = 2038074751  certified;  u_1 rel.err 0.00e+00  PASS
+  walk complete: n = 120000000 = K + 20000000, p_end = 2468776129,  P_W = 1.00894358
+
+== gate 2: exact seed decomposition Delta_seed = Delta_phys + (H-H_K) r P_prev ==
+  supercritical  H = H_K + 1000        max resid 2.381e-12 H-units (tol 5e-12): PASS
+  negative       H = -100              max resid 1.977e-12 H-units (tol 5e-12): PASS
+
+== gate 3: drift telescope  Sum (H-H_K) r P = (H-H_K)(P_J - 1) ==
+  supercritical  H = H_K + 1000        Sum = 8.943584   (H-H_K)(P_W-1) = 8.943584   rel 6.39e-11
+  negative       H = -100              Sum = -37.851824   (H-H_K)(P_W-1) = -37.851824   rel 6.38e-11
+  max rel 1.41e-07 (tol 5e-06): PASS
+
+== gate 4: harmonic-scale census, physical seed ==
+  i=j        p              Delta_phys     s/u_K part   rH part    |D|*k      c_M fit 
+  1          2038074751     -2.088465e-05  -2.2912e-05  2.0275e-06 2088.5     1.00000 
+  2          2038074761     -2.087878e-05  -2.2906e-05  2.0275e-06 2087.9     1.00000 
+  1000       2038096117     -2.085964e-05  -2.2887e-05  2.0275e-06 2086.0     1.00000 
+  10000      2038289839     -2.126851e-05  -2.3296e-05  2.0272e-06 2127.1     1.00000 
+  100000     2040217561     -2.045727e-05  -2.2482e-05  2.0244e-06 2047.8     1.00000 
+  1000000    2059519669     -2.267896e-05  -2.4675e-05  1.9965e-06 2290.6     1.00000 
+  5000000    2145390523     -2.354217e-05  -2.5418e-05  1.8760e-06 2471.9     1.00000 
+  10000000   2252945251     -2.074906e-05  -2.2485e-05  1.7360e-06 2282.4     1.00000 
+  20000000   2468776129     -2.145487e-05  -2.2970e-05  1.5150e-06 2574.6     1.00000 
+  |Delta_phys|*k over the window:  min 1022.2  max 3026.9
+  user convention i = j:  max |Delta|*i = 450.32 (at the window end);
+  steps with |Delta| > 1/i:  19952477 of 20000000  (the 1/i law fails at every
+  step beyond i ~ 5e4; it is not even an upper bound there)
+  PASS (over the harmonic scale in-window, as predicted by the
+  eta-dominated shape  |D|*k ~ (e'/p)(1+1/a)/u_K)
+
+== gate 5: drift-constant census  k r P_prev -> c_M/A_K ==
+  k*r*P_prev over window:  min 0.04904  max 0.04907
+  certified c_M = A_K * P_W / log p_W = 0.9999986  (max |c_M - 1| at checkpoints 1.4e-06)
+  limit of k*r*P_prev = c_M/A_K = 0.046652 = 1/A_K to float precision
+  in-window values sit ABOVE the limit (k log p / p = 1.0513 second-order excess of pi(p) at W);
+  seed 1000: i*r*drift at the window end = 49.0 -> limit (H-H_K) c_M/A_K = 46.7
+
+== summary ==
+  1/i-law certificate: PASS
+  exact decomposition Delta_k = (H-H_K)(P_j - P_(j-1)) + Delta_phys_k (both seeds, tol 5e-12):
+  DRIFT: k*r*P_prev -> c_M/A_K = 0.04665 with c_M = A_K*P_W/log p_W = 1.00000 (Mertens product
+  anchored at K; the e^gamma cancels in the anchored ratio):
+  for every seed H != H_K the 1/i law holds with EXPLICIT constant (H-H_K)*0.04665
+  and it is a law of DIVERGENCE: Sum Delta = (H-H_K)(P_J-1), H_k ~ (H-H_K)(c_M/A_K) log k;
+  PHYSICAL seed: |Delta|*k in [1022, 3027] over the window (eta-dominated), so the
+  residual EXCEEDS the harmonic scale in-window by up to 3027 x, yet Delta = o(1/k)
+  asymptotically (rate e'/p -> 0, PNT + prop:soscil): the 1/i law fails on both sides.
+  Consequence: a 1/i error law cannot yield chain positivity or convergence -- at
+  H != H_K it sums to harmonic divergence, at H = H_K the true scale is the e'-oscillation;
+  the physical telescope remains the Mertens-limit question for eps (the brick).
+  total 29.1 s

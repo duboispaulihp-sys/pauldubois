@@ -1,0 +1,68 @@
+== seed-sign dichotomy: sign(H_i(H)) vs sign(H), K = 10^8 ==
+window W = 200000000 steps, sieve bound 7000000000 (stream from the certified anchor p_K = 2038074743)
+
+self-test: window_primes [3,5000] and [999,2001] match the reference sieve exactly  PASS
+
+== gate 1: anchor continuity ==
+  p_(K+1) = 2038074751  certified;  u_1 rel.err 0.00e+00  PASS
+  walk complete: n = 300000000 = K + 200000000, p_end = 6461335109
+
+== gate 2: cross-check vs chainform deep pass ==
+  i = 1         H^phys = 4.13228819159396335e+03  deep 4.13228819173141528e+03  rel.err 3.33e-11  PASS
+  i = 2         H^phys = 4.13228817071518552e+03  deep 4.13228817085263745e+03  rel.err 3.33e-11  PASS
+  i = 1000      H^phys = 4.13226734039291205e+03  deep 4.13226734053036489e+03  rel.err 3.33e-11  PASS
+  i = 10000     H^phys = 4.13207781356720807e+03  deep 4.13207781370465545e+03  rel.err 3.33e-11  PASS
+  i = 100000    H^phys = 4.13021388722848224e+03  deep 4.13021388736587960e+03  rel.err 3.33e-11  PASS
+  i = 1000000   H^phys = 4.11173708688778879e+03  deep 4.11173708702537715e+03  rel.err 3.35e-11  PASS
+  i = 5000000   H^phys = 4.02483700195471101e+03  deep 4.02483700208751361e+03  rel.err 3.30e-11  PASS
+
+== gate 3: superposition residuals (direct recursion vs closed form, absolute) ==
+  seed 1000.0    max |E_direct - E_closed| = 8.399e-17  PASS
+  seed 1.0       max |E_direct - E_closed| = 1.024e-16  PASS
+  seed -100.0    max |E_direct - E_closed| = 8.325e-17  PASS
+
+== gate 4: dichotomy through the window ==
+  rho_i = H^phys_i / P_i (incl. rho_0 = H_K): min 2202.148158 at i = 200000000 ; max 4132.2882124786137865 at i = 0
+  critical seed  c_W = H_K - min rho = 1930.140054   (attained at i = 200000000)
+  lower critical seed d_W = H_K - max rho = 0.000000e+00  (= 0 <=> max rho at i = 0)
+  d_W ~ 0 (negative seeds stay negative through the window): PASS
+  seed 1.0     (c_W <): flip at i = 42993       re-crossings 0  PASS
+  seed 100.0   (c_W <): flip at i = 4373363     re-crossings 0  PASS
+  seed 1000.0  (c_W <): flip at i = 61006410    re-crossings 0  PASS
+  seed 1900.0  (c_W <): flip at i = 191615334   re-crossings 0  PASS
+  seed 4132.288212     : sign(H_i)=+ for all i<=W: margin (rho_min - thr) = 2202.1482  PASS
+  seed 2000.000000     : sign(H_i)=+ for all i<=W: margin (rho_min - thr) = 69.8599  PASS
+  seed 100000.000000   : sign(H_i)=+ for all i<=W: margin (rho_min - thr) = 98069.8599  PASS
+  seed -0.5   : sign(H_i)=- for all i<=W: margin (thr - rho_max) = 0.5000  PASS
+  seed -1.0   : sign(H_i)=- for all i<=W: margin (thr - rho_max) = 1.0000  PASS
+  seed -100.0 : sign(H_i)=- for all i<=W: margin (thr - rho_max) = 100.0000  PASS
+
+== gate 5: physical-seed margins vs float64 noise ==
+  min H^phys over window = 2.32068523531926576e+03 at i = 200000000
+  nonpositive phys count = 0 (must be 0)
+  safety vs drift bound 3.0e-12: >= 7.74e+14  PASS
+
+== checkpoint table ==
+  i          p_{K+i}          H_i^phys               P_i          rho_i         
+  1          2038074751       4.13228819159396e+03   1.00000000   4132.28818957 
+  2          2038074761       4.13228817071519e+03   1.00000000   4132.28816666 
+  1000       2038096117       4.13226734039291e+03   1.00000049   4132.26531287 
+  10000      2038289839       4.13207781356721e+03   1.00000491   4132.05754027 
+  100000     2040217561       4.13021388722848e+03   1.00004904   4130.01134595 
+  1000000    2059519669       4.11173708688779e+03   1.00048822   4109.73065212 
+  5000000    2145390523       4.02483700195471e+03   1.00239377   4015.22545901 
+  10000000   2252945251       3.91102465758115e+03   1.00467587   3892.82231992 
+  20000000   2468776129       3.74018748096121e+03   1.00894358   3707.03331792 
+  50000000   3121238909       3.35427977382535e+03   1.01988383   3288.88415202 
+  100000000  4222234741       2.87959474313504e+03   1.03397900   2784.96442602 
+  200000000  6461335109       2.32068523531927e+03   1.05382793   2202.14815839 
+
+== summary ==
+  seed-sign dichotomy certificate: PASS
+  closed form H_i(H) = H^phys_i + (H-H_K) P_i verified to abs 1.0e-16 (worst of 3 seeds)
+  critical seed c_W = 1930.140054 (rho minimum at i = 200000000); every seed > c_W keeps sign(H_i) = sign(H) = + throughout [0, W];
+  every seed 0 < H < c_W flips nonpositively inside the window (flip indices above, no re-crossings);
+  d_W = 0 exactly (rho maximum at i = 0): every seed H < 0 has H_i < 0 throughout [0, W] -- same sign as the seed;
+  physical seed H_K = 4132.288212: H_i > 0 for all i <= 200000000 (min 2320.6852 at i = 200000000), same sign as the seed
+  every seed H >= H_K: H_i >= H^phys_i >= 2320.6852 on [0, W] (seed excess (H-H_K) P_i >= 0), P_W = 1.05382793; all-step same-sign stays the brick (<=> Nicolas from K+1: cor:chainiff / thm:chainpos)
+  total 280.3 s
