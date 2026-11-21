@@ -1,0 +1,382 @@
+== chainform.py  [    0.0s]  ==
+Does the chained constant-offset two-form
+    p_(k+i)/(p_(k+i)-1) = (A_(k+i) - H_i - c_i)/(A_(k+i-1) - H_(i-1) - c_(i-1)),
+    c_j = log(p_(k+j)/log N_k),  log N_k = exp(theta(p_k)),
+close onto the anchored transport chain of Theorem 8?  (Residuals,
+phantom chains implied by the closure, and true chains are measured.)
+epsilon = P~/e^gamma - A with A = log theta; H = eps/u_k at fixed
+anchor scale; transport eps_(n+1) = (1+r_n) eps_n + s_n,
+s_n = r_n A_n - log1p(u_n), u_n = log p_(n+1)/theta(p_n).
+
+### CHEAP PASS: flat/segmented sieve, primes to 35000000
+
+== anchor k = 1000, window W = 1500000 ==
+p_k = 7919
+X_k = theta(p_k)          = 7812.2835407328394
+A_k = log X_k             = 8.9634525868746202
+eps_k = P~/e^gamma - A_k  = 0.024703435117112704
+u_k = log p_(k+1)/X_k     = 0.0011492196725869173  (log p_(k+1) = 8.9780299328371562)
+r_1 = 1/(p_(k+1)-1)       = 0.00012616704516780217
+s_1 = r A_k - log1p(u_k)  = -1.7667497762708295e-05
+H_c(k) = -s_1/(r_1 u_k)   = 121.85014806787086
+H_phys(k) = eps_k/u_k     = 21.495833830885228
+Theta prod P_W = prod (1+r) over window = 1.8901967598774578
+
+residuals beta_j = B_j - Q B_(j-1) of the proposed two-form on the
+true chain (measured) vs exact closed forms (predicted):
+  variant   cmode      n        pred_min          pred_max          meas_min          meas_max          max|meas-pred|
+  uscaled   shared    1500000  +8.502678e-10  +4.545762e-05  +8.502710e-10  +4.545762e-05  9.691e-15
+  uscaled   perline   1500000  -3.955067e-03  +3.717418e-05  -3.955067e-03  +3.717418e-05  9.250e-15
+  bare      shared    1500000  +8.308452e-08  +1.905609e-02  +8.308452e-08  +1.905609e-02  9.510e-15
+  bare      perline   1500000  -3.826755e-04  +1.795976e-02  -3.826755e-04  +1.795976e-02  9.327e-15
+
+checkpoint values (H_true = eps_(k+j)/u_k true chain; H_def = phantom):
+ step j = 1: H_true = +2.14831724235881083e+01
+   (uscaled,shared,H_k)   = +2.15155197433202048e+01   (bare,shared,H_k)   = +2.14985654034015177e+01
+   (uscaled,perline,H_k)  = +2.15155197433202048e+01   (bare,perline,H_k)  = +2.14985654034015177e+01
+   (uscaled,shared,0)     = +1.69738465972064240e-02   (bare,shared,0)     = +1.95066784289821271e-05
+ step j = 10000: H_true = +5.34695468277539199e+00
+   (uscaled,shared,H_k)   = +5.42418704956078983e+01   (bare,shared,H_k)   = +2.79340387412693865e+01
+   (uscaled,perline,H_k)  = -2.28400698141009980e+03   (bare,perline,H_k)  = +2.52468771612555756e+01
+   (uscaled,shared,0)     = +2.63381000169931525e+01   (bare,shared,0)     = +3.02682626780903519e-02
+ step j = 1000000: H_true = +4.41995970968345087e-01
+   (uscaled,shared,H_k)   = +8.94317960925363877e+01   (bare,shared,H_k)   = +3.96536558827287990e+01
+   (uscaled,perline,H_k)  = -6.50500899845420645e+03   (bare,perline,H_k)  = +3.20751947919259806e+01
+   (uscaled,shared,0)     = +4.98354120437820427e+01   (bare,shared,0)     = +5.72718359121893172e-02
+
+phantom chains H_def (family closure), first flip j (None = none in window):
+  seed              mode      cmode      flip_j   H_def at last step
+  21.49583383        uscaled   shared      none   +9.219916e+01
+  16.49583383        uscaled   shared      none   +8.274818e+01
+  1.495833831        uscaled   shared      none   +5.439523e+01
+  0                  uscaled   shared      none   +5.156781e+01
+  -1000              uscaled   shared         1   -1.838629e+03
+  21.49583383        uscaled   perline       23   -6.878795e+03
+  16.49583383        uscaled   perline       16   -6.888246e+03
+  1.495833831        uscaled   perline        4   -6.916599e+03
+  0                  uscaled   perline        2   -6.919426e+03
+  -1000              uscaled   perline        1   -8.809623e+03
+  21.49583383        bare      shared      none   +4.069062e+01
+  16.49583383        bare      shared      none   +3.123963e+01
+  1.495833831        bare      shared      none   +2.886683e+00
+  0                  bare      shared      none   +5.926274e-02
+  -1000              bare      shared         1   -1.890137e+03
+  21.49583383        bare      perline     none   +3.267941e+01
+  16.49583383        bare      perline     none   +2.322843e+01
+  1.495833831        bare      perline     4033   -5.124520e+00
+  0                  bare      perline        2   -7.951941e+00
+  -1000              bare      perline        1   -1.898149e+03
+
+true anchored chain (Theorem 8, seeds; first flip j or none):
+  seed 21.49583383        flip_j none
+  seed 16.49583383        flip_j 7202
+  seed 1.495833831        flip_j 90
+  seed 0                  flip_j 1
+  seed -1000              flip_j 1
+
+== anchor k = 10000, window W = 1500000 ==
+p_k = 104729
+X_k = theta(p_k)          = 104392.20201584966
+A_k = log X_k             = 11.555910258306216
+eps_k = P~/e^gamma - A_k  = 0.0065151806941230461
+u_k = log p_(k+1)/X_k     = 0.00011072919994561247  (log p_(k+1) = 11.559265009775785)
+r_1 = 1/(p_(k+1)-1)       = 9.5472685264745752e-06
+s_1 = r A_k - log1p(u_k)  = -3.9569161637158018e-07
+H_c(k) = -s_1/(r_1 u_k)   = 374.29631300821376
+H_phys(k) = eps_k/u_k     = 58.838867230352491
+Theta prod P_W = prod (1+r) over window = 1.4699133015500139
+
+residuals beta_j = B_j - Q B_(j-1) of the proposed two-form on the
+true chain (measured) vs exact closed forms (predicted):
+  variant   cmode      n        pred_min          pred_max          meas_min          meas_max          max|meas-pred|
+  uscaled   shared    1500000  +3.413561e-10  +1.038369e-06  +3.413589e-10  +1.038369e-06  9.919e-15
+  uscaled   perline   1500000  -5.947319e-04  +8.234119e-07  -5.947319e-04  +8.234119e-07  9.360e-15
+  bare      shared    1500000  +8.547093e-07  +4.558412e-03  +8.547093e-07  +4.558412e-03  2.658e-14
+  bare      perline   1500000  -2.653527e-05  +4.458239e-03  -2.653527e-05  +4.458239e-03  2.255e-14
+
+checkpoint values (H_true = eps_(k+j)/u_k true chain; H_def = phantom):
+ step j = 1: H_true = +5.88358554734089765e+01
+   (uscaled,shared,H_k)   = +5.88432917408692546e+01   (bare,shared,H_k)   = +5.88394294085380665e+01
+   (uscaled,perline,H_k)  = +5.88432917408692546e+01   (bare,perline,H_k)  = +5.88394294085380665e+01
+   (uscaled,shared,0)     = +3.86276005312991347e-03   (bare,shared,0)     = +4.27720330264946824e-07
+ step j = 10000: H_true = +3.95503759215557267e+01
+   (uscaled,shared,H_k)   = +8.78851647930658828e+01   (bare,shared,H_k)   = +6.27216314809128832e+01
+   (uscaled,perline,H_k)  = -6.80660246099509095e+03   (bare,perline,H_k)  = +6.19582103820744337e+01
+   (uscaled,shared,0)     = +2.51663199580912966e+01   (bare,shared,0)     = +2.78664647453474856e-03
+ step j = 1000000: H_true = +4.56074656715276472e+00
+   (uscaled,shared,H_k)   = +1.77154678636544503e+02   (bare,shared,H_k)   = +8.43123316766910023e+01
+   (uscaled,perline,H_k)  = -4.50388843469211351e+04   (bare,perline,H_k)  = +7.93055958506814136e+01
+   (uscaled,shared,0)     = +9.28526284218546749e+01   (bare,shared,0)     = +1.02814972579992059e-02
+
+phantom chains H_def (family closure), first flip j (None = none in window):
+  seed              mode      cmode      flip_j   H_def at last step
+  58.83886723        uscaled   shared      none   +1.835390e+02
+  53.83886723        uscaled   shared      none   +1.761894e+02
+  38.83886723        uscaled   shared      none   +1.541407e+02
+  0                  uscaled   shared      none   +9.705095e+01
+  -1000              uscaled   shared         1   -1.372862e+03
+  58.83886723        uscaled   perline       60   -4.891219e+04
+  53.83886723        uscaled   perline       54   -4.891954e+04
+  38.83886723        uscaled   perline       36   -4.894159e+04
+  0                  uscaled   perline        2   -4.899868e+04
+  -1000              uscaled   perline        1   -5.046859e+04
+  58.83886723        bare      shared      none   +8.649878e+01
+  53.83886723        bare      shared      none   +7.914921e+01
+  38.83886723        bare      shared      none   +5.710051e+01
+  0                  bare      shared      none   +1.074637e-02
+  -1000              bare      shared         1   -1.469903e+03
+  58.83886723        bare      perline     none   +8.106245e+01
+  53.83886723        bare      perline     none   +7.371288e+01
+  38.83886723        bare      perline     none   +5.166418e+01
+  0                  bare      perline        2   -5.425584e+00
+  -1000              bare      perline        1   -1.475339e+03
+
+true anchored chain (Theorem 8, seeds; first flip j or none):
+  seed 58.83886723        flip_j none
+  seed 53.83886723        flip_j 465260
+  seed 38.83886723        flip_j 42711
+  seed 0                  flip_j 1
+  seed -1000              flip_j 1
+
+== anchor k = 100000, window W = 1500000 ==
+p_k = 1299709
+X_k = theta(p_k)          = 1298474.4325372048
+A_k = log X_k             = 14.076700619892788
+eps_k = P~/e^gamma - A_k  = 0.0017907265586512011
+u_k = log p_(k+1)/X_k     = 1.084169224380212e-05  (log p_(k+1) = 14.077660184013972)
+r_1 = 1/(p_(k+1)-1)       = 7.6939648539685468e-07
+s_1 = r A_k - log1p(u_k)  = -1.1069490152309079e-08
+H_c(k) = -s_1/(r_1 u_k)   = 1327.0287900843082
+H_phys(k) = eps_k/u_k     = 165.17039207370118
+Theta prod P_W = prod (1+r) over window = 1.2116026460618525
+
+residuals beta_j = B_j - Q B_(j-1) of the proposed two-form on the
+true chain (measured) vs exact closed forms (predicted):
+  variant   cmode      n        pred_min          pred_max          meas_min          meas_max          max|meas-pred|
+  uscaled   shared    1500000  +2.327413e-10  +2.760704e-08  +2.327454e-10  +2.760704e-08  1.304e-14
+  uscaled   perline   1500000  -9.719781e-05  +3.875400e-08  -9.719781e-05  +3.875400e-08  9.296e-15
+  bare      shared    1500000  +8.727000e-06  +1.242108e-03  +8.727000e-06  +1.242108e-03  7.797e-14
+  bare      perline   1500000  +4.489430e-06  +1.232337e-03  +4.489430e-06  +1.232337e-03  9.121e-14
+
+checkpoint values (H_true = eps_(k+j)/u_k true chain; H_def = phantom):
+ step j = 1: H_true = +1.65169498143933197e+02
+   (uscaled,shared,H_k)   = +1.65171608263195310e+02   (bare,shared,H_k)   = +1.65170519167028118e+02
+   (uscaled,perline,H_k)  = +1.65171608263195310e+02   (bare,perline,H_k)  = +1.65170519167028118e+02
+   (uscaled,shared,0)     = +1.08910805143133953e-03   (bare,shared,0)     = +1.18077743138655933e-08
+ step j = 10000: H_true = +1.56255501081416043e+02
+   (uscaled,shared,H_k)   = +1.77155601445182896e+02   (bare,shared,H_k)   = +1.66381272991208704e+02
+   (uscaled,perline,H_k)  = -9.34365464036391859e+03   (bare,perline,H_k)  = +1.66278051296655377e+02
+   (uscaled,shared,0)     = +1.07744452608952486e+01   (bare,shared,0)     = +1.16813219616318520e-04
+ step j = 1000000: H_true = +4.41665952841556546e+01
+   (uscaled,shared,H_k)   = +3.62900097364390376e+02   (bare,shared,H_k)   = +1.95428671254068661e+02
+   (uscaled,perline,H_k)  = -2.37563716597359220e+05   (bare,perline,H_k)  = +1.92849144099255398e+02
+   (uscaled,shared,0)     = +1.67473241825259805e+02   (bare,shared,0)     = +1.81569334694131612e-03
+
+phantom chains H_def (family closure), first flip j (None = none in window):
+  seed              mode      cmode      flip_j   H_def at last step
+  165.1703921        uscaled   shared      none   +3.826364e+02
+  160.1703921        uscaled   shared      none   +3.765784e+02
+  145.1703921        uscaled   shared      none   +3.584043e+02
+  0                  uscaled   shared      none   +1.825155e+02
+  -1000              uscaled   shared         1   -1.029087e+03
+  165.1703921        uscaled   perline      171   -2.744587e+05
+  160.1703921        uscaled   perline      167   -2.744648e+05
+  145.1703921        uscaled   perline      150   -2.744829e+05
+  0                  uscaled   perline        2   -2.746588e+05
+  -1000              uscaled   perline        1   -2.758704e+05
+  165.1703921        bare      shared      none   +2.001229e+02
+  160.1703921        bare      shared      none   +1.940648e+02
+  145.1703921        bare      shared      none   +1.758908e+02
+  0                  bare      shared      none   +1.978777e-03
+  -1000              bare      shared         1   -1.211601e+03
+  165.1703921        bare      perline     none   +1.971431e+02
+  160.1703921        bare      perline     none   +1.910851e+02
+  145.1703921        bare      perline     none   +1.729111e+02
+  0                  bare      perline        2   -2.977767e+00
+  -1000              bare      perline        1   -1.214580e+03
+
+true anchored chain (Theorem 8, seeds; first flip j or none):
+  seed 165.1703921        flip_j none
+  seed 160.1703921        flip_j none
+  seed 145.1703921        flip_j none
+  seed 0                  flip_j 1
+  seed -1000              flip_j 1
+
+== anchor k = 1000000, window W = 1000000 ==
+p_k = 15485863
+X_k = theta(p_k)          = 15479837.62116343
+A_k = log X_k             = 16.555048936481914
+eps_k = P~/e^gamma - A_k  = 0.00050835331924403704
+u_k = log p_(k+1)/X_k     = 1.0694839806882437e-06  (log p_(k+1) = 16.555438359489496)
+r_1 = 1/(p_(k+1)-1)       = 6.4575013111956409e-08
+s_1 = r A_k - log1p(u_k)  = -4.4090664825927579e-10
+H_c(k) = -s_1/(r_1 u_k)   = 6384.2202377434196
+H_phys(k) = eps_k/u_k     = 475.32579115107183
+Theta prod P_W = prod (1+r) over window = 1.0446941026843317
+
+residuals beta_j = B_j - Q B_(j-1) of the proposed two-form on the
+true chain (measured) vs exact closed forms (predicted):
+  variant   cmode      n        pred_min          pred_max          meas_min          meas_max          max|meas-pred|
+  uscaled   shared    1000000  +8.607916e-11  +9.222475e-10  +8.607870e-11  +9.222454e-10  1.003e-14
+  uscaled   perline   1000000  -1.054989e-05  +9.069603e-10  -1.054989e-05  +9.069616e-10  9.919e-15
+  bare      shared    1000000  +3.435326e-05  +4.194157e-04  +3.435326e-05  +4.194157e-04  2.023e-13
+  bare      perline   1000000  +3.321396e-05  +4.182983e-04  +3.321396e-05  +4.182983e-04  2.265e-13
+
+checkpoint values (H_true = eps_(k+j)/u_k true chain; H_def = phantom):
+ step j = 1: H_true = +4.75325409584135514e+02
+   (uscaled,shared,H_k)   = +4.75326257621558455e+02   (bare,shared,H_k)   = +4.75325821845707083e+02
+   (uscaled,perline,H_k)  = +4.75326257621558455e+02   (bare,perline,H_k)  = +4.75325821845707083e+02
+   (uscaled,shared,0)     = +4.35776175185126086e-04   (bare,shared,0)     = +4.66055638526086113e-10
+ step j = 10000: H_true = +4.72197646400628116e+02
+   (uscaled,shared,H_k)   = +4.79298767569583902e+02   (bare,shared,H_k)   = +4.75631224308326182e+02
+   (uscaled,perline,H_k)  = -9.39693733003318994e+03   (bare,perline,H_k)  = +4.75620661832030294e+02
+   (uscaled,shared,0)     = +3.66754757998137038e+00   (bare,shared,0)     = +3.92238338520201069e-06
+ step j = 1000000: H_true = +3.28323487740184248e+02
+   (uscaled,shared,H_k)   = +6.81090733503874048e+02   (bare,shared,H_k)   = +4.96570248211280102e+02
+   (uscaled,perline,H_k)  = -6.91110710599879851e+05   (bare,perline,H_k)  = +4.95830387961782606e+02
+   (uscaled,shared,0)     = +1.84520684319469609e+02   (bare,shared,0)     = +1.97341915985305150e-04
+
+phantom chains H_def (family closure), first flip j (None = none in window):
+  seed              mode      cmode      flip_j   H_def at last step
+  475.3257912        uscaled   shared      none   +6.810907e+02
+  470.3257912        uscaled   shared      none   +6.758673e+02
+  455.3257912        uscaled   shared      none   +6.601969e+02
+  0                  uscaled   shared      none   +1.845207e+02
+  -1000              uscaled   shared         1   -8.601734e+02
+  475.3257912        uscaled   perline      479   -6.911107e+05
+  470.3257912        uscaled   perline      476   -6.911159e+05
+  455.3257912        uscaled   perline      459   -6.911316e+05
+  0                  uscaled   perline        2   -6.916073e+05
+  -1000              uscaled   perline        1   -6.926520e+05
+  475.3257912        bare      shared      none   +4.965702e+02
+  470.3257912        bare      shared      none   +4.913468e+02
+  455.3257912        bare      shared      none   +4.756764e+02
+  0                  bare      shared      none   +1.973419e-04
+  -1000              bare      shared         1   -1.044694e+03
+  475.3257912        bare      perline     none   +4.958304e+02
+  470.3257912        bare      perline     none   +4.906069e+02
+  455.3257912        bare      perline     none   +4.749365e+02
+  0                  bare      perline        2   -7.396629e-01
+  -1000              bare      perline        1   -1.045434e+03
+
+true anchored chain (Theorem 8, seeds; first flip j or none):
+  seed 475.3257912        flip_j none
+  seed 470.3257912        flip_j none
+  seed 455.3257912        flip_j none
+  seed 0                  flip_j 1
+  seed -1000              flip_j 1
+
+### DEEP PASS: segmented sieve, primes to 2200000000, anchor K = 100000000, W = 5000000
+
+== certification of the K = 1e8 anchor against h1_at_1e8_results.txt ==
+  p_K = 2038074743  PASS (the 1e8-th prime matches the certified value exactly)
+  X_K   run 2038030124.4153643  certified 2038030124.4153652  rel.err 4.68e-16  PASS
+  A_K   run 21.435249552999508  certified 21.435249552999508  rel.err 0.00e+00  PASS
+  u_K   run 1.0517642105918216e-08  certified 1.0517642105918211e-08  rel.err 4.72e-16  PASS
+  r_K   run 4.9065913799285331e-10  certified 4.9065913799285331e-10  rel.err 0.00e+00  PASS
+  s_K   run -2.4098227138607027e-13  certified -2.4098227138110719e-13  rel.err 2.06e-11  PASS
+  eps_K run 4.3461928498800262e-05  certified 4.3461928497354573e-05  rel.err 3.33e-11  PASS
+  H_K   run 4132.2882126160657  certified 4132.2882124786138  rel.err 3.33e-11  PASS
+  overall: PASS
+
+== anchor k = 100000000, window W = 5000000 ==
+p_k = 2038074743
+X_k = theta(p_k)          = 2038030124.4153643
+A_k = log X_k             = 21.435249552999508
+eps_k = P~/e^gamma - A_k  = 4.3461928498800262e-05
+u_k = log p_(k+1)/X_k     = 1.0517642105918216e-08  (log p_(k+1) = 21.435271449680776)
+r_1 = 1/(p_(k+1)-1)       = 4.9065913799285331e-10
+s_1 = r A_k - log1p(u_k)  = -2.4098227138607027e-13
+H_c(k) = -s_1/(r_1 u_k)   = 46696.766971490288
+H_phys(k) = eps_k/u_k     = 4132.2882126160657
+Theta prod P_W = prod (1+r) over window = 1.0023937741586748
+
+residuals beta_j = B_j - Q B_(j-1) of the proposed two-form on the
+true chain (measured) vs exact closed forms (predicted):
+  variant   cmode      n        pred_min          pred_max          meas_min          meas_max          max|meas-pred|
+  uscaled   shared    5000000  +3.075053e-13  +6.546705e-13  +3.019807e-13  +6.572520e-13  1.039e-14
+  uscaled   perline   5000000  -1.371431e-07  +4.927083e-13  -1.371431e-07  +4.938272e-13  1.054e-14
+  bare      shared    5000000  +1.412629e-05  +3.063587e-05  +1.412629e-05  +3.063587e-05  2.554e-12
+  bare      perline   5000000  +1.411624e-05  +3.062585e-05  +1.411624e-05  +3.062585e-05  3.023e-12
+
+exact residuals for the first three steps (measured vs predicted):
+ step j = 1:
+   uscaled  shared    meas +4.93827201353269629e-13  pred +4.92708349528087184e-13  diff +1.12e-15
+   uscaled  perline   meas +4.93827201353269629e-13  pred +4.92708349332695552e-13  diff +1.12e-15
+   bare     shared    meas +2.29121960728662089e-05  pred +2.29121956810106477e-05  diff +3.92e-13
+   bare     perline   meas +2.29121960728662089e-05  pred +2.29121956810106477e-05  diff +3.92e-13
+   eps check: transported +4.34619282791429820e-05 vs direct sieve +4.34619282785320138e-05 (diff -6.11e-16)
+ step j = 2:
+   uscaled  shared    meas +4.93827201353269629e-13  pred +4.92584810947550676e-13  diff +1.24e-15
+   uscaled  perline   meas -4.90609863845747896e-09  pred -4.90609988084802735e-09  diff +1.24e-15
+   bare     shared    meas +2.29063225560821593e-05  pred +2.29063227615921966e-05  diff -2.06e-13
+   bare     perline   meas +2.29014158321660943e-05  pred +2.29014161691265377e-05  diff -3.37e-13
+   eps check: transported +4.34619280595474679e-05 vs direct sieve +4.34619280547110520e-05 (diff -4.84e-15)
+ step j = 3:
+   uscaled  shared    meas +4.90274487674469128e-13  pred +4.92439667538305591e-13  diff -2.17e-15
+   uscaled  perline   meas -3.92478227695391979e-09  pred -3.92478010936858289e-09  diff -2.17e-15
+   bare     shared    meas +2.28994222197798081e-05  pred +2.28994227659877810e-05  diff -5.46e-13
+   bare     perline   meas +2.28954977501416579e-05  pred +2.28954974934387450e-05  diff +2.57e-13
+   eps check: transported +4.34619278400245274e-05 vs direct sieve +4.34619278344428039e-05 (diff -5.58e-15)
+
+checkpoint values (H_true = eps_(k+j)/u_k true chain; H_def = phantom):
+ step j = 1: H_true = +4.13228819173141528e+03
+   (uscaled,shared,H_k)   = +4.13228823862559875e+03   (bare,shared,H_k)   = +4.13228821464361135e+03
+   (uscaled,perline,H_k)  = +4.13228823862559875e+03   (bare,perline,H_k)  = +4.13228821464361135e+03
+   (uscaled,shared,0)     = +2.39828156020730225e-05   (bare,shared,0)     = +2.52242671194835566e-13
+ step j = 2: H_true = +4.13228817085263745e+03
+   (uscaled,shared,H_k)   = +4.13228826463513087e+03   (bare,shared,H_k)   = +4.13228821667115608e+03
+   (uscaled,perline,H_k)  = +4.13182175394611477e+03   (bare,perline,H_k)  = +4.13228821666624935e+03
+   (uscaled,shared,0)     = +4.79656312041460450e-05   (bare,shared,0)     = +5.04485342389671132e-13
+ step j = 1000: H_true = +4.13226734053036489e+03
+   (uscaled,shared,H_k)   = +4.13231415324010777e+03   (bare,shared,H_k)   = +4.13229024015115738e+03
+   (uscaled,perline,H_k)  = +3.13557286080838094e+03   (bare,perline,H_k)  = +4.13229022966778939e+03
+   (uscaled,shared,0)     = +2.39132316582134873e-02   (bare,shared,0)     = +2.51510812177002663e-10
+ step j = 10000: H_true = +4.13207781370465545e+03
+   (uscaled,shared,H_k)   = +4.13254935845508135e+03   (bare,shared,H_k)   = +4.13230848704897653e+03
+   (uscaled,perline,H_k)  = -5.90100408847168910e+03   (bare,perline,H_k)  = +4.13230838151965236e+03
+   (uscaled,shared,0)     = +2.40872252964758504e-01   (bare,shared,0)     = +2.53340814992952801e-09
+ step j = 100000: H_true = +4.13021388736587960e+03
+   (uscaled,shared,H_k)   = +4.13486989650954638e+03   (bare,shared,H_k)   = +4.13249086558180898e+03
+   (uscaled,perline,H_k)  = -9.57769709658367938e+04   (bare,perline,H_k)  = +4.13248981474482389e+03
+   (uscaled,shared,0)     = +2.37903281729062455e+00   (bare,shared,0)     = +2.50218157304971101e-08
+ step j = 1000000: H_true = +4.11173708702537715e+03
+   (uscaled,shared,H_k)   = +4.15789040872909572e+03   (bare,shared,H_k)   = +4.13430566058563545e+03
+   (uscaled,perline,H_k)  = -9.91043542091387673e+05   (bare,perline,H_k)  = +4.13429519341314517e+03
+   (uscaled,shared,0)     = +2.35847468019930027e+01   (bare,shared,0)     = +2.48055926022061612e-07
+ step j = 5000000: H_true = +4.02483700208751361e+03
+   (uscaled,shared,H_k)   = +4.26450594759309752e+03   (bare,shared,H_k)   = +4.14217997864200970e+03
+   (uscaled,perline,H_k)  = -4.87477440431587398e+06   (bare,perline,H_k)  = +4.14212866265693083e+03
+   (uscaled,shared,0)     = +1.22326055447211886e+02   (bare,shared,0)     = +1.28658167142248203e-06
+
+phantom chains H_def (family closure), first flip j (None = none in window):
+  seed              mode      cmode      flip_j   H_def at last step
+  4132.288213        uscaled   shared      none   +4.264506e+03
+  4127.288213        uscaled   shared      none   +4.259494e+03
+  4112.288213        uscaled   shared      none   +4.244458e+03
+  0                  uscaled   shared      none   +1.223261e+02
+  -1000              uscaled   shared         1   -8.800677e+02
+  4132.288213        uscaled   perline     4118   -4.874774e+06
+  4127.288213        uscaled   perline     4112   -4.874779e+06
+  4112.288213        uscaled   perline     4101   -4.874794e+06
+  0                  uscaled   perline        2   -4.878917e+06
+  -1000              uscaled   perline        1   -4.879919e+06
+  4132.288213        bare      shared      none   +4.142180e+03
+  4127.288213        bare      shared      none   +4.137168e+03
+  4112.288213        bare      shared      none   +4.122132e+03
+  0                  bare      shared      none   +1.286582e-06
+  -1000              bare      shared         1   -1.002394e+03
+  4132.288213        bare      perline     none   +4.142129e+03
+  4127.288213        bare      perline     none   +4.137117e+03
+  4112.288213        bare      perline     none   +4.122081e+03
+  0                  bare      perline        2   -5.131470e-02
+  -1000              bare      perline        1   -1.002445e+03
+
+true anchored chain (Theorem 8, seeds; first flip j or none):
+  seed 4132.288213        flip_j none
+  seed 4127.288213        flip_j none
+  seed 4112.288213        flip_j none
+  seed 0                  flip_j 1
+  seed -1000              flip_j 1
+
+== end of chainform.py  [  158.1s]  ==

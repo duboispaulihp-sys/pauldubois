@@ -1,0 +1,51 @@
+== certified positivity window of the anchored chain, K = 10^8, physical seed ==
+window W = 200000000 steps, sieve bound 7000000000 (stream starts at the certified anchor p_K = 2038074743)
+
+self-test: window_primes [3,5000] and [999,2001] match the reference sieve exactly  PASS
+
+== gate 1: anchor continuity ==
+  p_(K+1) = 2038074751  (certified 2038074751)
+  u_1     = log p_(K+1)/X_K = 1.0517642105918211e-08  rel.err 0.00e+00  PASS
+  log p_(K+1)             = 21.435271449680776  rel.err 0.00e+00  vs certified
+
+== gate 2: cross-check against chainform deep pass (independent compensated walk from 2) ==
+  j = 1         H = 4.13228819159396335e+03  deep 4.13228819173141528e+03  rel.err 3.33e-11  PASS
+  j = 2         H = 4.13228817071518552e+03  deep 4.13228817085263745e+03  rel.err 3.33e-11  PASS
+  j = 1000      H = 4.13226734039291205e+03  deep 4.13226734053036489e+03  rel.err 3.33e-11  PASS
+  j = 10000     H = 4.13207781356720807e+03  deep 4.13207781370465545e+03  rel.err 3.33e-11  PASS
+  j = 100000    H = 4.13021388722848224e+03  deep 4.13021388736587960e+03  rel.err 3.33e-11  PASS
+  j = 1000000   H = 4.11173708688778879e+03  deep 4.11173708702537715e+03  rel.err 3.35e-11  PASS
+  j = 5000000   H = 4.02483700195471101e+03  deep 4.02483700208751361e+03  rel.err 3.30e-11  PASS
+
+== gate 3: window coverage ==
+  reached index n = 300000000 = K + 200000000  (target K + 200000000)  PASS
+  prime range certified: [p_{K+1}, p_end] = [2038074751, 6461335109]
+
+== gate 4: margins vs float64 noise ==
+  min eps over window  = 2.44081367455766244e-05  at j = 200000000
+  min H   over window  = 2.32068523531926576e+03  at j = 200000000
+  nonpositive eps or H count = 0 (must be 0)
+  float64 worst-case eps drift bound <= 3.0e-12  ->  safety factor >= 8.14e+06
+
+== checkpoint table ==
+  j          p_{K+j}          eps_{K+j}              H_j                   
+  1          2038074751       4.34619282776973e-05   4.13228819159396e+03  
+  2          2038074761       4.34619280581018e-05   4.13228817071519e+03  
+  1000       2038096117       4.34617089722272e-05   4.13226734039291e+03  
+  10000      2038289839       4.34597155969049e-05   4.13207781356721e+03  
+  100000     2040217561       4.34401114867624e-05   4.13021388722848e+03  
+  1000000    2059519669       4.32457791135165e-05   4.11173708688779e+03  
+  5000000    2145390523       4.23317951212165e-05   4.02483700195471e+03  
+  10000000   2252945251       4.11347576158599e-05   3.91102465758115e+03  
+  20000000   2468776129       3.93379533337858e-05   3.74018748096121e+03  
+  50000000   3121238909       3.52791141842153e-05   3.35427977382535e+03  
+  100000000  4222234741       3.02865469183779e-05   2.87959474313504e+03  
+  200000000  6461335109       2.44081367455766e-05   2.32068523531927e+03  
+
+== summary ==
+  window certificate: PASS
+  H_i > 0 for all 1 <= i <= 200000000 (physical seed at K = 10^8);
+  equivalently f(p) < 1 (Nicolas) for every prime in [p_(K+1), p_end] = [2038074751, 6461335109],
+  i.e. 200000000 consecutive primes: 2038074751 ... 6461335109
+  first-step value H_1 = 4.13228819159396335e+03 (matches deep pass to 3.33e-11 rel)
+  total 150.3 s

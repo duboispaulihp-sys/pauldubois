@@ -1,0 +1,50 @@
+== convergence of chain increments Delta_j = H_j - H_(j-1), K = 10^8, physical seed ==
+window W = 20000000 steps, sieve bound 2600000000 (stream from the certified anchor p_K = 2038074743)
+
+self-test: window_primes [3,5000] and [999,2001] match the reference sieve exactly  PASS
+
+== gate 1: anchor continuity ==
+  p_(K+1) = 2038074751  certified;  u_1 rel.err 0.00e+00  PASS
+  walk complete: n = 120000000 = K + 20000000, p_end = 2468776129
+
+== gate 2: exact increment identity Delta = r H + s/u_K ==
+  max |Delta - r H - s/u_K| = 1.959e-12 H-units (tol 5e-12 = 3 ulps of eps/u_K ~ 0.8e-12)
+  PASS
+
+== gate 3: 2nd-order s-law  p^2 s = 2a - e'(1+a) + a^2/2 ==
+  j          Delta_j        s/u_K part     rH part      s resid    e'/sqrt p
+  1          -2.088465e-05  -2.291220e-05  2.0275e-06   4.28e-05   0.989    
+  2          -2.087878e-05  -2.290632e-05  2.0275e-06   4.28e-05   0.988    
+  1000       -2.085964e-05  -2.288716e-05  2.0275e-06   4.28e-05   0.987    
+  10000      -2.126851e-05  -2.329574e-05  2.0272e-06   4.28e-05   1.005    
+  100000     -2.045727e-05  -2.248167e-05  2.0244e-06   4.28e-05   0.971    
+  1000000    -2.267896e-05  -2.467541e-05  1.9965e-06   4.28e-05   1.081    
+  5000000    -2.354217e-05  -2.541821e-05  1.8760e-06   4.24e-05   1.182    
+  10000000   -2.074906e-05  -2.248503e-05  1.7360e-06   4.11e-05   1.122    
+  20000000   -2.145487e-05  -2.296987e-05  1.5150e-06   4.05e-05   1.310    
+  max s-shape residual 4.696e-05 (tol 1e-03): PASS
+
+== gate 4: sign census and margin ==
+  Delta_j < 0 at 20000000/20000000 steps (nonnegative count = 0)
+  threshold: Delta < 0 <=> s < -r H u_K <=> e' > eps*p/(1+a) (2nd order);
+  min margin e'/(eps p/(1+a)) = 6.42 at j = 12945866
+  PASS
+
+== gate 5: modulation census ==
+  eta = e'/sqrt p over window:  min 0.557  max 1.454
+  (strip [p_K+1, 2.07e9] certified band [0.80, 1.23]; the band
+   drifts beyond -- e' is the Chebyshev oscillation, prop:soscil)
+  z = |Delta|*p^(3/2):  min 1.0090e+09  max 2.9289e+09  (ratio 2.90; ~ constant up to the eta band)
+
+  Delta(1) = 2.088465e-05 ... Delta(W) = 2.145487e-05 : the p^{-3/2} trend (~25% expected) is partly masked by the eta oscillation inside any window of this length;
+
+== summary ==
+  step-difference certificate: PASS
+  Delta_j = r H + s/u_K -> 0 unconditionally (prop:stepdiff):
+  rH-part = eps/p/u_K: 2.028e-06 (j=1) -> 1.515e-06 (j=W), tracks eps/p;
+  s-part  = s/u_K:     -2.291e-05 (j=1) -> -2.297e-05 (j=W), p^{-3/2} law
+  every step negative in the window (margin >= 6.4); the
+  increments converge to 0 but the chain need not converge:
+  sum Delta_j = H_j - H_0 telescopes; supercritical seeds diverge like P (log P ~ log log p), and for the physical
+  seed convergence of the telescope is exactly the open question whether eps has a Mertens limit.
+  total 31.2 s

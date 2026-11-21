@@ -1,0 +1,57 @@
+== independent re-audit of the increments H_j - H_(j-1) ==
+window W = 50000 steps, sieve to 2100000000; four routes plus the
+mispairing-equivalence control (off-by-one drift, second order
+|dH| r^2 Q, no float signature)
+
+anchor continuity: p_(K+1) = 2038074751, u_1 rel 0  PASS
+
+== route agreement over 50000 steps (abs, H-units) ==
+  H = 1                   A-vs-B 1.54e-10   A-vs-C 2.07e-16   A-vs-D 1.08e-12
+  H = H_K (physical)      A-vs-B 8.19e-11   A-vs-C 1.31e-12   A-vs-D 1.50e-12
+  H = H_K + 1000          A-vs-B 1.16e-10   A-vs-C 1.47e-12   A-vs-D 1.60e-12
+  H = -100                A-vs-B 1.59e-10   A-vs-C 2.43e-14   A-vs-D 1.09e-12
+
+== sum-level telescope control (err vs closed form H_W - H_0) ==
+  H = 1                  corrected telescope err 6.49e-11
+  H = H_K (physical)     corrected telescope err 7.51e-13
+  H = H_K + 1000         corrected telescope err 1.51e-11
+  H = -100               corrected telescope err 6.67e-11
+
+== mispairing-equivalence control (off-by-one drift r_(K+j-1) Q_j)
+   versus the corrected drift r_(K+j-1) Q_(j-1) ==
+  seed                   max per-step diff sum-level diff   signature
+  H = 1                  9.95e-16         4.97e-11         none (sub-float)
+  H = H_K (physical)     0.00e+00         0.00e+00         none (sub-float)
+  H = H_K + 1000         2.41e-16         1.20e-11         none (sub-float)
+  H = -100               1.02e-15         5.09e-11         none (sub-float)
+  mechanism: per-step diff = |H-H_K| r^2 Q, sum-level diff
+  <= |H-H_K| sum r^2 Q: the delivered off-by-one leaves NO trace
+  at machine precision; the repair is purely notational.
+
+== checkpoint rows (telescope errors) ==
+  j=1       H = 1                  Delta=-2.291170e-05  err(corr)=8.12e-13
+  j=1       H = H_K (physical)     Delta=-2.088465e-05  err(corr)=9.56e-14
+  j=1       H = H_K + 1000         Delta=-2.039399e-05  err(corr)=2.93e-13
+  j=1       H = -100               Delta=-2.296126e-05  err(corr)=8.37e-13
+  j=2       H = 1                  Delta=-2.290583e-05  err(corr)=7.37e-13
+  j=2       H = H_K (physical)     Delta=-2.087878e-05  err(corr)=2.23e-13
+  j=2       H = H_K + 1000         Delta=-2.038812e-05  err(corr)=3.57e-13
+  j=2       H = -100               Delta=-2.295539e-05  err(corr)=7.88e-13
+  j=1000    H = 1                  Delta=-2.288668e-05  err(corr)=5.22e-12
+  j=1000    H = H_K (physical)     Delta=-2.085964e-05  err(corr)=4.02e-13
+  j=1000    H = H_K + 1000         Delta=-2.036899e-05  err(corr)=4.53e-13
+  j=1000    H = -100               Delta=-2.293623e-05  err(corr)=5.15e-12
+  j=10000   H = 1                  Delta=-2.329536e-05  err(corr)=1.01e-11
+  j=10000   H = H_K (physical)     Delta=-2.126851e-05  err(corr)=8.59e-14
+  j=10000   H = H_K + 1000         Delta=-2.077790e-05  err(corr)=2.62e-12
+  j=10000   H = -100               Delta=-2.334491e-05  err(corr)=1.06e-11
+  j=50000   H = 1                  Delta=-2.271672e-05  err(corr)=6.49e-11
+  j=50000   H = H_K (physical)     Delta=-2.069068e-05  err(corr)=7.51e-13
+  j=50000   H = H_K + 1000         Delta=-2.020027e-05  err(corr)=1.51e-11
+  j=50000   H = -100               Delta=-2.276625e-05  err(corr)=6.67e-11
+
+verdict: levels (B), per-step increments (C, D) and the corrected
+telescope (E+) all agree with the direct recursion within float
+tolerance; the off-by-one drift variant (E-) coincides with the
+corrected one to within |dH| r^2 Q (sub-float, no signature): PASS
+total 0.2 s
