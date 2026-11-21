@@ -10,7 +10,10 @@ the machine-checked portion to the threshold dichotomy at the exact budget roots
 Part VII quantifies the bridge on the AB decaying-stability rate; Part VIII constructs the
 error taxonomy and the controller with the fatal floor; Part IX assembles the model-level
 singularity; Part X closes the threshold from below with the no-side q-power instances
-(two-sided machine-checked dichotomy at all three anchors). No piece of the open core is dressed up as proved.
+(two-sided machine-checked dichotomy at all three anchors); Part XI pins the exact critical
+ratio of each anchor in closed rational form and machine-checks the boundary — at contraction
+at most μ*, the head is never exceeded at any window, via the 1000/999 accounting identity.
+No piece of the open core is dressed up as proved.
 
 ---
 
@@ -647,3 +650,91 @@ With Part X the construction ledger stands at 33 theorems across six Lean files 
 Bridge, Control, ModelSingularity, ThresholdNo), each closed with printed axiom dependencies,
 plus three independent stdlib verifiers (`drift_budget_verification.py`,
 `drift_bridge_verification.py`, `drift_threshold_dichotomy.py`).
+
+## Part XI — The exact critical point: the 1000/999 accounting identity and the boundary of the dichotomy, machine-checked
+
+Part X left, per anchor, a machine-checked band-pair: yes-side at contraction ratio
+at most the V1 constant, no-side at persistence ratio at least the X0 constant, with the
+exact critical ratio inside the band *not claimed*. This part pins the boundary of the
+yes region **exactly**, in closed rational form, and machine-checks it: at contraction
+ratio at most the exact critical μ*, the budget head is **never exceeded at any window**
+— not merely at the witness windows of V1, but for all K. File: `formal/DriftCritical.lean`
+(seven theorems: `telescope`, `chatBound1–3`, `criticalNever1–3`); companion verifier
+`drift_critical_point.py` (stdlib, exact rationals).
+
+### XI.1 The exact accounting identity (the 1000/999 feedback telescoping, general K)
+
+Under the exact coupling recursion `30000000 * dhat(n+1) = 30000 * dhat n + 30000000 * chat n`,
+the prefix sums satisfy, **exactly**, at every window K:
+
+  `29970000 * sumTo dhat K + 30000000 * dhat K = 30000000 * (dhat 0 + sumTo chat K)`.
+
+Splitting the left side, this is `(1000/999) * (dhat 0 + sumTo chat K)` minus the boundary
+correction `dhat K / 999`: the response prefix is exactly 1000/999 times (launch + released
+source), and the finite-window correction is always positive — the accounting never
+overstates. This closes the item left open in Part X, where the transfer route deliberately
+used only `dhat(n+1) ≥ chat n` and discarded the feedback.
+
+### XI.2 The exact critical ratios, in closed form
+
+With the caps at their adversarial values (launch d̂₀ = 10⁶, floor ĉ₀ = 39000), the exact
+critical total released source is T = (999/1000)·M − d̂₀, and the exact critical contraction
+ratio is μ* = 1 − ĉ₀/T in lowest terms:
+
+| anchor | head M | exact critical μ* (closed form) | decimal |
+| --- | --- | --- | --- |
+| 1 | 1541354 | **250406323/269906323** | 0.927753 |
+| 2 | 1744063 | **703318937/742318937** | 0.947462 |
+| 3 | 1928014 | **443542993/463042993** | 0.957887 |
+
+The boundary identity validating these, exact at all three anchors:
+
+  `(999·M − 10⁹)·(d − c) = ĉ₀·1000·d`,  verified: 19500000·539812646 = 39000·1000·269906323 (anchor 1),
+  39000000·742318937 = 39000·1000·742318937 (anchor 2), 19500000·926085986 = 39000·1000·463042993 (anchor 3);
+
+equivalently the saturating limit is exact: (1000/999)·(10⁶ + ĉ₀·d/(d−c)) = M, i.e. a
+trajectory contracting at exactly μ* saturates the head with deficit 0 in the limit —
+and the Lean theorems show it never *breaches* the head at any finite window.
+
+### XI.3 Machine-checked content
+
+- `telescope`: the 1000/999 accounting identity above, proved for all K by omega induction
+  with definitional step equations. This is the feedback telescoping named in Part X as the
+  second half of the remaining unit.
+- `chatBound1–3`: the source potential at each exact critical ratio — if
+  `d·chat(n+1) ≤ c·chat n` with μ* = c/d, then `(d−c)·sumTo chat K + d·chat K ≤ d·chat 0`
+  at every K: the released source is at most `d·chat0/(d−c)`.
+- `criticalNever1–3`: the boundary theorems. Under the exact coupling, launch at cap
+  d̂₀ ≤ 10⁶, floor at cap ĉ₀ ≤ 39000, and contraction at ratio **at most the exact critical
+  μ\*\**, the prefix sums satisfy `sumTo dhat K ≤ M` for **every** window K. Printed axiom
+  dependencies, all seven: `[propext, Quot.sound]`.
+
+### XI.4 What this changes in the ledger
+
+The yes region of the dichotomy is now machine-checked on the closed interval
+[…, μ*ᵢ] at all three anchors (Part VI covered only […, νᵢ] at the witness windows, with
+νᵢ < μ\*ᵢ by gaps of 4.5×10⁻⁸, 3.6×10⁻⁸, 4.6×10⁻⁸ — the V1 bisected anchors land within
+5×10⁻⁸ of the exact criticals, now explained rather than coincidental). The no-side stands
+as in Part X at ρᵢ ∈ {116/125, 237/250, 479/500}. The single remaining unresolved interval
+per anchor is the open band (μ\*ᵢ, ρ\*ᵢ) of widths 2.47×10⁻⁴, 5.38×10⁻⁴, 1.13×10⁻⁴, inside
+which the exact critical ratio has now been pinned from below by the exact closed form and
+from above by the Part X no-side certificates. Disposing of it would require formalizing
+monotonicity of the response in the source channel (the response prefix sums are nondecreasing
+in each chat n) to convert the lower-bound persistence of Part X into a squeeze against the
+exact boundary; that is the one remaining named formal unit.
+
+### XI.5 Scope and integrity close
+
+- Every statement of `formal/DriftCritical.lean` concerns integer sequences at fixed literal
+  scale. Nothing in it is a Navier–Stokes statement.
+- The boundary theorems are saturation-exact, not divergence claims: at μ* the head is
+  approached and never breached; no no-side is claimed inside (μ*, ρ).
+- (E1), (O2), (O3) remain open; the model singularity of Part IX remains model-level; the
+  bridge imports Alpöge–Buckmaster and cannot outrank it; the unconditionally constructed
+  singularity is and remains Alpöge–Buckmaster's. No deliverable of this program claims an
+  unconditional blow-up proof for the Navier–Stokes equations.
+
+With Part XI the construction ledger stands at 40 theorems across seven Lean files (V0, V1,
+Bridge, Control, ModelSingularity, ThresholdNo, DriftCritical), each closed with printed
+axiom dependencies, plus four independent stdlib verifiers (`drift_budget_verification.py`,
+`drift_bridge_verification.py`, `drift_threshold_dichotomy.py`, `drift_critical_point.py`).
