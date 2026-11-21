@@ -314,3 +314,100 @@ fluids. The singularity remains unconditionally proved by Alpöge–Buckmaster a
 
 `#print axioms` output for all eleven theorems: `[propext, Quot.sound]`; `sorryAx` absent
 (verified at compile time, Lean v4.36.0, exit 0).
+
+---
+
+## Part VII — The mechanism demonstrated with the article as drive (AB-quantified bridge)
+
+The uploaded article is byte-identical to the Alpöge–Buckmaster paper already transcribed
+(md5 `753db728…`), so the extraction below is from the known text. What the article supplies
+that the cascade can consume is exactly one object: the convergence rate (1.6),
+
+∥∇(U−W)(σ)∥_{L²} ≤ C e^{−κσ}, κ ∈ (0, ¼),
+
+whose κ arises as Θ = e^{−κS} with Θ ∈ (e^{−S/4}, 1) — the essential spectral radius e^{−S/4}
+of the period-monodromy operator of the profile — and whose constant C is **untracked**: the
+formal Theorem 1.1 carries no rate at all, and the paper bounds κ only through Θ, with no
+lower bound. Learning from the article therefore means learning to *quantify the bridge
+honestly*: not "(E1) is discharged for the AB class", but "(E1) is discharged for the AB class
+**at a price**, and the price is a computable constant budget".
+
+### VII.1 The constant budget of the bridge (proved here, exact arithmetic)
+
+Reading the AB convergence per window (stage width S, launch σ₀, exact rational simulation
+in `drift_bridge_verification.py`): δₙ ≤ C e^{−κσₙ}; hence Σₙ δₙ ≤ C e^{−κσ₀}/(1 − e^{−κS}).
+The Drift Theorem needs this inside min-band D_max(σ) = 0.05137848. Solving for C:
+
+**Proposition (bridge constant budget).** *For an AB-class solution with convergence constants
+(C, κ), the geometric mechanism closes on the band at the maximal launch if and only if*
+
+C ≤ C_max(κ) = e^{κσ₀} (1 − e^{−κS}) · 0.05137848.
+
+Computed (σ₀ = 7.3303, S = log 2):
+
+| κ | ¼ | 0.20 | 0.15 | 0.10 | 0.05 | 0.01 |
+| --- | --- | --- | --- | --- | --- | --- |
+| C_max | 0.051090 | 0.028813 | 0.015235 | 0.007161 | 0.002525 | 0.000382 |
+
+The window bookkeeping is unforgiving on the rate: at κ = ¼ the total is one window excess
+plus the tail (1 − e^{−κS})⁻¹ ≈ 6.29; at κ = 0.01 it is ≈ 144.7 — the whole mechanism lives or
+dies by where the monodromy spectrum sits between e^{−S/4} and 1. The article proves κ > 0
+exists but does not compute it; the bridge inherits exactly that gap.
+
+### VII.2 Machine-checked envelope(`formal/DriftBridge.lean`)
+
+Core Lean 4 (v4.36.0), scale D = 30 000 000, two theorems, both `#print axioms` =
+`[propext, Quot.sound]`, no `sorryAx`:
+
+- `geometricEnvelope` — the source-free summation: under the pure contraction
+  D·δ̂(n+1) ≤ X·δ̂ₙ, the potential (D − X)·Σ_{k<K} δ̂ₖ + D·δ̂_K ≤ D·δ̂₀ for every K — the
+  machine form of Ce^{−κσₙ}; no powers, no q-lemma needed, a single induction.
+- `bridgeInstance` — the κ = ¼ instance: X = 25 226 893 = ⌈2^{−1/4}·D⌉ (interval check
+  2^{−1/4} ≤ X/D < 2^{−1/4} + 10⁻⁷ verified), launch cap δ̂₀ ≤ 245 230 (the C_max(¼) reading
+  capped inside the budget), head M = 1 541 354 = ⌊0.05137848·D⌋; ground inequality closed by
+  `decide` with slack 147 566 878.
+
+### VII.3 The demonstration, stage by stage (AB drive, κ = ¼, C = C_max)
+
+The geometric mechanism run on the article's engine instead of the model contraction:
+
+| n | σₙ | δₙ | cumulative | ε₀ = 1/30 + cum |
+| --- | --- | --- | --- | --- |
+| 0 | 7.3303 | 0.008175 | 0.008175 | 0.041508 |
+| 1 | 8.0234 | 0.006874 | 0.015048 | 0.048382 |
+| 2 | 8.7166 | 0.005780 | 0.020829 | 0.054162 |
+| 3 | 9.4097 | 0.004861 | 0.025689 | 0.059023 |
+| 4 | 10.1029 | 0.004087 | 0.029776 | 0.063110 |
+| 5 | 10.7960 | 0.003437 | 0.033213 | 0.066547 |
+| 6 | 11.4892 | 0.002890 | 0.036104 | 0.069437 |
+| 7 | 12.1823 | 0.002430 | 0.038534 | 0.071867 |
+
+Σ_∞ = 0.05137848 = D_min *exactly* (by construction of C_max — the tightest drive the budget
+admits), and the total misfit ε₀ = 1/30 + Σ_∞ = 0.084712 ≤ 1/9 with 23.76% headroom. The tilt
+bound at the band: sin²θ ≤ 5.51·D_max² ≤ 0.0228, i.e. θ ≤ 6.94° — the cascade self-corrects
+while the drift accumulates, exactly as the two channels of (6a.7) prescribe.
+
+**Two drives, one mechanism.** On the same window bookkeeping, the same budget, two
+independent engines now land inside:
+
+| drive | Σδ | occupancy of the tightest head |
+| --- | --- | --- |
+| Dubois model drive (q = 10⁻³, c₀ = 1.3×10⁻³, μ = 2^{−1/2}) | 0.037810 | 73.6% |
+| AB convergence drive (κ = ¼, C = C_max(¼)) | 0.051378 | 100% (by construction of C_max; 79.9% of the band-end head) |
+
+Both are conditional demonstrations of the same geometric process: the launch defect is
+absorbed, the intrinsic corrections decay geometrically, the tilt channel never diverges, the
+cascade exits inside (6a.7). The difference is *what each still owes*: the model drive owes
+(E1)+(E2)+(O3) (its decay is a hypothesis about the true flow); the AB drive owes the
+untracked pair (C, κ) from the article's stability theorem plus the [P] calibration — debts
+the article genuinely carries but does not pay in full.
+
+### VII.4 Scope
+
+Nothing in this part is unconditional. The AB drive runs on the paper-level rate (1.6) — the
+formal Theorem 1.1 has no rate — with C, κ unmeasured and period S assumed to match the
+cascade's stage width log 2 (for a general AB period S′ the per-window factor is e^{−κS′} and
+C_max(κ) rescales accordingly, same formula). The open core (E1), (O2), (O3) is unchanged; the
+quantified bridge narrows what a proof of the drift for the AB class would still need: the
+spectral gap of one monodromy operator of one certified profile — a finite computation, but
+not one performed in the article, in its formalization, or here.
