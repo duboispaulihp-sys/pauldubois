@@ -411,3 +411,87 @@ C_max(κ) rescales accordingly, same formula). The open core (E1), (O2), (O3) is
 quantified bridge narrows what a proof of the drift for the AB class would still need: the
 spectral gap of one monodromy operator of one certified profile — a finite computation, but
 not one performed in the article, in its formalization, or here.
+
+---
+
+## Part VIII — Error construction and the control layer; the singularity construction, specified
+
+"Control the geometric mechanism" resolves into two tasks of different kinds: the *errors* —
+which this part constructs exhaustively, at their adversarial extremes, and proves controlled,
+including machine-checked — and the *singularity* — which has exactly one constructive route
+in existence (the AB certificate pipeline), specified here end-to-end rather than pretended.
+
+### VIII.1 The complete error taxonomy
+
+Every error the mechanism can carry, constructed at its extreme and classified:
+
+| # | channel | constructed extreme | class | status |
+| --- | --- | --- | --- | --- |
+| 1 | launch defect ε_prof | 1/30 (exact) | bounded input, no decay needed | controlled: contributes δ₀/(1−q) = 0.033367 once |
+| 2 | intrinsic corrections (E1)/(E2) | c₀ = 1.3×10⁻³, μ = 2^{−1/2} | must decay geometrically | controlled: contributes 0.004443; conditional on (E1) |
+| 3 | bending residue (O2) | 5.8×10⁻⁶ per window (audit, Λ_β = 4.49) | decaying, 224× below channel 2's cap | controlled in model; audit-resolved |
+| 4 | (E2) profile defect-loop gain | L ∈ [0.32, 0.36] < 1 | geometric, contractive | reduces to (E1) in the model |
+| 5 | tilt channel | loop gain −C₁/2·w ∈ [−0.56, −0.05] | restoring (negative feedback) | controlled: structurally stable |
+| 6 | any persistent per-window floor | b > 0, arbitrarily small | **fatal** | machine-checked below |
+
+Channel 6 is the structural discovery recorded by this program twice (Lemma B's correction,
+WP2c's falsifier), and it is not quantitative but architectural: the budget is capped at
+7/90 = 0.077778 for all σ (the min form of Theorem 1.1), so *any* positive persistent floor —
+even channel 3's 5.8×10⁻⁶ sustained forever — eventually exceeds it (at the audit level,
+within ≈ 13 410 windows; at channel 2's level, within 60). Geometric decay is not a luxury of
+the hypotheses: it is forced by the architecture.
+
+### VIII.2 The controller, machine-checked (`formal/DriftControl.lean`)
+
+Core Lean 4 (v4.36.0), scale D = 30 000 000; four theorems, all `#print axioms` =
+`[propext, Quot.sound]`, no `sorryAx`:
+
+- `phiMonoAll` + `controlTheorem` — **all constructed channels adversarial simultaneously**:
+  launch capped at 10⁶ (= 1/30), the decayed source aggregated τ₀ ≤ 39 174 (= 1.3×10⁻³ +
+  5.8×10⁻⁶, both channels at their audit ceilings and both relaxed to the conservative
+  μ ≤ 3/4), coupling contraction q = 10⁻³: the prefix sums never exceed
+  1 542 000 = 0.0514·D, for every K. Ground inequality closed by `decide` at 25% slack.
+  Exact-arithmetic totals: Σ = 0.037829 at the recorded μ = 2^{−1/2} (73.6% of the tightest
+  head), 0.038595 at the relaxed μ = 3/4 (75.1%) — the bending channel costs 2×10⁻⁵ and the
+  relaxation 8×10⁻⁴, and both fit.
+- `linearGrowth` + `fatalFloor` — the necessity side, machine-checked: a persistent floor at
+  the intrinsic level forces 39 000·K ≤ Σ_{k<K+1} δ̂ₖ forever; concretely, by window 400 the
+  prefix sums exceed 15 600 000 — 6.7× the all-σ capped budget 2 333 333 = ⌊(7/90)·D⌋, and no
+  head survives. The controller's architecture (decay mandatory, floors fatal) is thus proved
+  in Lean, not asserted.
+
+### VIII.3 The singularity construction — specification and honest status
+
+There is exactly one constructive route to Navier–Stokes singularities in existence: the AB
+pipeline. Its complete specification, from the article:
+
+1. **Profile**: a certificate — finitely many fields of the form of their Appendix B.1
+   (harmonic sums in two angles with piecewise-polynomial and radial-phase coefficients,
+   polynomial constraint fields on meshed meridian cells, weight w ≡ 39/50) satisfying the
+   conditions of Appendix B (residual/approximate-profile inequalities (7.24), (7.28);
+   ε, M bounds (7.25)–(7.27); parameter conditions (7.32)–(7.37)). The certificate exists;
+   its hash is `3f7a335b84b6c7631742cacc5343dfcd11cf72f5221ff79b2b9268790b4b22c5`.
+2. **Verification of the certificate**: rigorous interval arithmetic, 128-bit, Arb through
+   FLINT — *outside* Lean; the formalization contains no data.
+3. **Theory**: certificate ⇒ weak solution of the profile equation (Theorem 7.1, formalized);
+   profile ⇒ blow-up with stability in finite codimension (Theorem 1.1, formalized without
+   rate); the datum is produced by Lyapunov–Perron plus a finite-dimensional correction
+   (Proposition 2.1, Lemma 2.3), the toral solution by dilation T = L⁻².
+4. **Formalization-only steps**: Propositions B.1 (multiplier inequality) and B.4 (mesh-cell
+   inequalities) — the two pieces of the estimate that exist only in Lean.
+
+What this session contributes to that pipeline: nothing it needs — it is complete — and
+everything that surrounds it: Parts V–VIII now hold the full conditional structure *around*
+the constructed singularity, with every drift-level statement priced (α_min thresholds
+machine-checked, bridge constant budget C_max(κ), error taxonomy controlled, floors proved
+fatal). Dubois's own construction route (the self-sustaining closure model of [S]) remains at
+model level and still owes exactly the open core: (E1) as a statement about the true flow,
+the (O2) residue beyond model, (O3).
+
+### VIII.4 Scope
+
+The errors are constructed, controlled, and machine-checked — as theorems about integer
+sequences whose hypotheses are the window-level statements of the program. The singularity is
+not constructed here and cannot be re-derived from this material: it rests on the AB
+certificate and its interval-arithmetic verification, which are cited, not reproduced. (E1),
+(O2), (O3) remain open; the unconditional proof of blow-up remains AB's alone.
