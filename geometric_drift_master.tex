@@ -37,7 +37,7 @@ one place and, unlike the earlier companion, carries the \emph{proof bodies} in 
 program constructs Paul Dubois's geometric mechanism around the Navier--Stokes blow-up
 question, reduces its macroscopic content to exact integer arithmetic at a fixed literal
 scale, and machine-checks the resulting chain in Lean~4: ten self-contained files in
-\texttt{formal/}, $113$ theorems, axiom profile $[\mathrm{propext},\mathrm{Quot.sound}]$
+\texttt{formal/}, $112$ theorems, axiom profile $[\mathrm{propext},\mathrm{Quot.sound}]$
 throughout (a single theorem, \texttt{compareMono}, additionally uses
 $\mathrm{Classical.choice}$), \texttt{sorryAx} never. The proof sections below give
 complete written derivations for: the two workhorse potential lemmas and the
@@ -67,6 +67,9 @@ dependency is the \texttt{omega} tactic.
 \item \textbf{The papers.} The framework follows the geometric-drift mechanism of
 \cite{dubois}; the drive rate used in Part~VII is the AB decaying-stability certificate of
 \cite{blowup}; see Section~\ref{sec:bib}.
+\item \textbf{The formal index.} Appendix~\ref{sec:index} lists all $112$ theorems of the
+ten carrier files, in file order, with printed-profile or support status and one hyperlink per
+file to the section carrying its proof account.
 \item \textbf{Proof status markers.} A displayed proof labelled \emph{complete} is written
 out in this document step by step and is mirrored, at the same level of detail, by the
 cited Lean theorem. Sketches are used only for Part~X's per-window chain bookkeeping,
@@ -107,7 +110,7 @@ XIV (error bracket) & \texttt{formal/DriftError.lean} & \texttt{forcingUnderErro
 \end{longtable}
 
 $[\mathrm{p},\mathrm{Q}]$ abbreviates $[\mathrm{propext},\mathrm{Quot.sound}]$.
-Totals: $113$ theorems across ten files; $60$ printed axiom dependencies; the only
+Totals: $112$ theorems across ten files; $60$ printed axiom dependencies; the only
 $\mathrm{Classical.choice}$ use in the entire program is \texttt{compareMono} (Part~XII).
 
 \subsection*{Delivery anchors}
@@ -901,12 +904,16 @@ it does not close the admissibility-stratified band $(\mathsf{Em},\mathsf{Ens})$
 \begin{itemize}
 \item Lean 4.36.0, standalone; every file compiled clean in a single process, zero errors;
 heavy theorems carry \texttt{maxHeartbeats} headroom.
-\item $113$ theorems across ten files; $60$ printed axiom dependencies, all
+\item $112$ theorems across ten files; $60$ printed axiom dependencies, all
 $[\mathrm{propext},\mathrm{Quot.sound}]$ except \texttt{compareMono}
 (additionally $\mathrm{Classical.choice}$, Part~XII).
 \item Four independent stdlib verifiers re-derive the numeric certificates
 (\texttt{drift\_budget\_verification.py}, \texttt{drift\_bridge\_verification.py},
 \texttt{drift\_threshold\_dichotomy.py}, \texttt{drift\_critical\_point.py}).
+\item Honest recount: earlier delivery comments stated $113$ theorems; the census
+pattern (lines beginning \texttt{theorem}) matched one column-0 ledger prose line of
+\texttt{DriftSharpNo.lean}. The declarative count is $112$, reported file by file in
+Appendix~\ref{sec:index}; the $60$ printed profiles are unaffected.
 \item Design pickles cross-check every anchor tuple $(M,a,b,A,K)$ and every emitted literal
 of Parts XII--XIV: the deficit-free floor lattice reproduces the Part~XII chains
 byte-identically, both bisections ($\mathsf{Em}$, $\mathsf{Ens}$) are boundary-exact, the
@@ -939,6 +946,162 @@ $710/1543/4779$) $+$ Proposition~\ref{prop:forced} and Theorem~\ref{thm:perturbe
 (no side, frontiers $10402299/84162012/86225119$, witness sums
 $1526000/1696000/1908000\le M$): $\mathsf{Em}<\mathsf{Ens}$, both boundary-exact.
 \end{itemize}
+
+\section{The formal index: every deliverable theorem}\label{sec:index}
+
+Table~\ref{tab:index} is the \emph{complete formal inventory} of the program,
+generated directly from the ten carrier files in \texttt{formal/}: every theorem,
+in file order, with its printed axiom profile ($60$ deliverables) or support status,
+and one hyperlink per file to the section of this document carrying its proof account.
+The choice-using entry \texttt{compareMono} (Part~XII) is the single
+$\mathrm{Classical.choice}$ use in the program; \texttt{sorryAx} appears nowhere in
+any profile. An honest recount note: earlier delivery records stated $113$ theorems;
+the census pattern used there (lines beginning \texttt{theorem}) also matched a
+ledger prose line of \texttt{DriftSharpNo.lean} that begins with the word
+\texttt{theorems} at column 0; the declarative count is $112$ and is what this
+index reports, file by file. The count of printed profiles, $60$, is unaffected.
+
+\begin{longtable}{p{0.52\textwidth} p{0.40\textwidth}}
+\hline
+\textbf{Export (file order)} & \textbf{Axiom status}\\
+\hline
+\endhead
+\multicolumn{2}{l}{\hyperref[sec:reduction]{\texttt{formal/DriftReduction.lean}}\ \ Part~V (V0): 3 theorems, 72 lines, 625\,2 bytes}\\
+\quad\texttt{phiMono} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{driftBound} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{constantSourceDiverges} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:reduction]{\texttt{formal/DriftReductionV1.lean}}\ \ Part~VI (V1): 11 theorems, 217 lines, 798\,8 bytes}\\
+\quad\texttt{sumToMono} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{sumToTelescope} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{chatUpperBound} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{chatLowerBound} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{phiMono1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{driftBound1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{phiMono2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{driftBound2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{phiMono3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{driftBound3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{constantSourceDiverges} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:control]{\texttt{formal/DriftBridge.lean}}\ \ Part~VII (bridge): 2 theorems, 45 lines, 694\,1 bytes}\\
+\quad\texttt{geometricEnvelope} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{bridgeInstance} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:control]{\texttt{formal/DriftControl.lean}}\ \ Part~VIII (control): 4 theorems, 85 lines, 246\,3 bytes}\\
+\quad\texttt{phiMonoAll} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{controlTheorem} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{linearGrowth} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{fatalFloor} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:control]{\texttt{formal/ModelSingularity.lean}}\ \ Part~IX (model singularity): 4 theorems, 46 lines, 550\,1 bytes}\\
+\quad\texttt{powTwoGe} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{powFourGe} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{gradDiverges} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{gapVanishes} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:sharp]{\texttt{formal/ThresholdNo.lean}}\ \ Part~X (dichotomy, no side): 9 theorems, 297\,3 lines, 922\,682 bytes}\\
+\quad\texttt{sumToMono} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{shiftSum} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{sumToStep} & support lemma (no print line)\\
+\quad\texttt{noSideForced} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsExceeds} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{noSideForced2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsExceeds2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{noSideForced3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsExceeds3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:critical]{\texttt{formal/DriftCritical.lean}}\ \ Part~XI (exact criticals): 8 theorems, 142 lines, 025\,6 bytes}\\
+\quad\texttt{sumToStep} & support lemma (no print line)\\
+\quad\texttt{telescope} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{chatBound1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{chatBound2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{chatBound3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{criticalNever1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{criticalNever2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{criticalNever3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:squeeze]{\texttt{formal/DriftSharpNo.lean}}\ \ Part~XII (sharp squeeze): 8 theorems, 220\,4 lines, 052\,483 bytes}\\
+\quad\texttt{sumToStep} & support lemma (no print line)\\
+\quad\texttt{compareMono} & recorded at delivery: $[\mathrm{p},\mathrm{Q}]$ + choice; no print line in the file\\
+\quad\texttt{noSideForcedSharp1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsSharp1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{noSideForcedSharp2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsSharp2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{noSideForcedSharp3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{existsSharp3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:witness]{\texttt{formal/DriftWitness.lean}}\ \ Part~XIII (witnesses): 30 theorems, 529\,4 lines, 658\,495 bytes}\\
+\quad\texttt{sumToStep} & support lemma (no print line)\\
+\quad\texttt{modRange} & support lemma (no print line)\\
+\quad\texttt{patchDeltaRange} & support lemma (no print line)\\
+\quad\texttt{patchGe} & support lemma (no print line)\\
+\quad\texttt{patchCongr} & support lemma (no print line)\\
+\quad\texttt{modSumZero} & support lemma (no print line)\\
+\quad\texttt{sharpForced1} & support lemma (no print line)\\
+\quad\texttt{sharpForced2} & support lemma (no print line)\\
+\quad\texttt{sharpForced3} & support lemma (no print line)\\
+\quad\texttt{invariantsW1} & support lemma (no print line)\\
+\quad\texttt{lawW1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hexactW1} & support lemma (no print line)\\
+\quad\texttt{hlowW1} & support lemma (no print line)\\
+\quad\texttt{hd0W1} & support lemma (no print line)\\
+\quad\texttt{hc0W1} & support lemma (no print line)\\
+\quad\texttt{constructedWitness1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{invariantsW2} & support lemma (no print line)\\
+\quad\texttt{lawW2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hexactW2} & support lemma (no print line)\\
+\quad\texttt{hlowW2} & support lemma (no print line)\\
+\quad\texttt{hd0W2} & support lemma (no print line)\\
+\quad\texttt{hc0W2} & support lemma (no print line)\\
+\quad\texttt{constructedWitness2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{invariantsW3} & support lemma (no print line)\\
+\quad\texttt{lawW3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hexactW3} & support lemma (no print line)\\
+\quad\texttt{hlowW3} & support lemma (no print line)\\
+\quad\texttt{hd0W3} & support lemma (no print line)\\
+\quad\texttt{hc0W3} & support lemma (no print line)\\
+\quad\texttt{constructedWitness3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\multicolumn{2}{l}{\hyperref[sec:bracket]{\texttt{formal/DriftError.lean}}\ \ Part~XIV (error bracket): 33 theorems, 828\,11 lines, 976\,753 bytes}\\
+\quad\texttt{sumToStep} & support lemma (no print line)\\
+\quad\texttt{modRange} & support lemma (no print line)\\
+\quad\texttt{patchDeltaRange} & support lemma (no print line)\\
+\quad\texttt{patchGe} & support lemma (no print line)\\
+\quad\texttt{patchCongr} & support lemma (no print line)\\
+\quad\texttt{modSumZero} & support lemma (no print line)\\
+\quad\texttt{forcingUnderError1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{forcingUnderError2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{forcingUnderError3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{invariantsW1P} & support lemma (no print line)\\
+\quad\texttt{lawW1P} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hlowW1P} & support lemma (no print line)\\
+\quad\texttt{hexactW1P} & support lemma (no print line)\\
+\quad\texttt{hd0W1P} & support lemma (no print line)\\
+\quad\texttt{hc0W1P} & support lemma (no print line)\\
+\quad\texttt{simExact1} & support lemma (no print line)\\
+\quad\texttt{perturbedWitness1} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{invariantsW2P} & support lemma (no print line)\\
+\quad\texttt{lawW2P} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hlowW2P} & support lemma (no print line)\\
+\quad\texttt{hexactW2P} & support lemma (no print line)\\
+\quad\texttt{hd0W2P} & support lemma (no print line)\\
+\quad\texttt{hc0W2P} & support lemma (no print line)\\
+\quad\texttt{simExact2} & support lemma (no print line)\\
+\quad\texttt{perturbedWitness2} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{invariantsW3P} & support lemma (no print line)\\
+\quad\texttt{lawW3P} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\quad\texttt{hlowW3P} & support lemma (no print line)\\
+\quad\texttt{hexactW3P} & support lemma (no print line)\\
+\quad\texttt{hd0W3P} & support lemma (no print line)\\
+\quad\texttt{hc0W3P} & support lemma (no print line)\\
+\quad\texttt{simExact3} & support lemma (no print line)\\
+\quad\texttt{perturbedWitness3} & printed, $[\mathrm{p},\mathrm{Q}]$\\
+\hline
+\caption{The formal index: all $112$ theorems of the ten carrier files, with the
+$60$ printed axiom profiles and the single $\mathrm{Classical.choice}$ entry.}
+\label{tab:index}
+\end{longtable}
 
 \begin{thebibliography}{9}\label{sec:bib}
 

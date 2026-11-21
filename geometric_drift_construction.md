@@ -748,7 +748,7 @@ that at contraction **at most** μ* the head is never breached. Part XII dispose
 attainment direction at μ* itself: at contraction **exactly** μ* = a/b (in lowest terms),
 every admissible integer trajectory — coupling exact, launch at cap d̂₀ ≥ 10⁶, source at cap
 ĉ₀ ≥ 39000, floor law at A = a·30000000/b — is forced **above** the head by the certified
-window. File: `formal/DriftSharpNo.lean` (483,052 bytes; nine theorems: `sumToStep`,
+window. File: `formal/DriftSharpNo.lean` (483,052 bytes; eight theorems: `sumToStep`,
 `compareMono`, `noSideForcedSharp1..3`, `existsSharp1..3`).
 
 ### XII.1 The device: the sliding-window certificate
@@ -866,6 +866,10 @@ Forcing has a finite error tolerance, and the lattice knows it.
 
 - Every statement of `formal/DriftError.lean` concerns integer sequences at fixed literal
   scale. Nothing in it is a Navier–Stokes statement.
+- Honest recount: earlier records stated 113 theorems because a census-by-grep also matched
+  a column-0 prose line of `formal/DriftSharpNo.lean` ("theorems give the complementary
+  direction: ..."); the declarative count is 112 (SharpNo itself carries eight: `sumToStep`,
+  `compareMono`, and the six squeeze exports). The 60 printed axiom profiles are unaffected.
 - The bracket bounds the tolerance of the mechanism *at the anchors*; it does not close the
   admissibility-stratified band (Em, Ens) — the honest successor boundary alongside the
   open bands (μ*ᵢ, ρᵢ) named in Part XI.
@@ -876,7 +880,7 @@ Forcing has a finite error tolerance, and the lattice knows it.
 
 ---
 
-With Part XIV the construction ledger covers Parts I–XIV: 113 theorems across ten Lean files
+With Part XIV the construction ledger covers Parts I–XIV: 112 theorems across ten Lean files
 in `formal/` (V0, V1, Bridge, Control, ModelSingularity, ThresholdNo, DriftCritical,
 DriftSharpNo, DriftWitness, DriftError), 60 printed axiom dependencies — all
 `[propext, Quot.sound]` except `compareMono` (plus `Classical.choice`, Part XII);

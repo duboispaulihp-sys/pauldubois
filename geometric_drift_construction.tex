@@ -23,7 +23,7 @@
 \begin{abstract}
 This document \emph{links} the full construction program: the geometric framework of the
 geometric-drift mechanism, the all-options reduction to integer arithmetic, the machine-checked
-Lean 4 chain (ten self-contained files in \texttt{formal/}, $113$ theorems, $60$ printed axiom
+Lean 4 chain (ten self-contained files in \texttt{formal/}, $112$ theorems, $60$ printed axiom
 profiles, axiom-clean at
 $[\mathrm{propext},\mathrm{Quot.sound}]$ throughout with the single
 $\mathrm{Classical.choice}$ exception \texttt{compareMono}, \texttt{sorryAx} never), the
@@ -49,7 +49,8 @@ prose; Parts XII--XIV additionally carry their own docstring ledgers inside
 \item \textbf{The full proof document.} \texttt{geometric\_drift\_master.tex} is the master
 document of the program: it collects Parts I--XIV with the \emph{proof bodies} written out
 in full (accounting core, exact critical point, sharp squeeze, constructed witnesses,
-error bracket) and carries its own delivery anchors.
+error bracket), carries its own delivery anchors, and ends with the complete hyperlinked
+formal index of all $112$ theorems (its Appendix~B).
 \item \textbf{The formal layer.} Each file in \texttt{formal/} is a \emph{self-contained}
 Lean~4 file: no imports beyond core, its own namespace and its own \texttt{sumTo},
 \texttt{\#print axioms} at the bottom of every deliverable theorem. The only external
@@ -124,7 +125,7 @@ $[\mathrm{propext},\mathrm{Quot.sound}]$\newline
 (choice-free)\\
 \hline
 \caption{The layer map: layers I--XIV, carrier files, exports, machine-checked status.
-Totals: ten Lean files, $113$ theorems, $60$ printed axiom dependencies.}
+Totals: ten Lean files, $112$ theorems, $60$ printed axiom dependencies.}
 \label{tab:map}
 \end{longtable}
 
@@ -393,7 +394,7 @@ widths $2.47\times10^{-4}$, $5.38\times10^{-4}$, $1.13\times10^{-4}$) is the suc
 \begin{itemize}
 \item Lean 4.36.0, standalone; every file compiled clean in a single process, zero errors;
 heavy theorems carry \texttt{maxHeartbeats} headroom.
-\item $113$ theorems across ten files; $60$ printed axiom dependencies, all
+\item $112$ theorems across ten files; $60$ printed axiom dependencies, all
 $[\mathrm{propext},\mathrm{Quot.sound}]$ except \texttt{compareMono}
 (plus $\mathrm{Classical.choice}$, Part XII).
 \item Part XIV carrier: \texttt{formal/DriftError.lean}, $11\,828$ lines, $753{,}976$ bytes,
@@ -402,6 +403,9 @@ exactly $[\mathrm{propext},\mathrm{Quot.sound}]$.
 \item Four independent stdlib verifiers re-derive the numeric certificates
 (\texttt{drift\_budget\_verification.py}, \texttt{drift\_bridge\_verification.py},
 \texttt{drift\_threshold\_dichotomy.py}, \texttt{drift\_critical\_point.py}).
+\item Honest recount: earlier records stated $113$ theorems because the census pattern
+also matched a column-0 prose line of \texttt{DriftSharpNo.lean}; the declarative count is
+$112$ (file-by-file in Appendix~B of \texttt{geometric\_drift\_master.tex}).
 \item Design pickles cross-check every anchor tuple $(M,a,b,A,K)$ against the emitted
 literals, windows, and slacks.
 \end{itemize}
