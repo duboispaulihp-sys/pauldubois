@@ -54,10 +54,12 @@ stated precisely in Section~\ref{sec:integrity}.
 \section{How to read this document}\label{sec:readme}
 
 \begin{itemize}
-\item \textbf{The ledger.} \texttt{geometric\_drift\_construction.md} carries Parts I--XI in
-prose; Parts XII--XIV carry their own docstring ledgers inside
+\item \textbf{The ledger.} \texttt{geometric\_drift\_construction.md} carries Parts I--XIV in
+prose; Parts XII--XIV additionally carry their own docstring ledgers inside
 \texttt{formal/DriftSharpNo.lean}, \texttt{formal/DriftWitness.lean} and
-\texttt{formal/DriftError.lean}.
+\texttt{formal/DriftError.lean}. The shorter linked companion
+\texttt{geometric\_drift\_construction.tex} is the layer map plus framework accounts;
+this file is the full-proof master.
 \item \textbf{The formal layer.} Each file in \texttt{formal/} is a \emph{self-contained}
 Lean~4 file: no imports beyond core, its own namespace and its own \texttt{sumTo},
 \texttt{\#print axioms} at the bottom of every deliverable theorem. The only external
@@ -107,6 +109,23 @@ XIV (error bracket) & \texttt{formal/DriftError.lean} & \texttt{forcingUnderErro
 $[\mathrm{p},\mathrm{Q}]$ abbreviates $[\mathrm{propext},\mathrm{Quot.sound}]$.
 Totals: $113$ theorems across ten files; $60$ printed axiom dependencies; the only
 $\mathrm{Classical.choice}$ use in the entire program is \texttt{compareMono} (Part~XII).
+
+\subsection*{Delivery anchors}
+
+Every layer was delivered on PR~\#4 with a summary comment pinning its commit, its compile
+record, and its numeric tables; the comment chain is the delivery record of the program.
+\begin{itemize}
+\item Part~XII (\texttt{formal/DriftSharpNo.lean}): \#4
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7063578517}{comment 7063578517}.
+\item Part~XIII (\texttt{formal/DriftWitness.lean}): \#4
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064107266}{comment 7064107266}.
+\item Linked companion, first edition (\texttt{geometric\_drift\_construction.tex}): \#4
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064375359}{comment 7064375359}.
+\item Part~XIV (\texttt{formal/DriftError.lean}): \#4
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064852773}{comment 7064852773}.
+\item This master document, first edition: \#4
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7065062543}{comment 7065062543}.
+\end{itemize}
 
 \section{The geometric framework (Parts I--II)}\label{sec:framework}
 

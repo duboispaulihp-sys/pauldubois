@@ -1,5 +1,5 @@
 % geometric_drift_construction.tex
-% Linked companion to the machine-checked construction ledger (Parts I-XIII).
+% Linked companion to the machine-checked construction ledger (Parts I-XIV).
 % Compile with any LaTeX engine: pdflatex, xelatex, lualatex.
 % Uses only standard packages: article, hyperref, amsmath, amssymb, geometry, booktabs-free tabulars.
 \documentclass[11pt]{article}
@@ -13,7 +13,7 @@
 \newcommand{\sumto}{\operatorname{sumTo}}
 
 \title{The Geometric Drift --- Linked Construction Document\\
-\large A tex companion to the machine-checked ledger, Parts I--XIII}
+\large A tex companion to the machine-checked ledger, Parts I--XIV}
 \author{Machine-checked companion program\\ \small in the spirit of P.~Dubois, ``The Geometric Drift --- Statement, Reduction, and the Open Core''}
 \date{Commit series on \href{https://github.com/duboispaulihp-sys/pauldubois/pull/4}{PR \#4}, branch \texttt{vibe/geometric-drift-construction-5368e9}}
 
@@ -23,22 +23,33 @@
 \begin{abstract}
 This document \emph{links} the full construction program: the geometric framework of the
 geometric-drift mechanism, the all-options reduction to integer arithmetic, the machine-checked
-Lean 4 chain (nine self-contained files in \texttt{formal/}, $80$ theorems, axiom-clean at
-$[\mathrm{propext},\mathrm{Quot.sound}]$ throughout, \texttt{sorryAx} never), and the integral
+Lean 4 chain (ten self-contained files in \texttt{formal/}, $113$ theorems, $60$ printed axiom
+profiles, axiom-clean at
+$[\mathrm{propext},\mathrm{Quot.sound}]$ throughout with the single
+$\mathrm{Classical.choice}$ exception \texttt{compareMono}, \texttt{sorryAx} never), the
+integral
 constructed singularity of Part~XIII in which the per-window error is explicit and bounded by
-$999$. Every numeric certificate quoted here is computed by exact integer arithmetic and, since
+$999$, and the adversarial error-tolerance bracket of Part~XIV. Full proof bodies for every
+layer live in the master document \texttt{geometric\_drift\_master.tex}; the prose ledger
+\texttt{geometric\_drift\_construction.md} carries Parts I--XIV. Every numeric certificate
+quoted here is computed by exact integer arithmetic and, since
 Part~V, checked by the Lean kernel. No piece is dressed up as more than it is: the boundary
 of the proved program is stated precisely in Section~\ref{sec:integrity} and
-Section~\ref{sec:map} links each layer to its carrier file.
+Section~\ref{sec:map} links each layer to its carrier file and its delivery record.
 \end{abstract}
 
 \section{How to read this document}\label{sec:readme}
 
 \begin{itemize}
-\item \textbf{The ledger.} \texttt{geometric\_drift\_construction.md} carries Parts I--XI in
-prose; Parts XII--XIII carry their own docstring ledgers inside
-\hyperref[sec:sharp]{\texttt{formal/DriftSharpNo.lean}} and
-\hyperref[sec:witness]{\texttt{formal/DriftWitness.lean}}.
+\item \textbf{The ledger.} \texttt{geometric\_drift\_construction.md} carries Parts I--XIV in
+prose; Parts XII--XIV additionally carry their own docstring ledgers inside
+\hyperref[sec:sharp]{\texttt{formal/DriftSharpNo.lean}},
+\hyperref[sec:witness]{\texttt{formal/DriftWitness.lean}} and the Part~XIV carrier
+\hyperref[sec:bracket]{\texttt{formal/DriftError.lean}}.
+\item \textbf{The full proof document.} \texttt{geometric\_drift\_master.tex} is the master
+document of the program: it collects Parts I--XIV with the \emph{proof bodies} written out
+in full (accounting core, exact critical point, sharp squeeze, constructed witnesses,
+error bracket) and carries its own delivery anchors.
 \item \textbf{The formal layer.} Each file in \texttt{formal/} is a \emph{self-contained}
 Lean~4 file: no imports beyond core, its own namespace and its own \texttt{sumTo},
 \texttt{\#print axioms} at the bottom of every deliverable theorem. The only external
@@ -49,6 +60,17 @@ dependency is the \texttt{omega} tactic.
 \item \textbf{Delivery.} All work lands on
 \href{https://github.com/duboispaulihp-sys/pauldubois/pull/4}{PR \#4} of
 \href{https://github.com/duboispaulihp-sys/pauldubois}{\texttt{duboispaulihp-sys/pauldubois}}.
+\item \textbf{Delivery anchors.} Each layer was delivered with a PR-\#4 summary comment
+pinning its commit and compile record: Part~XII
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7063578517}{(comment)},
+Part~XIII
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064107266}{(comment)},
+the first edition of this companion
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064375359}{(comment)},
+Part~XIV
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064852773}{(comment)},
+the master document
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7065062543}{(comment)}.
 \end{itemize}
 
 \section{The layer map}\label{sec:map}
@@ -96,8 +118,13 @@ XIII (witnesses) & \texttt{formal/DriftWitness.lean} & \texttt{constructedWitnes
 $[\mathrm{propext},\mathrm{Quot.sound}]$\newline
 (choice-free)\\
 \hline
-\caption{The layer map: layers I--XIII, carrier files, exports, machine-checked status.
-Totals: nine Lean files, $80$ theorems, $54$ printed axiom dependencies.}
+XIV (error bracket) & \texttt{formal/DriftError.lean} & \texttt{forcingUnderError1..3},
+\texttt{lawW1..3P}, \texttt{simExact1..3}, \texttt{perturbedWitness1..3} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\newline
+(choice-free)\\
+\hline
+\caption{The layer map: layers I--XIV, carrier files, exports, machine-checked status.
+Totals: ten Lean files, $113$ theorems, $60$ printed axiom dependencies.}
 \label{tab:map}
 \end{longtable}
 
@@ -297,6 +324,55 @@ function congruence between $\mathrm{patch}\langle\text{atom args}\rangle$ and
 $\mathrm{patch}\langle\text{literal args}\rangle$, so the induction's zero case is
 manualized with \texttt{rfl}-evaluation lemmas and rewrite chains.
 
+\section{Part XIV: the adversarial error bracket}\label{sec:bracket}
+
+\texttt{formal/DriftError.lean} ($11\,828$ lines, $753{,}976$ bytes) asks how much error the
+geometric mechanism can absorb, and answers with a \emph{two-sided, boundary-exact bracket}
+at each anchor. The perturbed model replaces the exact floor law by an iterate tolerated up
+to a per-window error budget: two boundary constants matter, the lattice-scale tolerance
+$\mathsf{Em}$ and its coupling-scale image $\mathsf{ME}=\mathrm{mult}\cdot\mathsf{Em}$;
+likewise $\mathsf{Ens}$ and $\mathsf{ED}=\mathrm{mult}\cdot\mathsf{Ens}$ on the far side
+($\mathrm{mult}=2400/300/300$).
+
+\paragraph{Yes side.} \texttt{forcingUnderError$i$}: every trajectory satisfying the coupling
+\eqref{eq:coupling}, launched at both caps ($\dhat 0\ge 10^6$, $\chat 0\ge 39000$), whose
+floor law may fall short by at most $\mathsf{ME}$ per window in coupling units,
+\[
+30000000\cdot \chat(n+1)+\mathsf{ME}\ \ge\ A\cdot \chat n,
+\qquad\text{equivalently}\quad b\cdot \chat(n+1)\ \ge\ a\cdot \chat n-\mathsf{Em},
+\]
+is still forced above the head: $\sumto d K \ge M+1$ at the certified window $K$.
+
+\paragraph{No side.} \texttt{perturbedWitness$i$}: at tolerance $\mathsf{Ens}$ (coupling
+units: $\mathsf{ED}=\mathrm{mult}\cdot\mathsf{Ens}$) the forcing \emph{fails}. An explicit
+integral trajectory of the perturbed law, built by the launch row and \texttt{patch}
+machinery of Part~XIII, launches at both caps ($\dhat 0\le 10^6$, $\chat 0\le 39000$), keeps
+the invariant apparatus of Part~XIII (the \texttt{patch} definition, residue pinning,
+coupling-exactness $\mathrm{dval}=1000\cdot\mathrm{tval}$), obeys the perturbed floor law
+with literal deficit $\mathsf{ED}$ at every window, and yet $\sumto d K\le M$: the head is
+never reached. Forcing has a \emph{finite} error tolerance, and the lattice knows it.
+
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\textbf{arm} & $\mathsf{Em}$ & $\mathsf{ME}$ & $\mathsf{Ens}$ & $\mathsf{ED}$ &
+\textbf{no-side sum} ($\le M$)\\
+\hline
+1 & $710$ & $1704000$ & $10402299$ & $24965517600$ & $1526000\le 1541354$\\
+2 & $1543$ & $462900$ & $84162012$ & $25248603600$ & $1696000\le 1744063$\\
+3 & $4779$ & $1433700$ & $86225119$ & $25867535700$ & $1908000\le 1928014$\\
+\hline
+\end{tabular}
+\end{center}
+
+The bracket is disjoint, $\mathsf{Em}<\mathsf{Ens}$, at every anchor, and both bisection
+boundaries are exact. Nine exports (\texttt{forcingUnderError1..3}, \texttt{lawW1..3P},
+\texttt{perturbedWitness1..3}) print axiom profile exactly
+$[\mathrm{propext},\mathrm{Quot.sound}]$: the bracket layer is entirely choice-free. The
+full proof bodies --- the scale equivalence (F1), the sliding-clear forcing chain (F2), and
+the complete construction of the no-side counterexamples --- are written out in
+\texttt{geometric\_drift\_master.tex}, Section~9.
+
 \section{Integrity boundaries}\label{sec:integrity}
 
 \begin{itemize}
@@ -306,7 +382,8 @@ manualized with \texttt{rfl}-evaluation lemmas and rewrite chains.
 \item The model singularity of Part IX is model-level; the bridge imports Alp\"oge--Buckmaster
 \cite{blowup} and cannot outrank it; the unconditionally constructed singularity remains
 theirs. No deliverable claims an unconditional blow-up proof for Navier--Stokes.
-\item \texttt{sorryAx} never appears in any printed axiom profile; the residual formal unit
+\item \texttt{sorryAx} never appears in any printed axiom profile. The error-tolerance
+question \emph{at the anchors} is settled two-sidedly by Part~XIV; the residual formal unit
 named in Part XI (monotone response in the source channel, to squeeze the open bands of
 widths $2.47\times10^{-4}$, $5.38\times10^{-4}$, $1.13\times10^{-4}$) is the successor task.
 \end{itemize}
@@ -316,9 +393,12 @@ widths $2.47\times10^{-4}$, $5.38\times10^{-4}$, $1.13\times10^{-4}$) is the suc
 \begin{itemize}
 \item Lean 4.36.0, standalone; every file compiled clean in a single process, zero errors;
 heavy theorems carry \texttt{maxHeartbeats} headroom.
-\item $80$ theorems across nine files; $54$ printed axiom dependencies, all
+\item $113$ theorems across ten files; $60$ printed axiom dependencies, all
 $[\mathrm{propext},\mathrm{Quot.sound}]$ except \texttt{compareMono}
 (plus $\mathrm{Classical.choice}$, Part XII).
+\item Part XIV carrier: \texttt{formal/DriftError.lean}, $11\,828$ lines, $753{,}976$ bytes,
+single-process compile EXIT $=0$, zero errors, zero warnings, all nine printed profiles
+exactly $[\mathrm{propext},\mathrm{Quot.sound}]$.
 \item Four independent stdlib verifiers re-derive the numeric certificates
 (\texttt{drift\_budget\_verification.py}, \texttt{drift\_bridge\_verification.py},
 \texttt{drift\_threshold\_dichotomy.py}, \texttt{drift\_critical\_point.py}).

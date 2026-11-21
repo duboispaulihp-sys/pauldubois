@@ -738,3 +738,146 @@ With Part XI the construction ledger stands at 40 theorems across seven Lean fil
 Bridge, Control, ModelSingularity, ThresholdNo, DriftCritical), each closed with printed
 axiom dependencies, plus four independent stdlib verifiers (`drift_budget_verification.py`,
 `drift_bridge_verification.py`, `drift_threshold_dichotomy.py`, `drift_critical_point.py`).
+
+---
+
+## Part XII — The sharp no-side squeeze: attainment at the exact critical ratios
+
+Part XI pinned the exact critical ratio μ* from below, in closed rational form, and proved
+that at contraction **at most** μ* the head is never breached. Part XII disposes of the
+attainment direction at μ* itself: at contraction **exactly** μ* = a/b (in lowest terms),
+every admissible integer trajectory — coupling exact, launch at cap d̂₀ ≥ 10⁶, source at cap
+ĉ₀ ≥ 39000, floor law at A = a·30000000/b — is forced **above** the head by the certified
+window. File: `formal/DriftSharpNo.lean` (483,052 bytes; nine theorems: `sumToStep`,
+`compareMono`, `noSideForcedSharp1..3`, `existsSharp1..3`).
+
+### XII.1 The device: the sliding-window certificate
+
+The monolithic per-anchor encoding did not elaborate at full scale; kernel bisection bounded
+the workable window widths between 60 and 120 atoms. The device is a **sliding-window
+certificate**: the chain links are consumed window by window (`clear` per emitted window) so
+that each `omega` call sees a bounded slice of at most ~10 atoms. Each slice emits, in order,
+the floor step (literal verification of b·(Lₙ − 1) < a·Lₙ₋₁), the coupling step, the
+potential 1000ʲ·d̂ⱼ ≥ XBⱼ, and the prefix bound; the final slice ends in the weighted
+accounting identity of Part XI at the literal constant LSC = 999·1000^(K−1). Certified
+windows: K = 93, 123, 149.
+
+### XII.2 Machine-checked status and the one debt
+
+Six squeeze exports compile at full scale, all printing `[propext, Quot.sound]`;
+`Classical.choice` enters the file only through the monotonicity helper `compareMono` (not a
+boundary theorem); the layer also carries a 447-digit exact division witness at the anchor-3
+scale. One marked debt: the four trajectory hypotheses of the squeeze were **assumed**, not
+derived. Discharged in Part XIII — the debt marker in the file's docstring ledger now reads
+"Layer-13 status: resolved".
+
+---
+
+## Part XIII — Constructed singularities and controlled errors: the debt discharged
+
+File: `formal/DriftWitness.lean` (495,658 bytes; 30 theorems, six printed profiles, entirely
+choice-free — no `Classical.choice` anywhere). For each anchor the trajectory is
+**constructed**, not assumed: a state row `(bnd, tval, ĉ, dval)` advanced by exact integer
+recursion from the launch row `(39000, 1000, 39000, 1000000)`:
+
+```
+bnd'  = (a·ĉ + (b−1)) / b          (ceiling iterate of the floor law)
+tval' = (tval + ĉ) / 1000          (integer part of the growth)
+ĉ'    = patch bnd' (0 − tval')     (the constructed error)
+dval' = tval + ĉ
+```
+
+with `patch b p = b + ((p − b) % 1000 + 1000) % 1000` — the least integer ≥ b in the residue
+class p (mod 1000), machine-checked via `patchDeltaRange` (lift in [0, 999]), `patchGe`, and
+`patchCongr` (residue transfer). This residual lift is *the* error the mechanism must
+control; it is bounded by 999 per window and it only ever moves the law bound **up**:
+b·bnd′ ≥ a·ĉ, hence 30000000·ĉ′(n) ≥ A·ĉ(n−1).
+
+### XIII.1 The invariants
+
+The six-part induction `invariantsW1..3` keeps the trajectory integral: `1 ≤ bnd`, `0 ≤ tval`,
+`1 ≤ ĉ`, the patch definition `ĉ = patch bnd (0 − tval)`, the residue pinning
+`(tval + ĉ) % 1000 = 0` (propagated by `patchCongr`), and coupling-exactness
+`dval = 1000·tval` (which makes the coupling division exact).
+
+### XIII.2 The close-out
+
+`constructedWitness1..3` closes with a seven-component anonymous constructor ending in
+`sharpForced1..3` — the Part XII squeeze applied to the Part XIII construction with **no
+hypothesis assumed**:
+
+| arm | μ* (floor law a/b) | A | K | crossing |
+| --- | --- | --- | --- | --- |
+| 1 | 11597/12500 | 27832800 | 93 | sumTo d 93 ≥ 1541355 = M+1 |
+| 2 | 94747/100000 | 28424100 | 123 | sumTo d 123 ≥ 1744064 = M+1 |
+| 3 | 95789/100000 | 28736700 | 149 | sumTo d 149 ≥ 1928015 = M+1 |
+
+Both exports per arm (`constructedWitness`, `lawW`) print `[propext, Quot.sound]` exactly.
+Two prover facts are recorded in the file's docstring ledger: (i) `omega` closing a
+*conjunction* goal containing modular atoms pulls `Classical.choice` into its internal
+certificate, while the same facts as separate single-atom goals are choice-free; (ii) `omega`
+does not fire function congruence between `patch ⟨atom args⟩` and
+`patch ⟨literal args⟩`, so the induction's zero case is manualized with `rfl`-evaluation
+lemmas and rewrite chains.
+
+---
+
+## Part XIV — The adversarial error bracket: how much error the mechanism can absorb
+
+File: `formal/DriftError.lean` (11,828 lines, 753,976 bytes; 33 theorems, nine printed
+profiles, entirely choice-free). Parts XI–XIII worked with the exact floor law; Part XIV asks
+how much error the mechanism tolerates and answers with a two-sided, boundary-exact bracket
+at each anchor. The perturbed law at coupling scale is
+
+```
+30000000·ĉ(n+1) + E  ≥  A·ĉ(n)        (b-scale: b·ĉ(n+1) ≥ a·ĉ(n) − E/mult)
+```
+
+with two boundary constants per anchor: the lattice-scale tolerance `Em` with coupling-scale
+image `ME = mult·Em` (yes side), and `Ens` with `ED = mult·Ens` (no side); mult = 2400/300/300.
+
+### XIV.1 The yes side: forcing under error
+
+`forcingUnderError1..3`: every trajectory satisfying the coupling, launched at both caps
+(d̂₀ ≥ 10⁶, ĉ₀ ≥ 39000), whose floor law falls short by at most `ME` per window —
+`30000000·ĉ(n+1) + ME ≥ A·ĉ(n)` — is still forced above the head: `sumTo dhat K ≥ M+1` at
+the certified window (93/123/149). Error budgets: ME = 1704000 / 462900 / 1433700 (lattice
+scale Em = 710 / 1543 / 4779).
+
+### XIV.2 The no side: constructed counterexamples under a strictly larger error
+
+`perturbedWitness1..3`: at tolerance `Ens` the forcing *fails*. An explicit integral
+trajectory of the perturbed law — same launch row and `patch` machinery as Part XIII, exact
+sums `sumTo Wd K = 1526000 / 1696000 / 1908000` — launches at both caps (d̂₀ ≤ 10⁶,
+ĉ₀ ≤ 39000), keeps the invariant apparatus (patch definition, residue pinning
+`(tval + ĉ) % 1000 = 0`, coupling-exactness `dval = 1000·tval`), obeys the perturbed law with
+literal deficit `ED` at every window, and yet `sumTo d K ≤ M`: the head is never reached.
+
+| arm | Em (lattice) | ME (coupling) | Ens (lattice) | ED (coupling) | no-side sum (≤ M) |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 710 | 1704000 | 10402299 | 24965517600 | 1526000 ≤ 1541354 |
+| 2 | 1543 | 462900 | 84162012 | 25248603600 | 1696000 ≤ 1744063 |
+| 3 | 4779 | 1433700 | 86225119 | 25867535700 | 1908000 ≤ 1928014 |
+
+The bracket is disjoint (Em < Ens) at every anchor and both bisection boundaries are exact.
+Forcing has a finite error tolerance, and the lattice knows it.
+
+### XIV.3 Scope
+
+- Every statement of `formal/DriftError.lean` concerns integer sequences at fixed literal
+  scale. Nothing in it is a Navier–Stokes statement.
+- The bracket bounds the tolerance of the mechanism *at the anchors*; it does not close the
+  admissibility-stratified band (Em, Ens) — the honest successor boundary alongside the
+  open bands (μ*ᵢ, ρᵢ) named in Part XI.
+- Full proof bodies for Parts XII–XIV (accounting core, exact critical point, sharp squeeze,
+  constructed witnesses, error bracket) are written out in `geometric_drift_master.tex`; the
+  linked companion `geometric_drift_construction.tex` carries the layer map and delivery
+  anchors; each layer's docstring ledger lives at the bottom of its carrier file.
+
+---
+
+With Part XIV the construction ledger covers Parts I–XIV: 113 theorems across ten Lean files
+in `formal/` (V0, V1, Bridge, Control, ModelSingularity, ThresholdNo, DriftCritical,
+DriftSharpNo, DriftWitness, DriftError), 60 printed axiom dependencies — all
+`[propext, Quot.sound]` except `compareMono` (plus `Classical.choice`, Part XII);
+`sorryAx` never.
