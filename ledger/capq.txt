@@ -1,0 +1,317 @@
+== H.0: T-identity T(mu,nu) = sum_sigma K_{sigma mu} K_{sigma nu} (cap-free) ==
+   all (mu,nu) |- k, k <= 7, l <= 6: 434 pairs, mismatches 0
+      [PASS] H.0 T-identity cap-free
+   T_q vs cap-4 engine T_table (k<=6, capped): mismatches 0
+      [PASS] H.0b T_q == T_table on cap-4 range
+
+== H.1: Routes A == B, both == brute force, per q ==
+   q=1: brute n<= 7, A-vs-brute n<=4, B-vs-brute n<=7: 35 values, mismatches 0
+      [PASS] H.1 q=1 brute/A/B three-route
+   q=1: Route A == Route B, n <= 6, k <= 8: mismatches 0
+      [PASS] H.1 q=1 A==B wide
+   q=2: brute n<= 5, A-vs-brute n<=4, B-vs-brute n<=5: 35 values, mismatches 0
+      [PASS] H.1 q=2 brute/A/B three-route
+   q=2: Route A == Route B, n <= 6, k <= 8: mismatches 0
+      [PASS] H.1 q=2 A==B wide
+   q=3: brute n<= 4, A-vs-brute n<=4, B-vs-brute n<=4: 34 values, mismatches 0
+      [PASS] H.1 q=3 brute/A/B three-route
+   q=3: Route A == Route B, n <= 6, k <= 8: mismatches 0
+      [PASS] H.1 q=3 A==B wide
+   q=4 parameterized vs cap-4 engine (k<=9, n in 2,3,5,17,35): mismatches 0
+      [PASS] H.1b q=4 consistency with Phase-2 engine
+      [PASS] H.1c settling anchors live(3,2)=20,P_3(2)=0,P_5(2)=b_(5)^2
+
+== H.2: SPLIT identity sum_{sigma_1<=q} b^2 == ledger_q, and
+   square-count law P^q = sum_{sigma_1>=q+1} b^2 (exact polynomial certificates) ==
+      [PASS] H.2 q=1,k=1 split identity at n=1..3
+      [PASS] H.2 q=1,k=1 square-count law at n=1..3
+      [PASS] H.2 q=1,k=1 fresh points n=4..10
+      [PASS] H.2 q=1,k=2 split identity at n=1..5
+      [PASS] H.2 q=1,k=2 square-count law at n=1..5
+      [PASS] H.2 q=1,k=2 fresh points n=6..12
+      [PASS] H.2 q=1,k=3 split identity at n=1..7
+      [PASS] H.2 q=1,k=3 square-count law at n=1..7
+      [PASS] H.2 q=1,k=3 fresh points n=8..14
+      [PASS] H.2 q=1,k=4 split identity at n=1..9
+      [PASS] H.2 q=1,k=4 square-count law at n=1..9
+      [PASS] H.2 q=1,k=4 fresh points n=10..16
+      [PASS] H.2 q=1,k=5 split identity at n=1..11
+      [PASS] H.2 q=1,k=5 square-count law at n=1..11
+      [PASS] H.2 q=1,k=5 fresh points n=12..18
+      [PASS] H.2 q=1,k=6 split identity at n=1..13
+      [PASS] H.2 q=1,k=6 square-count law at n=1..13
+      [PASS] H.2 q=1,k=6 fresh points n=14..20
+      [PASS] H.2 q=1,k=7 split identity at n=1..15
+      [PASS] H.2 q=1,k=7 square-count law at n=1..15
+      [PASS] H.2 q=1,k=7 fresh points n=16..22
+      [PASS] H.2 q=1,k=8 split identity at n=1..17
+      [PASS] H.2 q=1,k=8 square-count law at n=1..17
+      [PASS] H.2 q=1,k=8 fresh points n=18..24
+      [PASS] H.2 q=1,k=9 split identity at n=1..19
+      [PASS] H.2 q=1,k=9 square-count law at n=1..19
+      [PASS] H.2 q=1,k=9 fresh points n=20..26
+      [PASS] H.2 q=1,k=10 split identity at n=1..21
+      [PASS] H.2 q=1,k=10 square-count law at n=1..21
+      [PASS] H.2 q=1,k=10 fresh points n=22..28
+      [PASS] H.2 q=2,k=1 split identity at n=1..3
+      [PASS] H.2 q=2,k=1 square-count law at n=1..3
+      [PASS] H.2 q=2,k=1 fresh points n=4..10
+      [PASS] H.2 q=2,k=2 split identity at n=1..5
+      [PASS] H.2 q=2,k=2 square-count law at n=1..5
+      [PASS] H.2 q=2,k=2 fresh points n=6..12
+      [PASS] H.2 q=2,k=3 split identity at n=1..7
+      [PASS] H.2 q=2,k=3 square-count law at n=1..7
+      [PASS] H.2 q=2,k=3 fresh points n=8..14
+      [PASS] H.2 q=2,k=4 split identity at n=1..9
+      [PASS] H.2 q=2,k=4 square-count law at n=1..9
+      [PASS] H.2 q=2,k=4 fresh points n=10..16
+      [PASS] H.2 q=2,k=5 split identity at n=1..11
+      [PASS] H.2 q=2,k=5 square-count law at n=1..11
+      [PASS] H.2 q=2,k=5 fresh points n=12..18
+      [PASS] H.2 q=2,k=6 split identity at n=1..13
+      [PASS] H.2 q=2,k=6 square-count law at n=1..13
+      [PASS] H.2 q=2,k=6 fresh points n=14..20
+      [PASS] H.2 q=2,k=7 split identity at n=1..15
+      [PASS] H.2 q=2,k=7 square-count law at n=1..15
+      [PASS] H.2 q=2,k=7 fresh points n=16..22
+      [PASS] H.2 q=2,k=8 split identity at n=1..17
+      [PASS] H.2 q=2,k=8 square-count law at n=1..17
+      [PASS] H.2 q=2,k=8 fresh points n=18..24
+      [PASS] H.2 q=2,k=9 split identity at n=1..19
+      [PASS] H.2 q=2,k=9 square-count law at n=1..19
+      [PASS] H.2 q=2,k=9 fresh points n=20..26
+      [PASS] H.2 q=2,k=10 split identity at n=1..21
+      [PASS] H.2 q=2,k=10 square-count law at n=1..21
+      [PASS] H.2 q=2,k=10 fresh points n=22..28
+      [PASS] H.2 q=3,k=1 split identity at n=1..3
+      [PASS] H.2 q=3,k=1 square-count law at n=1..3
+      [PASS] H.2 q=3,k=1 fresh points n=4..10
+      [PASS] H.2 q=3,k=2 split identity at n=1..5
+      [PASS] H.2 q=3,k=2 square-count law at n=1..5
+      [PASS] H.2 q=3,k=2 fresh points n=6..12
+      [PASS] H.2 q=3,k=3 split identity at n=1..7
+      [PASS] H.2 q=3,k=3 square-count law at n=1..7
+      [PASS] H.2 q=3,k=3 fresh points n=8..14
+      [PASS] H.2 q=3,k=4 split identity at n=1..9
+      [PASS] H.2 q=3,k=4 square-count law at n=1..9
+      [PASS] H.2 q=3,k=4 fresh points n=10..16
+      [PASS] H.2 q=3,k=5 split identity at n=1..11
+      [PASS] H.2 q=3,k=5 square-count law at n=1..11
+      [PASS] H.2 q=3,k=5 fresh points n=12..18
+      [PASS] H.2 q=3,k=6 split identity at n=1..13
+      [PASS] H.2 q=3,k=6 square-count law at n=1..13
+      [PASS] H.2 q=3,k=6 fresh points n=14..20
+      [PASS] H.2 q=3,k=7 split identity at n=1..15
+      [PASS] H.2 q=3,k=7 square-count law at n=1..15
+      [PASS] H.2 q=3,k=7 fresh points n=16..22
+      [PASS] H.2 q=3,k=8 split identity at n=1..17
+      [PASS] H.2 q=3,k=8 square-count law at n=1..17
+      [PASS] H.2 q=3,k=8 fresh points n=18..24
+      [PASS] H.2 q=3,k=9 split identity at n=1..19
+      [PASS] H.2 q=3,k=9 square-count law at n=1..19
+      [PASS] H.2 q=3,k=9 fresh points n=20..26
+      [PASS] H.2 q=3,k=10 split identity at n=1..21
+      [PASS] H.2 q=3,k=10 square-count law at n=1..21
+      [PASS] H.2 q=3,k=10 fresh points n=22..28
+      [PASS] H.2 q=4,k=1 split identity at n=1..3
+      [PASS] H.2 q=4,k=1 square-count law at n=1..3
+      [PASS] H.2 q=4,k=1 fresh points n=4..10
+      [PASS] H.2 q=4,k=2 split identity at n=1..5
+      [PASS] H.2 q=4,k=2 square-count law at n=1..5
+      [PASS] H.2 q=4,k=2 fresh points n=6..12
+      [PASS] H.2 q=4,k=3 split identity at n=1..7
+      [PASS] H.2 q=4,k=3 square-count law at n=1..7
+      [PASS] H.2 q=4,k=3 fresh points n=8..14
+      [PASS] H.2 q=4,k=4 split identity at n=1..9
+      [PASS] H.2 q=4,k=4 square-count law at n=1..9
+      [PASS] H.2 q=4,k=4 fresh points n=10..16
+      [PASS] H.2 q=4,k=5 split identity at n=1..11
+      [PASS] H.2 q=4,k=5 square-count law at n=1..11
+      [PASS] H.2 q=4,k=5 fresh points n=12..18
+      [PASS] H.2 q=4,k=6 split identity at n=1..13
+      [PASS] H.2 q=4,k=6 square-count law at n=1..13
+      [PASS] H.2 q=4,k=6 fresh points n=14..20
+      [PASS] H.2 q=4,k=7 split identity at n=1..15
+      [PASS] H.2 q=4,k=7 square-count law at n=1..15
+      [PASS] H.2 q=4,k=7 fresh points n=16..22
+      [PASS] H.2 q=4,k=8 split identity at n=1..17
+      [PASS] H.2 q=4,k=8 square-count law at n=1..17
+      [PASS] H.2 q=4,k=8 fresh points n=18..24
+      [PASS] H.2 q=4,k=9 split identity at n=1..19
+      [PASS] H.2 q=4,k=9 square-count law at n=1..19
+      [PASS] H.2 q=4,k=9 fresh points n=20..26
+      [PASS] H.2 q=4,k=10 split identity at n=1..21
+      [PASS] H.2 q=4,k=10 square-count law at n=1..21
+      [PASS] H.2 q=4,k=10 fresh points n=22..28
+
+== H.3: zero law P^q = 0 for k <= q and k >= qn+1; and ==
+   interior positivity with witness (q+1, q^{t-1}, r-1)/(q^t, r) ==
+   q=1: zero checks k<=q & k>=qn+1 (n<=8): bad 0; P^q_qn(n), n=1..8: [0, 1, 5, 23, 119, 719, 5039, 40319]; witnesses (n<=8): 28 checks, bad 0
+      [PASS] H.3 q=1 zero window + witnesses
+      [PASS] H.3 q=1 top corner k=qn positive (n=2..8)
+      [PASS] H.3 q=1 interior positivity P^q > 0 (n<=5)
+   q=1: witness certificate n=2..12: 55 checks, bad 0
+      [PASS] H.3 q=1 witness certificate n=2..12
+   q=2: zero checks k<=q & k>=qn+1 (n<=8): bad 0; P^q_qn(n), n=1..8: [0, 2, 20, 281, 6209, 202409, 9135629, 545007959]; witnesses (n<=8): 56 checks, bad 0
+      [PASS] H.3 q=2 zero window + witnesses
+      [PASS] H.3 q=2 top corner k=qn positive (n=2..8)
+      [PASS] H.3 q=2 interior positivity P^q > 0 (n<=5)
+   q=2: witness certificate n=2..12: 121 checks, bad 0
+      [PASS] H.3 q=2 witness certificate n=2..12
+   q=3: zero checks k<=q & k>=qn+1 (n<=8): bad 0; P^q_qn(n), n=1..8: [0, 3, 54, 2007, 153039, 20933839, 4662857359, 1579060246399]; witnesses (n<=8): 84 checks, bad 0
+      [PASS] H.3 q=3 zero window + witnesses
+      [PASS] H.3 q=3 top corner k=qn positive (n=2..8)
+      [PASS] H.3 q=3 interior positivity P^q > 0 (n<=5)
+   q=3: witness certificate n=2..12: 187 checks, bad 0
+      [PASS] H.3 q=3 witness certificate n=2..12
+      [PASS] H.3d q=4 control witness (5,4^{t-1},r-1)/(4^t,r) n<=12, k<=q*n
+
+== H.3m: mirror law ledger_q(k,n) = ledger_q(qn-k, n) ==
+   q=1: n<=10, k=0..qn: 65 values, mismatches 0
+      [PASS] H.3m q=1 mirror law
+   q=2: n<=10, k=0..qn: 120 values, mismatches 0
+      [PASS] H.3m q=2 mirror law
+   q=3: n<=10, k=0..qn: 175 values, mismatches 0
+      [PASS] H.3m q=3 mirror law
+   q=4: n<=10, k=0..qn: 230 values, mismatches 0
+      [PASS] H.3m q=4 mirror law
+
+== H.4: birth law P^q_{q+1}(n) = (C(n+q, q+1) - n)^2 ==
+   q=1: birth law n=1..25 bad 0; b_(q+1) closed form bad 0
+      [PASS] H.4 q=1 birth + one-row at k=q+1
+   q=2: birth law n=1..25 bad 0; b_(q+1) closed form bad 0
+      [PASS] H.4 q=2 birth + one-row at k=q+1
+   q=3: birth law n=1..25 bad 0; b_(q+1) closed form bad 0
+      [PASS] H.4 q=3 birth + one-row at k=q+1
+   q=4: birth law n=1..25 bad 0; b_(q+1) closed form bad 0
+      [PASS] H.4 q=4 birth + one-row at k=q+1
+
+== H.5: maturation law b^q_(k)(n) = [x^k](1+x+...+x^q)^n ==
+   q=1: b_( k ) vs IE form and vs generating function (k=1..20, n in 2,3,5,8,17): 200 checks, bad 0
+      [PASS] H.5 q=1 maturation law
+   q=2: b_( k ) vs IE form and vs generating function (k=1..20, n in 2,3,5,8,17): 200 checks, bad 0
+      [PASS] H.5 q=2 maturation law
+   q=3: b_( k ) vs IE form and vs generating function (k=1..20, n in 2,3,5,8,17): 200 checks, bad 0
+      [PASS] H.5 q=3 maturation law
+   q=4: b_( k ) vs IE form and vs generating function (k=1..20, n in 2,3,5,8,17): 200 checks, bad 0
+      [PASS] H.5 q=4 maturation law
+
+== H.6: exact top coefficients [n^{2k}] (Newton, exact) ==
+      q  k   [n^2k] live_q / (1/k!)  [n^2k] ledger_q*k!^2 / N_k(q)
+   'P top coeff vs sum_big f^2/(k!)^2': q=1,k=5: PASS ([n^(2k)]P = 119/14400, predicted 119/14400)
+      q=1 k=5: live top ok True, ledger top ok True, N_k(1) = 1, big sum = 119
+      [PASS] H.6 q=1 k=5 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=1,k=6: PASS ([n^(2k)]P = 719/518400, predicted 719/518400)
+      q=1 k=6: live top ok True, ledger top ok True, N_k(1) = 1, big sum = 719
+      [PASS] H.6 q=1 k=6 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=1,k=7: PASS ([n^(2k)]P = 5039/25401600, predicted 5039/25401600)
+      q=1 k=7: live top ok True, ledger top ok True, N_k(1) = 1, big sum = 5039
+      [PASS] H.6 q=1 k=7 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=1,k=8: PASS ([n^(2k)]P = 40319/1625702400, predicted 40319/1625702400)
+      q=1 k=8: live top ok True, ledger top ok True, N_k(1) = 1, big sum = 40319
+      [PASS] H.6 q=1 k=8 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=2,k=5: PASS ([n^(2k)]P = 13/2400, predicted 13/2400)
+      q=2 k=5: live top ok True, ledger top ok True, N_k(2) = 42, big sum = 78
+      [PASS] H.6 q=2 k=5 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=2,k=6: PASS ([n^(2k)]P = 49/43200, predicted 49/43200)
+      q=2 k=6: live top ok True, ledger top ok True, N_k(2) = 132, big sum = 588
+      [PASS] H.6 q=2 k=6 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=2,k=7: PASS ([n^(2k)]P = 1537/8467200, predicted 1537/8467200)
+      q=2 k=7: live top ok True, ledger top ok True, N_k(2) = 429, big sum = 4611
+      [PASS] H.6 q=2 k=7 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=2,k=8: PASS ([n^(2k)]P = 3889/162570240, predicted 3889/162570240)
+      q=2 k=8: live top ok True, ledger top ok True, N_k(2) = 1430, big sum = 38890
+      [PASS] H.6 q=2 k=8 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=3,k=5: PASS ([n^(2k)]P = 17/14400, predicted 17/14400)
+      q=3 k=5: live top ok True, ledger top ok True, N_k(3) = 103, big sum = 17
+      [PASS] H.6 q=3 k=5 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=3,k=6: PASS ([n^(2k)]P = 23/57600, predicted 23/57600)
+      q=3 k=6: live top ok True, ledger top ok True, N_k(3) = 513, big sum = 207
+      [PASS] H.6 q=3 k=6 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=3,k=7: PASS ([n^(2k)]P = 2279/25401600, predicted 2279/25401600)
+      q=3 k=7: live top ok True, ledger top ok True, N_k(3) = 2761, big sum = 2279
+      [PASS] H.6 q=3 k=7 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=3,k=8: PASS ([n^(2k)]P = 24553/1625702400, predicted 24553/1625702400)
+      q=3 k=8: live top ok True, ledger top ok True, N_k(3) = 15767, big sum = 24553
+      [PASS] H.6 q=3 k=8 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=4,k=5: PASS ([n^(2k)]P = 1/14400, predicted 1/14400)
+      q=4 k=5: live top ok True, ledger top ok True, N_k(4) = 119, big sum = 1
+      [PASS] H.6 q=4 k=5 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=4,k=6: PASS ([n^(2k)]P = 13/259200, predicted 13/259200)
+      q=4 k=6: live top ok True, ledger top ok True, N_k(4) = 694, big sum = 26
+      [PASS] H.6 q=4 k=6 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=4,k=7: PASS ([n^(2k)]P = 229/12700800, predicted 229/12700800)
+      q=4 k=7: live top ok True, ledger top ok True, N_k(4) = 4582, big sum = 458
+      [PASS] H.6 q=4 k=7 top coefficients
+   'P top coeff vs sum_big f^2/(k!)^2': q=4,k=8: PASS ([n^(2k)]P = 583/135475200, predicted 583/135475200)
+      q=4 k=8: live top ok True, ledger top ok True, N_k(4) = 33324, big sum = 6996
+      [PASS] H.6 q=4 k=8 top coefficients
+
+== H.7: Gessel-parameter family N_k(q) = sum_{mu_1<=q} f_mu^2 ==
+      k      N_k(1)   N_k(2)=Cat   N_k(3)        N_k(4)      sum all = k!
+     5         1          42           103             119   PASS
+    10         1       16796        586590         2190688   PASS
+    15         1     9694845    8026793118    172188608886   PASS
+    20         1  6564120420  162958355218089  26525044132374656   PASS
+    25         1  4861946401452  4147342550996290153  6054582181256780696704   PASS
+    30         1  3814986502092304  122238900487877503161969  1790158821899427408246810846   PASS
+   N_k(1) = 1 for all k (LIS<=1):         PASS
+   N_k(2) = Catalan_k for all k<=30:      PASS
+   shape split sum_all f^2 = k! (q=1..4): PASS
+      [PASS] H.7 Gessel family anchors + splits
+
+   Regev-type standardized v_k^(q) = N_k(q)*k^{(q^2-1)/2}/q^{2k} (floats, trend [program]; Regev exponent (d^2-1)/2, anchored
+   by the Catalan slope at q = 2 and consistent with Note G at q = 4):
+      k    v^(2)      v^(3)      v^(4)
+     5     0.4586      1.0902      19.8254
+    10     0.5065      1.6823      63.0058
+    15     0.5245      1.9736      98.8301
+    20     0.5340      2.1446     125.5976
+    25     0.5398      2.2567     145.7588
+    30     0.5437      2.3357     161.3249
+
+== H.8: joint (k,n) regime census, cap-4 model ==
+   D_k(n) = P_k(n)*(k!)^2 / (sum_big f^2 * n^(2k));  D -> 1 as n grows
+   cos   = cosine between actual b^2-shares and frozen f^2-shares
+   n*mE  = n * max |share - frozen|  (freezing rate, cf. Note G)
+      k   n    live_k(n)                  digitsP       D_k(n)   cos(n)   n*mE
+     5    5  117520  5  21.589033  1.0  0.000  (0.0s)
+     5   10  91922580  7  5.714012  1.0  0.000  (0.0s)
+     5   15  5021988930  9  3.367742  1.0  0.000  (0.0s)
+     6    6  4402320  7  11.191899  0.9912065533158597  0.660  (0.0s)
+     6   12  13711024008  10  3.896119  0.9985589479653051  0.569  (0.0s)
+     6   18  1682113091436  12  2.569356  0.9994634069199599  0.530  (0.0s)
+     7    7  196677271  8  7.001062  0.9116509050531134  1.520  (0.0s)
+     7   14  2447125029440  12  2.951502  0.9801870262436836  1.508  (0.0s)
+     7   21  674667649375020  15  2.111211  0.9918058648217273  1.485  (0.0s)
+     8    8  10212456856  10  4.904574  0.9151334703746783  1.345  (0.0s)
+     8   16  508645038835680  15  2.388707  0.9831797292507557  1.167  (0.0s)
+     8   24  315276777906143256  17  1.817875  0.9931396257192271  1.208  (0.0s)
+     9    9  604509115896  12  3.705906  0.8279961551083107  1.968  (0.1s)
+     9   18  120684130375723200  17  2.021959  0.9562412500809432  2.067  (0.1s)
+     9   27  168228482555470837500  20  1.615824  0.9812977830984075  2.057  (0.1s)
+    10   10  40184615197440  14  2.958544  0.7811849377465385  1.166  (0.3s)
+    10   20  32186804794545134160  20  1.768193  0.9453621849107842  1.438  (0.3s)
+    10   30  100922718512860613064360  23  1.469616  0.9766689545923114  1.524  (0.4s)
+    11   11  2964246412320765  16  2.466423  0.7780713471872647  1.224  (1.2s)
+    11   22  9532380646702596598300  22  1.585772  0.9479098987285759  1.252  (1.2s)
+    11   33  67241742026134257413377920  26  1.360462  0.97794064172007  1.316  (1.2s)
+    12   12  240292639238512080  18  2.131349  0.7361177548442658  1.670  (3.3s)
+    12   24  3103998185500038548633472  25  1.451813  0.9287104067787617  1.812  (3.4s)
+    12   36  49264487219031773382801480240  29  1.277613  0.9688334750937921  1.804  (3.4s)
+
+   D_k(k) as k grows (joint regime, trend [program]):
+     D_k(k): 21.589  11.192  7.001  4.905  3.706  2.959  2.466  2.131
+     cos(k,k): 1.0  0.9912065533158597  0.9116509050531134  0.9151334703746783  0.8279961551083107  0.7811849377465385  0.7780713471872647  0.7361177548442658
+
+   reading (all rows engine-certified; trend claims [program]):
+     - at n = k and n = 2k the frozen profile is already close, but the
+       cosine DECREASES with k at n = k (freezing lags in the joint
+       regime; n = 3k rows recover it); [program]
+     - the joint-regime window is engine-bound (Route B reach).
+
+== SUMMARY ==
+   ALL CHECKS PASS (H.0-H.8)
+   total runtime 191s
+
+end of capq_engine

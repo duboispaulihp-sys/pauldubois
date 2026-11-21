@@ -1,0 +1,85 @@
+== Phase 7: cap-boundary law at q = 4 ==
+   ledger_q(k,n) = sum over mu subseteq (q^n), |mu|=k, of s_mu(1^n)^2
+   top boundary: m = qn - k;  #boundary shapes = # parts<=4 partitions of
+   m with <= n rows;  ledger(4n,n) = 1;
+   ledger(4n-1, n) = n^2.
+
+   n    m   #shapes(=bound?)   ledger(4n-m, n)        ledger(m, n)     mirror
+    1   0   1 == bound OK   1   1   OK
+    1   1   1 == bound OK   1   1   OK
+    1   2   1 == bound OK   1   1   OK
+    1   3   1 == bound OK   1   1   OK
+    1   4   1 == bound OK   1   1   OK
+    2   0   1 == bound OK   1   1   OK
+    2   1   1 == bound OK   4   4   OK
+    2   2   2 == bound OK   10   10   OK
+    2   3   2 == bound OK   20   20   OK
+    2   4   3 == bound OK   35   35   OK
+    2   5   2 == bound OK   20   20   OK
+    2   6   2 == bound OK   10   10   OK
+    2   7   1 == bound OK   4   4   OK
+    2   8   1 == bound OK   1   1   OK
+    3   0   1 == bound OK   1   1   OK
+    3   1   1 == bound OK   9   9   OK
+    3   2   2 == bound OK   45   45   OK
+    3   3   3 == bound OK   165   165   OK
+    3   4   4 == bound OK   495   495   OK
+    3   5   4 == bound OK   846   846   OK
+    3   6   5 == bound OK   994   994   OK
+    3   7   4 == bound OK   846   846   OK
+    3   8   4 == bound OK   495   495   OK
+    4   0   1 == bound OK   1   1   OK
+    4   1   1 == bound OK   16   16   OK
+    4   2   2 == bound OK   136   136   OK
+    4   3   3 == bound OK   816   816   OK
+    4   4   5 == bound OK   3876   3876   OK
+    4   5   5 == bound OK   12368   12368   OK
+    4   6   7 == bound OK   27608   27608   OK
+    4   7   7 == bound OK   44912   44912   OK
+    4   8   8 == bound OK   53382   53382   OK
+    5   0   1 == bound OK   1   1   OK
+    5   1   1 == bound OK   25   25   OK
+    5   2   2 == bound OK   325   325   OK
+    5   3   3 == bound OK   2925   2925   OK
+    5   4   5 == bound OK   20475   20475   OK
+    5   5   6 == bound OK   102879   102879   OK
+    5   6   8 == bound OK   373275   373275   OK
+    5   7   9 == bound OK   1005075   1005075   OK
+    5   8   11 == bound OK   2035800   2035800   OK
+    6   0   1 == bound OK   1   1   OK
+    6   1   1 == bound OK   36   36   OK
+    6   2   2 == bound OK   666   666   OK
+    6   3   3 == bound OK   8436   8436   OK
+    6   4   5 == bound OK   82251   82251   OK
+    6   5   6 == bound OK   594504   594504   OK
+    6   6   9 == bound OK   3180444   3180444   OK
+    6   7   10 == bound OK   12840264   12840264   OK
+    6   8   13 == bound OK   39730869   39730869   OK
+    7   0   1 == bound OK   1   1   OK
+    7   1   1 == bound OK   49   49   OK
+    8   0   1 == bound OK   1   1   OK
+    8   1   1 == bound OK   64   64   OK
+    9   0   1 == bound OK   1   1   OK
+    9   1   1 == bound OK   81   81   OK
+   10   0   1 == bound OK   1   1   OK
+   10   1   1 == bound OK   100   100   OK
+   11   0   1 == bound OK   1   1   OK
+   11   1   1 == bound OK   121   121   OK
+   12   0   1 == bound OK   1   1   OK
+   12   1   1 == bound OK   144   144   OK
+
+   shape-count law (parts <= 4, <= n rows) and mirror consistency: ALL PASS (n=1..12, m=0..8)
+
+== headline boundary values ==
+   ledger_4(40, 10) = 1   (law: 1)
+   ledger_4(39, 10) = 100 = 10^2   (law: n^2)
+   ledger_4(80, 20) = 1   (law: 1)
+   ledger_4(79, 20) = 400 = 20^2   (law: n^2)
+   ledger_4(140, 35) = 1   (law: 1)
+   ledger_4(139, 35) = 1225 = 35^2   (law: n^2)
+   ledger_4(160, 40) = 1   (law: 1)
+   ledger_4(159, 40) = 1600 = 40^2   (law: n^2)
+   (ledger(139,35) = 1225 = 35^2 and ledger(160,40) = 1 reproduce the
+    two ledger SKIPs of the Phase-2 audit, independently re-derived.)
+
+end of boundary_law

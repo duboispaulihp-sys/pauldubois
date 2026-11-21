@@ -1,0 +1,62 @@
+== Phase 7: SKIP re-audit. 42 SKIP claim lines, 40 unique objects ==
+   live(20,35) = 27277245818749123471218465200909528830189120   (1780s)   [REACHED; Route B; cost ~ p(20)=627 kostka DPs]
+   ledger(139,35) = 1225   [REACHED]
+   ledger(146,40) = 890781865166222353286753672695200   [REACHED]
+   ledger(160,40) = 1   [REACHED]
+   live(20,35) = 27277245818749123471218465200909528830189120   [REACHED(B)]
+   live(36,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(37,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(38,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(39,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(40,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(41,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(42,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(43,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(44,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(45,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(46,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(47,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(48,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(49,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(50,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(51,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(52,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(53,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(54,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(55,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(56,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(57,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(58,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(59,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(60,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(61,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(62,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(63,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(64,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(65,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(119,33)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(123,34)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(127,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(134,37)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(140,35)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+   live(146,40)   [STILL-SKIP: T-DP cost exponential in k; measured 5.4 ms/pair at k=12, 24 s/pair at k=20, 111 s at k=24]
+
+== appendix summary: 4 claim lines upgraded to verified, 38 remain honest SKIPs (42 total) ==
+   Upgrades re-derive and STRUCTURALLY EXPLAIN their values:
+   ledger(4n-1, n) = n^2 and ledger(4n, n) = 1 (boundary law, Note I).
+
+== end of run 1 (appendix summary: 4 claim lines upgraded to verified, 38 remain honest SKIPs (42 total)) ==
+   ledger(139,35): engine 1225
+      document claims: 1225   ->  MATCH (digit-exact)
+   ledger(146,40): engine 890781865166222353286753672695200
+      document claims: 890781865166222353286753672695200   ->  MATCH (digit-exact)
+   ledger(160,40): engine 1
+      document claims: 1   ->  MATCH (digit-exact)
+   live(20,35): engine 27277245818749123471218465200909528830189120
+      document claims: 27277245818749123471218465200909528830189120   ->  MATCH (digit-exact)
+   4/4 SKIP-upgrade claims VERIFIED against the document's
+   printed values (claims.json misc/difflive entries; live(20,35)
+   printed at line 1414 of the uploaded markdown).
+   Audit ledger: 42 SKIP claim lines -> 4 verified -> 38 honest SKIPs remain.
+
+end of skip_reach

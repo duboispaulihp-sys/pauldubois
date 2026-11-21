@@ -1,0 +1,18 @@
+== Phase 7: J.2 extension of the joint (k,n) census (cap 4) ==
+| k | n | digits(P) | D_k(n) | cos_k(n) | n*maxErr |
+|----|----|------------------|---------|---------|-------|
+| 13 | 13 | 20 | 1.8989 | 0.6951 | 1.323 |   (4.8s)
+| 14 | 14 | 22 | 1.7362 | 0.6695 | 0.962 |   (12.2s)
+| 15 | 15 | 24 | 1.6222 | 0.6615 | 1.133 |   (29.6s)
+| 16 | 16 | 26 | 1.5425 | 0.6632 | 1.113 |   (69.2s)
+| 17 | 17 | 28 | 1.4868 | 0.6626 | 1.200 |   (157.9s)
+| 18 | 18 | 30 | 1.4478 | 0.6566 | 0.776 |   (373.5s)
+| 19 | 19 | 32 | 1.4201 | 0.6488 | 0.666 |   (922.7s)
+
+--- editorial note (Phase 7 close-out) ---
+The run was harvested to k = 19 and the k = 20 rung (~34 min at the
+measured 2.2x/step cost) was cut intentionally; rows beyond k = 19
+deferred to the sped-up engine (roadmap engineering items). The raw
+row at k = 15 above is the Note-H row already harvested (display
+column shift only); values 1.6222 / 0.6615 / 1.133.
+end of joint_ext (harvested)

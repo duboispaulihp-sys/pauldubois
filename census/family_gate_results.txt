@@ -1,0 +1,152 @@
+-- model: P4 model Q[h]/h^5 (VHC-true fiber model)
+ model P4: T_abs=4, base dims [1, 1, 1, 1, 1], family top 5, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0, 0, 0]
+      fam  w : [0, 0, 0, 0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: P2 model Q[g]/g^3 (hand-verified anchor)
+ model P2: T_abs=2, base dims [1, 1, 1], family top 3, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+   [PASS] H1: P2 hand anchor: dims (1,1,1)->(1,2,2,1), w_fam = (0,0,0,0)
+      base w : [0, 0, 0]
+      fam  w : [0, 0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: Weil-slot ring (hand-verified anchor, one w-slot at p=2)
+ model slot: T_abs=3, base dims [1, 1, 2, 1], family top 4, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+   [PASS] H2: slot-ring hand anchor: Z (1,1,2,1)->(1,2,3,3,1), w (0,0,1,0)->(0,0,1,1,0)
+      base w : [0, 0, 1, 0]
+      fam  w : [0, 0, 1, 1, 0]
+      (elapsed 0.0 s)
+
+-- model: slot x P2 external product (slot propagation under O4 (Cor 4.9))
+ model slot x P2: T_abs=5, base dims [1, 2, 4, 4, 3, 1], family top 6, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 1, 1, 1, 0]
+      fam  w : [0, 0, 1, 2, 2, 1, 0]
+      (elapsed 0.1 s)
+
+-- model: matroid U_{2,3} Chow (FY/Bergman presentation, 3 flat divisors)
+ model U_{2,3}: T_abs=1, base dims [1, 1], family top 2, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0]
+      fam  w : [0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: matroid U_{2,4} Chow (FY/Bergman presentation, 4 flat divisors)
+ model U_{2,4}: T_abs=1, base dims [1, 1], family top 2, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0]
+      fam  w : [0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: matroid U_{3,5} Chow (FY/Bergman presentation, 15 flat divisors)
+ model U_{3,5}: T_abs=2, base dims [1, 11, 1], family top 3, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0]
+      fam  w : [0, 0, 0, 0]
+      (elapsed 342.6 s)
+
+-- model: matroid Fano F_7 Chow (FY/Bergman presentation, 14 flat divisors)
+ model Fano F_7: T_abs=2, base dims [1, 8, 1], family top 3, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0]
+      fam  w : [0, 0, 0, 0]
+      (elapsed 321.2 s)
+
+-- model: matroid K4 graphic Chow (FY/Bergman presentation, 13 flat divisors)
+ model K4 graphic: T_abs=2, base dims [1, 8, 1], family top 3, factor Q[eps]/eps^2+seed (fw=1)
+   [PASS] Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 1 dim Z^{p-1}(A), all p
+   [PASS] B1: B-law dim B^p(A_fam) = dim B^p(A) + 1 dim B^{p-1}(A)
+   [PASS] B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] W1: slot law w_fam(p) = w_A(p) + 1 w_A(p-1), all p
+   [PASS] V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0]
+      fam  w : [0, 0, 0, 0]
+      (elapsed 130.9 s)
+
+-- two-parameter first-order family (dim N^1 = 2), anchor models
+-- model: P4 model Q[h]/h^5
+ model P4: T_abs=4, base dims [1, 1, 1, 1, 1], family top 5, factor N(eps,dlt)+seed (fw=2)
+   [PASS] 2par.Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 2 dim Z^{p-1}(A), all p
+   [PASS] 2par.B1: B-law dim B^p(A_fam) = dim B^p(A) + 2 dim B^{p-1}(A)
+   [PASS] 2par.B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] 2par.W1: slot law w_fam(p) = w_A(p) + 2 w_A(p-1), all p
+   [PASS] 2par.V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0, 0, 0]
+      fam  w : [0, 0, 0, 0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: P2 model Q[g]/g^3
+ model P2: T_abs=2, base dims [1, 1, 1], family top 3, factor N(eps,dlt)+seed (fw=2)
+   [PASS] 2par.Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 2 dim Z^{p-1}(A), all p
+   [PASS] 2par.B1: B-law dim B^p(A_fam) = dim B^p(A) + 2 dim B^{p-1}(A)
+   [PASS] 2par.B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] 2par.W1: slot law w_fam(p) = w_A(p) + 2 w_A(p-1), all p
+   [PASS] 2par.V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 0]
+      fam  w : [0, 0, 0, 0]
+      (elapsed 0.0 s)
+
+-- model: Weil-slot ring
+ model slot: T_abs=3, base dims [1, 1, 2, 1], family top 4, factor N(eps,dlt)+seed (fw=2)
+   [PASS] 2par.Z1: Z-law dim Z^p(A_fam) = dim Z^p(A) + 2 dim Z^{p-1}(A), all p
+   [PASS] 2par.B1: B-law dim B^p(A_fam) = dim B^p(A) + 2 dim B^{p-1}(A)
+   [PASS] 2par.B2: transport: engine B^p = span(base B^p padded + factor-images), all p
+   [PASS] 2par.W1: slot law w_fam(p) = w_A(p) + 2 w_A(p-1), all p
+   [PASS] 2par.V1: model-VHC invariance: w_fam = 0 everywhere  <=>  w_A = 0 everywhere
+      base w : [0, 0, 1, 0]
+      fam  w : [0, 0, 1, 2, 0]
+      (elapsed 0.0 s)
+
+-- negative control: family direction with NO algebraic seed
+-- model: P2 model Q[g]/g^3
+   [PASS] N1: Tate-dropped control: w_noseed(p) = w_A(p) + dim Z^{p-1}(A), all p
+   [PASS] N2: Tate-dropped: engine B^p(A_fam) = B^p(A) embedded, no eps band
+      base w   : [0, 0, 0]
+      noseed w : [0, 1, 1, 1]
+      (elapsed 0.0 s)
+
+-- model: Weil-slot ring
+   [PASS] N1: Tate-dropped control: w_noseed(p) = w_A(p) + dim Z^{p-1}(A), all p
+   [PASS] N2: Tate-dropped: engine B^p(A_fam) = B^p(A) embedded, no eps band
+      base w   : [0, 0, 1, 0]
+      noseed w : [0, 1, 2, 2, 1]
+      (elapsed 0.0 s)
+
+
+== summary: 66 checks, 66 PASS, 0 FAIL ==

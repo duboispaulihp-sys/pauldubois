@@ -1,0 +1,52 @@
+== F.2: exact leading constants ==
+  k=5: sum_all f^2 = 120 (=k!: True), sum_(s_1>=5) f^2 = 1, sum_(mu_1<=4) f^2 = 119
+        P_5(n)/live(k,n) -> 1/120;  ledger-share -> 119/120   (0.0s)
+  check k=5: P_5/live limit == 1/120: True
+  k=6: sum_all f^2 = 720 (=k!: True), sum_(s_1>=5) f^2 = 26, sum_(mu_1<=4) f^2 = 694
+        P_6(n)/live(k,n) -> 13/360;  ledger-share -> 347/360   (0.0s)
+  k=7: sum_all f^2 = 5040 (=k!: True), sum_(s_1>=5) f^2 = 458, sum_(mu_1<=4) f^2 = 4582
+        P_7(n)/live(k,n) -> 229/2520;  ledger-share -> 2291/2520   (0.0s)
+  k=8: sum_all f^2 = 40320 (=k!: True), sum_(s_1>=5) f^2 = 6996, sum_(mu_1<=4) f^2 = 33324
+        P_8(n)/live(k,n) -> 583/3360;  ledger-share -> 2777/3360   (0.0s)
+  k=9: sum_all f^2 = 362880 (=k!: True), sum_(s_1>=5) f^2 = 101072, sum_(mu_1<=4) f^2 = 261808
+        P_9(n)/live(k,n) -> 6317/22680;  ledger-share -> 16363/22680   (0.0s)
+  k=10: sum_all f^2 = 3628800 (=k!: True), sum_(s_1>=5) f^2 = 1438112, sum_(mu_1<=4) f^2 = 2190688
+        P_10(n)/live(k,n) -> 44941/113400;  ledger-share -> 68459/113400   (0.0s)
+
+== F.3: the zero law: P_k(n) = 0 iff k<=4 or k>=4n+1 ==
+   interior positivity k in [5,min(4n,11)]: ALL PASS
+   closure beyond 4n (k<=26):               ALL PASS
+   proof (notes/05, Thm F.3): explicit witness pair sigma=(5,4^(t-1),r-1)-type;
+      sigma dominates mu=(4^t,r), K_{sigma,mu} > 0, C_mu(n) > 0 => b_sigma > 0.
+
+== F.4: closed-law atlas (exact Newton forms, certified) ==
+  ledger(5, n): deg 10; self-fit True; certified on 10 fresh pts: PASS; top coeff == RSK constant: True (119/14400)  (0s)
+    L_5(m) = (20)*falling(m-1,1) + (403)*falling(m-1,2) + (4945/3)*falling(m-1,3) + (58403/24)*falling(m-1,4) + (65143/40)*falling(m-1,5) + (99403/180)*falling(m-1,6) + (7175/72)*falling(m-1,7) + (5503/576)*falling(m-1,8) + (29/64)*falling(m-1,9) + (119/14400)*falling(m-1,10)
+  ledger(6, n): deg 12; self-fit True; certified on 12 fresh pts: PASS; top coeff == RSK constant: True (347/259200)  (0s)
+    L_6(m) = (10)*falling(m-1,1) + (487)*falling(m-1,2) + (12328/3)*falling(m-1,3) + (89589/8)*falling(m-1,4) + (526753/40)*falling(m-1,5) + (140411/18)*falling(m-1,6) + (12696/5)*falling(m-1,7) + (1368823/2880)*falling(m-1,8) + (89501/1728)*falling(m-1,9) + (138547/43200)*falling(m-1,10) + (4471/43200)*falling(m-1,11) + (347/259200)*falling(m-1,12)
+  ledger(7, n): deg 14; self-fit True; certified on 14 fresh pts: PASS; top coeff == RSK constant: True (2291/12700800)  (0s)
+    L_7(m) = (4)*falling(m-1,1) + (419)*falling(m-1,2) + (21193/3)*falling(m-1,3) + (276829/8)*falling(m-1,4) + (8255569/120)*falling(m-1,5) + (3013313/45)*falling(m-1,6) + (9992291/280)*falling(m-1,7) + (6422899/576)*falling(m-1,8) + (18364543/8640)*falling(m-1,9) + (76016989/302400)*falling(m-1,10) + (554497/30240)*falling(m-1,11) + (1442711/1814400)*falling(m-1,12) + (3757/201600)*falling(m-1,13) + (2291/12700800)*falling(m-1,14)
+  ledger(8, n): deg 16; self-fit True; certified on 16 fresh pts: PASS; top coeff == RSK constant: True (2777/135475200)  (0s)
+    L_8(m) = (1)*falling(m-1,1) + (493/2)*falling(m-1,2) + (8650)*falling(m-1,3) + (912619/12)*falling(m-1,4) + (3760093/15)*falling(m-1,5) + (23254067/60)*falling(m-1,6) + (810421369/2520)*falling(m-1,7) + (786245269/5040)*falling(m-1,8) + (471274399/10080)*falling(m-1,9) + (150534373/16800)*falling(m-1,10) + (5366449/4800)*falling(m-1,11) + (660605629/7257600)*falling(m-1,12) + (34528273/7257600)*falling(m-1,13) + (287363/1881600)*falling(m-1,14) + (27659/10160640)*falling(m-1,15) + (2777/135475200)*falling(m-1,16)
+  live(5, n): deg 10; self-fit True; certified on 10 fresh pts: PASS; top coeff == RSK constant: True (1/120)  (0s)
+    V_5(m) = (36)*falling(m-1,1) + (549)*falling(m-1,2) + (1945)*falling(m-1,3) + (16027/6)*falling(m-1,4) + (10331/6)*falling(m-1,5) + (572)*falling(m-1,6) + (102)*falling(m-1,7) + (233/24)*falling(m-1,8) + (11/24)*falling(m-1,9) + (1/120)*falling(m-1,10)
+  live(6, n): deg 12; self-fit True; certified on 12 fresh pts: PASS; top coeff == RSK constant: True (1/720)  (0s)
+    V_6(m) = (28)*falling(m-1,1) + (1070)*falling(m-1,2) + (21056/3)*falling(m-1,3) + (32175/2)*falling(m-1,4) + (50729/3)*falling(m-1,5) + (670577/72)*falling(m-1,6) + (208033/72)*falling(m-1,7) + (18845/36)*falling(m-1,8) + (4015/72)*falling(m-1,9) + (1223/360)*falling(m-1,10) + (13/120)*falling(m-1,11) + (1/720)*falling(m-1,12)
+  live(7, n): deg 14; self-fit True; certified on 14 fresh pts: PASS; top coeff == RSK constant: True (1/5040)  (0s)
+    V_7(m) = (16)*falling(m-1,1) + (3271/2)*falling(m-1,2) + (121339/6)*falling(m-1,3) + (305609/4)*falling(m-1,4) + (1504187/12)*falling(m-1,5) + (3822265/36)*falling(m-1,6) + (920821/18)*falling(m-1,7) + (267199/18)*falling(m-1,8) + (8033/3)*falling(m-1,9) + (109333/360)*falling(m-1,10) + (429/20)*falling(m-1,11) + (653/720)*falling(m-1,12) + (1/48)*falling(m-1,13) + (1/5040)*falling(m-1,14)
+  live(8, n): deg 16; self-fit True; certified on 16 fresh pts: PASS; top coeff == RSK constant: True (1/40320)  (1s)
+    V_8(m) = (5)*falling(m-1,1) + (1948)*falling(m-1,2) + (95081/2)*falling(m-1,3) + (2375869/8)*falling(m-1,4) + (5975853/8)*falling(m-1,5) + (22511219/24)*falling(m-1,6) + (47759651/72)*falling(m-1,7) + (163786763/576)*falling(m-1,8) + (4951921/64)*falling(m-1,9) + (9891811/720)*falling(m-1,10) + (64503/40)*falling(m-1,11) + (179921/1440)*falling(m-1,12) + (301/48)*falling(m-1,13) + (109/560)*falling(m-1,14) + (17/5040)*falling(m-1,15) + (1/40320)*falling(m-1,16)
+  live(9, n): deg 18; self-fit True; certified on 18 fresh pts: PASS; top coeff == RSK constant: True (1/362880)  (2s)
+    V_9(m) = (1670)*falling(m-1,2) + (274118/3)*falling(m-1,3) + (3858011/4)*falling(m-1,4) + (44460893/12)*falling(m-1,5) + (487649741/72)*falling(m-1,6) + (490850395/72)*falling(m-1,7) + (1189583627/288)*falling(m-1,8) + (459578803/288)*falling(m-1,9) + (3527915197/8640)*falling(m-1,10) + (68056727/960)*falling(m-1,11) + (13707103/1620)*falling(m-1,12) + (150359/216)*falling(m-1,13) + (73951/1890)*falling(m-1,14) + (2771/1890)*falling(m-1,15) + (4211/120960)*falling(m-1,16) + (19/40320)*falling(m-1,17) + (1/362880)*falling(m-1,18)
+  P(6, n): deg 12; self-fit True; certified on 12 fresh pts: PASS; top coeff == RSK constant: True (13/259200)  (0s)
+    P_6(m) = (18)*falling(m-1,1) + (583)*falling(m-1,2) + (8728/3)*falling(m-1,3) + (39111/8)*falling(m-1,4) + (448901/120)*falling(m-1,5) + (36311/24)*falling(m-1,6) + (126053/360)*falling(m-1,7) + (46259/960)*falling(m-1,8) + (6859/1728)*falling(m-1,9) + (8213/43200)*falling(m-1,10) + (209/43200)*falling(m-1,11) + (13/259200)*falling(m-1,12)
+  P(7, n): deg 14; self-fit True; certified on 14 fresh pts: PASS; top coeff == RSK constant: True (229/12700800)  (0s)
+    P_7(m) = (12)*falling(m-1,1) + (2433/2)*falling(m-1,2) + (78953/6)*falling(m-1,3) + (334389/8)*falling(m-1,4) + (6786301/120)*falling(m-1,5) + (2352691/60)*falling(m-1,6) + (38984321/2520)*falling(m-1,7) + (2127469/576)*falling(m-1,8) + (4770497/8640)*falling(m-1,9) + (15822731/302400)*falling(m-1,10) + (94151/30240)*falling(m-1,11) + (202849/1814400)*falling(m-1,12) + (443/201600)*falling(m-1,13) + (229/12700800)*falling(m-1,14)
+  P(8, n): deg 16; self-fit True; certified on 16 fresh pts: PASS; top coeff == RSK constant: True (583/135475200)  (0s)
+    P_8(m) = (4)*falling(m-1,1) + (3403/2)*falling(m-1,2) + (77781/2)*falling(m-1,3) + (5302369/24)*falling(m-1,4) + (59557051/120)*falling(m-1,5) + (22015987/40)*falling(m-1,6) + (35881934/105)*falling(m-1,7) + (287506181/2240)*falling(m-1,8) + (617306317/20160)*falling(m-1,9) + (240823651/50400)*falling(m-1,10) + (2373911/4800)*falling(m-1,11) + (246196211/7257600)*falling(m-1,12) + (10982927/7257600)*falling(m-1,13) + (78877/1881600)*falling(m-1,14) + (6613/10160640)*falling(m-1,15) + (583/135475200)*falling(m-1,16)
+  P(9, n): deg 18; self-fit True; certified on 18 fresh pts: PASS; top coeff == RSK constant: True (6317/8230118400)  (0s)
+    P_9(m) = (3175/2)*falling(m-1,2) + (503819/6)*falling(m-1,3) + (2529203/3)*falling(m-1,4) + (30402663/10)*falling(m-1,5) + (464813053/90)*falling(m-1,6) + (1007125099/210)*falling(m-1,7) + (4482339563/1680)*falling(m-1,8) + (42820731283/45360)*falling(m-1,9) + (795643249/3600)*falling(m-1,10) + (1327351873/37800)*falling(m-1,11) + (27863359487/7257600)*falling(m-1,12) + (2103053009/7257600)*falling(m-1,13) + (2281588733/152409600)*falling(m-1,14) + (59048723/114307200)*falling(m-1,15) + (5175361/457228800)*falling(m-1,16) + (2591/18289152)*falling(m-1,17) + (6317/8230118400)*falling(m-1,18)
+  P(10, n): deg 20; self-fit True; certified on 20 fresh pts: PASS; top coeff == RSK constant: True (44941/411505920000)  (8s)
+    P_10(m) = (1971/2)*falling(m-1,2) + (826847/6)*falling(m-1,3) + (14986135/6)*falling(m-1,4) + (857575237/60)*falling(m-1,5) + (13060909729/360)*falling(m-1,6) + (1706987834/35)*falling(m-1,7) + (97374834589/2520)*falling(m-1,8) + (250771925651/12960)*falling(m-1,9) + (971122363453/151200)*falling(m-1,10) + (1324754578547/907200)*falling(m-1,11) + (1687081474871/7257600)*falling(m-1,12) + (5443928407/207360)*falling(m-1,13) + (35809648639/16934400)*falling(m-1,14) + (27682396219/228614400)*falling(m-1,15) + (6353905283/1306368000)*falling(m-1,16) + (243675973/1828915200)*falling(m-1,17) + (19416239/8230118400)*falling(m-1,18) + (9497/391910400)*falling(m-1,19) + (44941/411505920000)*falling(m-1,20)
+
+all exact; end of closed_laws
