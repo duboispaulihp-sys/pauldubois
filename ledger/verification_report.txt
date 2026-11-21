@@ -1,0 +1,453 @@
+PASS  binomial  L493 N=99 n=10 printed=C(N+k,k)
+PASS  binomial  L493 N=99 n=10 live-engine   [engine live(1..4,10)]
+PASS  binomial  L503 N=120 n=11 printed=C(N+k,k)
+PASS  binomial  L503 N=120 n=11 live-engine   [engine live(1..4,11)]
+PASS  binomial  L513 N=143 n=12 printed=C(N+k,k)
+PASS  binomial  L513 N=143 n=12 live-engine   [engine live(1..4,12)]
+PASS  binomial  L523 N=168 n=13 printed=C(N+k,k)
+PASS  binomial  L523 N=168 n=13 live-engine   [engine live(1..4,13)]
+PASS  binomial  L533 N=195 n=14 printed=C(N+k,k)
+PASS  binomial  L533 N=195 n=14 live-engine   [engine live(1..4,14)]
+PASS  binomial  L543 N=224 n=15 printed=C(N+k,k)
+PASS  binomial  L543 N=224 n=15 live-engine   [engine live(1..4,15)]
+PASS  binomial  L555 N=255 n=16 printed=C(N+k,k)
+PASS  binomial  L555 N=255 n=16 live-engine   [engine live(1..4,16)]
+PASS  binomial  L569 N=288 n=17 printed=C(N+k,k)
+PASS  binomial  L569 N=288 n=17 live-engine   [engine live(1..4,17)]
+PASS  binomial  L579 N=323 n=18 printed=C(N+k,k)
+PASS  binomial  L579 N=323 n=18 live-engine   [engine live(1..4,18)]
+PASS  binomial  L589 N=360 n=19 printed=C(N+k,k)
+PASS  binomial  L589 N=360 n=19 live-engine   [engine live(1..4,19)]
+PASS  binomial  L599 N=399 n=20 printed=C(N+k,k)
+PASS  binomial  L599 N=399 n=20 live-engine   [engine live(1..4,20)]
+PASS  binomial  L609 N=440 n=21 printed=C(N+k,k)
+PASS  binomial  L609 N=440 n=21 live-engine   [engine live(1..4,21)]
+PASS  binomial  L619 N=483 n=22 printed=C(N+k,k)
+PASS  binomial  L619 N=483 n=22 live-engine   [engine live(1..4,22)]
+PASS  binomial  L629 N=528 n=23 printed=C(N+k,k)
+PASS  binomial  L629 N=528 n=23 live-engine   [engine live(1..4,23)]
+PASS  binomial  L639 N=575 n=24 printed=C(N+k,k)
+PASS  binomial  L639 N=575 n=24 live-engine   [engine live(1..4,24)]
+PASS  binomial  L649 N=624 n=25 printed=C(N+k,k)
+PASS  binomial  L649 N=624 n=25 live-engine   [engine live(1..4,25)]
+PASS  binomial  L659 N=675 n=26 printed=C(N+k,k)
+PASS  binomial  L659 N=675 n=26 live-engine   [engine live(1..4,26)]
+PASS  binomial  L669 N=728 n=27 printed=C(N+k,k)
+PASS  binomial  L669 N=728 n=27 live-engine   [engine live(1..4,27)]
+PASS  binomial  L679 N=783 n=28 printed=C(N+k,k)
+PASS  binomial  L679 N=783 n=28 live-engine   [engine live(1..4,28)]
+PASS  binomial  L689 N=840 n=29 printed=C(N+k,k)
+PASS  binomial  L689 N=840 n=29 live-engine   [engine live(1..4,29)]
+PASS  binomial  L699 N=899 n=30 printed=C(N+k,k)
+PASS  binomial  L699 N=899 n=30 live-engine   [engine live(1..4,30)]
+PASS  binomial  L709 N=960 n=31 printed=C(N+k,k)
+PASS  binomial  L709 N=960 n=31 live-engine   [engine live(1..4,31)]
+PASS  binomial  L719 N=1023 n=32 printed=C(N+k,k)
+PASS  binomial  L719 N=1023 n=32 live-engine   [engine live(1..4,32)]
+PASS  binomial  L728 N=1088 n=33 printed=C(N+k,k)
+PASS  binomial  L728 N=1088 n=33 live-engine   [engine live(1..4,33)]
+PASS  binomial  L734 N=1155 n=34 printed=C(N+k,k)
+PASS  binomial  L734 N=1155 n=34 live-engine   [engine live(1..4,34)]
+PASS  binomial  L1406 N=1224 n=35 printed=C(N+k,k)
+PASS  binomial  L1406 N=1224 n=35 live-engine   [engine live(1..4,35)]
+PASS  binomial  L1406 N=1295 n=36 printed=C(N+k,k)
+PASS  binomial  L1406 N=1295 n=36 live-engine   [engine live(1..4,36)]
+PASS  birth L649 n=25  P5=(C(n+4,5)-n)^2
+PASS  birth L649 n=25  live(5,25)
+PASS  birth L649 n=25  ledger(5,25)
+PASS  birth L659 n=26  P5=(C(n+4,5)-n)^2
+PASS  birth L659 n=26  live(5,26)
+PASS  birth L659 n=26  ledger(5,26)
+PASS  birth L669 n=27  P5=(C(n+4,5)-n)^2
+PASS  birth L669 n=27  live(5,27)
+PASS  birth L669 n=27  ledger(5,27)
+PASS  birth L679 n=28  P5=(C(n+4,5)-n)^2
+PASS  birth L679 n=28  live(5,28)
+PASS  birth L679 n=28  ledger(5,28)
+PASS  birth L689 n=29  P5=(C(n+4,5)-n)^2
+PASS  birth L689 n=29  live(5,29)
+PASS  birth L689 n=29  ledger(5,29)
+PASS  birth L699 n=30  P5=(C(n+4,5)-n)^2
+PASS  birth L699 n=30  live(5,30)
+PASS  birth L699 n=30  ledger(5,30)
+PASS  birth L709 n=31  P5=(C(n+4,5)-n)^2
+PASS  birth L709 n=31  live(5,31)
+PASS  birth L709 n=31  ledger(5,31)
+PASS  birth L719 n=32  P5=(C(n+4,5)-n)^2
+PASS  birth L719 n=32  live(5,32)
+PASS  birth L719 n=32  ledger(5,32)
+PASS  birth L639 n=24  P5=(C(n+4,5)-n)^2
+PASS  P_6(17) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(18) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(19) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(20) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(21) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(22) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(23) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(24) L? total=engine P_k
+PASS  P_6(24) L? sum(squares)=total
+PASS  P_6(24) L? printed b-value 474444 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(24) L? printed b-value 1883148 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(24) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(24) L? no unprinted syzygy shapes
+PASS  P_6(25) L? total=engine P_k
+PASS  P_6(25) L? sum(squares)=total
+PASS  P_6(25) L? printed b-value 593150 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(25) L? printed b-value 2374500 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(25) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(25) L? no unprinted syzygy shapes
+PASS  P_6(26) L? total=engine P_k
+PASS  P_6(26) L? sum(squares)=total
+PASS  P_6(26) L? printed b-value 735605 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(26) L? printed b-value 2968225 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(26) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(26) L? no unprinted syzygy shapes
+PASS  P_6(27) L? total=engine P_k
+PASS  P_6(27) L? sum(squares)=total
+PASS  P_6(27) L? printed b-value 3680703 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(27) L? printed b-value 905463 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(27) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(27) L? no unprinted syzygy shapes
+PASS  P_6(28) L? total=engine P_k
+PASS  P_6(28) L? sum(squares)=total
+PASS  P_6(28) L? printed b-value 1106784 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(28) L? printed b-value 4530204 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(28) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(28) L? no unprinted syzygy shapes
+PASS  P_6(29) L? total=engine P_k
+PASS  P_6(29) L? sum(squares)=total
+PASS  P_6(29) L? printed b-value 1344063 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(29) L? printed b-value 5537028 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(29) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(29) L? no unprinted syzygy shapes
+PASS  P_6(30) L? total=engine P_k
+PASS  P_6(30) L? sum(squares)=total
+PASS  P_6(30) L? printed b-value 1622260 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(30) L? printed b-value 6723650 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(30) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(30) L? no unprinted syzygy shapes
+PASS  P_6(31) L? total=engine P_k
+PASS  P_6(31) L? sum(squares)=total
+PASS  P_6(31) L? printed b-value 1946831 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(31) L? printed b-value 8114870 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(31) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(31) L? no unprinted syzygy shapes
+PASS  P_6(32) L? total=engine P_k
+PASS  P_6(32) L? sum(squares)=total
+PASS  P_6(32) L? printed b-value 2323760 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(32) L? printed b-value 9737968 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(32) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(32) L? no unprinted syzygy shapes
+PASS  P_6(33) L? total=engine P_k
+PASS  P_6(33) L? sum(squares)=total
+PASS  P_6(33) L? printed b-value 2759592 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(33) L? printed b-value 11622864 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(33) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(33) L? no unprinted syzygy shapes
+PASS  P_6(34) L? total=engine P_k
+PASS  P_6(34) L? sum(squares)=total
+PASS  P_6(34) L? printed b-value 3261467 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(34) L? printed b-value 13802283 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(34) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(34) L? no unprinted syzygy shapes
+PASS  P_6(17) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(18) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(26) L? total=engine P_k
+PASS  P_6(26) L? sum(squares)=total
+PASS  P_6(26) L? printed b-value 735605 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(26) L? printed b-value 2968225 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(26) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(26) L? no unprinted syzygy shapes
+PASS  P_6(27) L? total=engine P_k
+PASS  P_6(27) L? sum(squares)=total
+PASS  P_6(27) L? printed b-value 3680703 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(27) L? printed b-value 905463 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(27) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(27) L? no unprinted syzygy shapes
+PASS  P_6(28) L? total=engine P_k
+PASS  P_6(28) L? sum(squares)=total
+PASS  P_6(28) L? printed b-value 1106784 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(28) L? printed b-value 4530204 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(28) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(28) L? no unprinted syzygy shapes
+PASS  P_6(29) L? total=engine P_k
+PASS  P_6(29) L? sum(squares)=total
+PASS  P_6(29) L? printed b-value 1344063 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(29) L? printed b-value 5537028 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(29) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(29) L? no unprinted syzygy shapes
+PASS  P_6(30) L? total=engine P_k
+PASS  P_6(30) L? sum(squares)=total
+PASS  P_6(30) L? printed b-value 1622260 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(30) L? printed b-value 6723650 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(30) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(30) L? no unprinted syzygy shapes
+PASS  P_6(35) L? total=engine P_k
+PASS  P_6(35) L? sum(squares)=total
+PASS  P_6(35) L? printed b-value 3837155 matches a b_sigma (sigma_1>=5)   [sigma=(6,)]
+PASS  P_6(35) L? printed b-value 16311925 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1)]
+PASS  P_6(35) L? P_k = sum_(s_1>=5) b^2
+PASS  P_6(35) L? no unprinted syzygy shapes
+PASS  P_6(35) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(24) L? total=engine P_k
+PASS  P_7(24) L? sum(squares)=total
+PASS  P_7(24) L? printed b-value 2028600 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(24) L? printed b-value 9351432 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(24) L? printed b-value 18076896 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(24) L? printed b-value 17754528 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(24) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(24) L? no unprinted syzygy shapes
+PASS  P_7(25) L? total=engine P_k
+PASS  P_7(25) L? sum(squares)=total
+PASS  P_7(25) L? printed b-value 2621450 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(25) L? printed b-value 12199800 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(25) L? printed b-value 23743500 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(25) L? printed b-value 23404800 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(25) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(25) L? no unprinted syzygy shapes
+PASS  P_7(26) L? total=engine P_k
+PASS  P_7(26) L? sum(squares)=total
+PASS  P_7(26) L? printed b-value 3356730 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(26) L? printed b-value 15760550 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(26) L? printed b-value 30867850 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(26) L? printed b-value 30529200 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(26) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(26) L? no unprinted syzygy shapes
+PASS  P_7(27) L? total=engine P_k
+PASS  P_7(27) L? sum(squares)=total
+PASS  P_7(27) L? printed b-value 39749697 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(27) L? printed b-value 20176182 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(27) L? printed b-value 4261842 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(27) L? printed b-value 39434850 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(27) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(27) L? no unprinted syzygy shapes
+PASS  P_7(28) L? total=engine P_k
+PASS  P_7(28) L? sum(squares)=total
+PASS  P_7(28) L? printed b-value 5368248 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(28) L? printed b-value 25611120 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(28) L? printed b-value 50736168 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(28) L? printed b-value 50478012 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(28) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(28) L? no unprinted syzygy shapes
+PASS  P_7(29) L? total=engine P_k
+PASS  P_7(29) L? sum(squares)=total
+PASS  P_7(29) L? printed b-value 6711905 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(29) L? printed b-value 32254148 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(29) L? printed b-value 64227170 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(29) L? printed b-value 64069758 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(29) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(29) L? no unprinted syzygy shapes
+PASS  P_7(30) L? total=engine P_k
+PASS  P_7(30) L? sum(squares)=total
+PASS  P_7(30) L? printed b-value 8333730 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(30) L? printed b-value 40321020 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(30) L? printed b-value 80681190 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(30) L? printed b-value 80682060 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(30) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(30) L? no unprinted syzygy shapes
+PASS  P_7(31) L? total=engine P_k
+PASS  P_7(31) L? sum(squares)=total
+PASS  P_7(31) L? printed b-value 10280096 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(31) L? printed b-value 50057250 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(31) L? printed b-value 100621505 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(31) L? printed b-value 100854315 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(31) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(31) L? no unprinted syzygy shapes
+PASS  P_7(32) L? total=engine P_k
+PASS  P_7(32) L? sum(squares)=total
+PASS  P_7(32) L? printed b-value 12603360 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(32) L? printed b-value 61741088 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(32) L? printed b-value 124642816 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(32) L? printed b-value 125200320 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(32) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(32) L? no unprinted syzygy shapes
+PASS  P_7(33) L? total=engine P_k
+PASS  P_7(33) L? sum(squares)=total
+PASS  P_7(33) L? printed b-value 15362424 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(33) L? printed b-value 75686688 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(33) L? printed b-value 153418320 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(33) L? printed b-value 154415712 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(33) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(33) L? no unprinted syzygy shapes
+PASS  P_7(34) L? total=engine P_k
+PASS  P_7(34) L? sum(squares)=total
+PASS  P_7(34) L? printed b-value 18623330 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(34) L? printed b-value 92247474 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(34) L? printed b-value 187707234 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(34) L? printed b-value 189285888 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(34) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(34) L? no unprinted syzygy shapes
+PASS  P_7(26) L? total=engine P_k
+PASS  P_7(26) L? sum(squares)=total
+PASS  P_7(26) L? printed b-value 3356730 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(26) L? printed b-value 15760550 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(26) L? printed b-value 30867850 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(26) L? printed b-value 30529200 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(26) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(26) L? no unprinted syzygy shapes
+PASS  P_7(27) L? total=engine P_k
+PASS  P_7(27) L? sum(squares)=total
+PASS  P_7(27) L? printed b-value 39749697 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(27) L? printed b-value 20176182 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(27) L? printed b-value 4261842 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(27) L? printed b-value 39434850 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(27) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(27) L? no unprinted syzygy shapes
+PASS  P_7(28) L? total=engine P_k
+PASS  P_7(28) L? sum(squares)=total
+PASS  P_7(28) L? printed b-value 5368248 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(28) L? printed b-value 25611120 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(28) L? printed b-value 50736168 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(28) L? printed b-value 50478012 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(28) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(28) L? no unprinted syzygy shapes
+PASS  P_7(29) L? total=engine P_k
+PASS  P_7(29) L? sum(squares)=total
+PASS  P_7(29) L? printed b-value 6711905 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(29) L? printed b-value 32254148 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(29) L? printed b-value 64227170 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(29) L? printed b-value 64069758 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(29) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(29) L? no unprinted syzygy shapes
+PASS  P_7(30) L? total=engine P_k
+PASS  P_7(30) L? sum(squares)=total
+PASS  P_7(30) L? printed b-value 8333730 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(30) L? printed b-value 40321020 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(30) L? printed b-value 80681190 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(30) L? printed b-value 80682060 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(30) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(30) L? no unprinted syzygy shapes
+PASS  P_7(35) L? total=engine P_k
+PASS  P_7(35) L? sum(squares)=total
+PASS  P_7(35) L? printed b-value 22459890 matches a b_sigma (sigma_1>=5)   [sigma=(7,)]
+PASS  P_7(35) L? printed b-value 111819710 matches a b_sigma (sigma_1>=5)   [sigma=(6, 1)]
+PASS  P_7(35) L? printed b-value 228362785 matches a b_sigma (sigma_1>=5)   [sigma=(5, 2)]
+PASS  P_7(35) L? printed b-value 230694420 matches a b_sigma (sigma_1>=5)   [sigma=(5, 1, 1)]
+PASS  P_7(35) L? P_k = sum_(s_1>=5) b^2
+PASS  P_7(35) L? no unprinted syzygy shapes
+SKIP  live(119,33) — beyond engine reach (deep rung)
+SKIP  live(123,34) — beyond engine reach (deep rung)
+PASS  live(5,35) L?
+PASS  live(5,34) L?
+PASS  live(5,35) L?
+PASS  live(6,35) L?
+PASS  live(7,35) L?
+SKIP  live(20,35) — beyond engine reach (deep rung)
+PASS  live(8,2) L?
+PASS  live(8,3) L?
+PASS  live(5,34) L?
+PASS  live(5,35) L?
+PASS  live(6,35) L?
+PASS  live(7,35) L?
+SKIP  live(140,35) — beyond engine reach (deep rung)
+SKIP  live(127,35) — beyond engine reach (deep rung)
+SKIP  live(134,37) — beyond engine reach (deep rung)
+SKIP  live(38,35) — beyond engine reach (deep rung)
+SKIP  live(39,35) — beyond engine reach (deep rung)
+SKIP  live(40,35) — beyond engine reach (deep rung)
+SKIP  live(41,35) — beyond engine reach (deep rung)
+SKIP  live(42,35) — beyond engine reach (deep rung)
+SKIP  live(43,35) — beyond engine reach (deep rung)
+SKIP  live(44,35) — beyond engine reach (deep rung)
+SKIP  live(45,35) — beyond engine reach (deep rung)
+SKIP  live(46,35) — beyond engine reach (deep rung)
+SKIP  live(47,35) — beyond engine reach (deep rung)
+SKIP  live(48,35) — beyond engine reach (deep rung)
+SKIP  live(49,35) — beyond engine reach (deep rung)
+SKIP  live(50,35) — beyond engine reach (deep rung)
+SKIP  live(51,35) — beyond engine reach (deep rung)
+SKIP  live(52,35) — beyond engine reach (deep rung)
+SKIP  live(53,35) — beyond engine reach (deep rung)
+SKIP  live(54,35) — beyond engine reach (deep rung)
+SKIP  live(55,35) — beyond engine reach (deep rung)
+SKIP  live(56,35) — beyond engine reach (deep rung)
+SKIP  live(57,35) — beyond engine reach (deep rung)
+SKIP  live(58,35) — beyond engine reach (deep rung)
+SKIP  live(59,35) — beyond engine reach (deep rung)
+SKIP  live(60,35) — beyond engine reach (deep rung)
+SKIP  live(61,35) — beyond engine reach (deep rung)
+SKIP  live(59,35) — beyond engine reach (deep rung)
+SKIP  live(62,35) — beyond engine reach (deep rung)
+SKIP  live(63,35) — beyond engine reach (deep rung)
+SKIP  live(64,35) — beyond engine reach (deep rung)
+SKIP  live(65,35) — beyond engine reach (deep rung)
+PASS  live(6,35) L?
+SKIP  live(36,35) — beyond engine reach (deep rung)
+SKIP  live(37,35) — beyond engine reach (deep rung)
+SKIP  live(146,40) — beyond engine reach (deep rung)
+SKIP  live(146,40) — beyond engine reach (deep rung)
+PASS  ledger(21,35) L?
+PASS  ledger(22,35) L?
+PASS  ledger(23,35) L?
+PASS  ledger(24,35) L?
+PASS  ledger(25,35) L?
+PASS  ledger(26,35) L?
+PASS  ledger(27,35) L?
+PASS  ledger(28,35) L?
+PASS  ledger(29,35) L?
+PASS  ledger(30,35) L?
+PASS  ledger(31,35) L?
+PASS  ledger(32,35) L?
+PASS  ledger(33,35) L?
+PASS  ledger(34,35) L?
+PASS  ledger(35,35) L?
+PASS  ledger(5,34) L?
+PASS  ledger(36,35) L?
+PASS  ledger(37,35) L?
+PASS  ledger(38,35) L?
+PASS  ledger(39,35) L?
+PASS  ledger(40,35) L?
+PASS  ledger(41,35) L?
+PASS  ledger(42,35) L?
+PASS  ledger(43,35) L?
+PASS  ledger(44,35) L?
+PASS  ledger(45,35) L?
+PASS  ledger(46,35) L?
+PASS  ledger(47,35) L?
+PASS  ledger(48,35) L?
+PASS  ledger(49,35) L?
+PASS  ledger(50,35) L?
+PASS  ledger(51,35) L?
+PASS  ledger(52,35) L?
+PASS  ledger(53,35) L?
+PASS  ledger(54,35) L?
+PASS  ledger(55,35) L?
+PASS  ledger(56,35) L?
+PASS  ledger(57,35) L?
+PASS  ledger(58,35) L?
+PASS  ledger(59,35) L?
+PASS  ledger(60,35) L?
+PASS  ledger(61,35) L?
+PASS  ledger(62,35) L?
+PASS  ledger(63,35) L?
+PASS  ledger(64,35) L?
+PASS  ledger(65,35) L?
+PASS  ledger(66,35) L?
+PASS  ledger(67,35) L?
+PASS  ledger(68,35) L?
+PASS  ledger(69,35) L?
+PASS  ledger(70,35) L?
+SKIP  ledger(139,35) — beyond engine reach
+PASS  ledger(6,34) L?
+PASS  ledger(6,35) L?
+PASS  ledger(6,40) L?
+SKIP  ledger(146,40) — beyond engine reach
+SKIP  ledger(160,40) — beyond engine reach
+PASS  ledger(20,35) L?
+PASS  ledger(5,35) L?
+PASS  ledger(5,35) L?
+PASS  ledger(70,35) L?
+PASS  ledger(72,36) L?
+PASS  live(20,35)-ledger(20,35) printed: ledger side
+PASS  live(20,35)-ledger(20,35) printed: live side
+PASS  live(5,35)-ledger(5,35) printed: ledger side
+PASS  live(5,35)-ledger(5,35) printed: live side
+PASS  total_35 = 2*sum ledger(1..69,35) + ledger(70,35)   [0s]
+PASS  correction law == live engine, k=5..8, n in {2..35 grid}   [0s]
+PASS  mirror law ledger(k,n)=ledger(4n-k,n), small n,k
+PASS  mirror law at n=35, k=5,6,7 <-> 135,134,133
+PASS  mirror law n=35, all k=1..20 <-> 139..120
+PASS  ledger(70,35) is the largest ledger rung k<=90, n=35
+NOTE  live(5,15) = 5021988930 (log10 = 9.934); document claims ~5.022e9
+PASS  live(5,15) ~ 5.022e9
+==== 409 PASS, 0 FAIL, 42 SKIP ====

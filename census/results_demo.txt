@@ -1,0 +1,51 @@
+== demo 1: Hodge ring Q[h]/(h^5), model of P^4 ==
+== census: P^4 model: divisors generate everything ==
+   p   dim_Z^p   dim_B^p   w(p)
+   0   1         1         0
+   1   1         1         0
+   2   1         1         0
+   3   1         1         0
+   4   1         1         0
+   distance to HC_Q (in this model): 0  (w = 0 in all degrees)
+
+== demo 2: Weil-slot ring A = Q[h,w]/(h^4, w^2, h w) ==
+   (deg h = 1 i.e. cohomological 2; deg w = 2 i.e. cohomological 4;
+    models a Hodge ring with one non-divisorial codimension-2 class)
+== census: Weil-slot ring ==
+   p   dim_Z^p   dim_B^p   w(p)
+   0   1         1         0
+   1   1         1         0
+   2   2         1         1
+   Weil slots at: p=2 (w=1)
+
+== demo 3: external product (slot ring) x (Q[g]/(g^3), P^2 model) ==
+== census: external product: the w-slot propagates (Cor 4.9) ==
+   p   dim_Z^p   dim_B^p   w(p)
+   0   1         1         0
+   1   2         2         0
+   2   4         3         1
+   3   4         3         1
+   4   3         2         1
+   Weil slots at: p=2 (w=1), p=3 (w=1), p=4 (w=1)
+
+== matroid pillar ==
+   U_{2,3}: rank 2, 3 proper-flat divisors
+      graded dims A^p: [(0, 1), (1, 1)]
+      PD check (k, dim, pairing rank): [(0, 1, 1), (1, 1, 1)] -> PASS
+
+   U_{2,4}: rank 2, 4 proper-flat divisors
+      graded dims A^p: [(0, 1), (1, 1)]
+      PD check (k, dim, pairing rank): [(0, 1, 1), (1, 1, 1)] -> PASS
+
+   U_{3,5}: rank 3, 15 proper-flat divisors
+      graded dims A^p: [(0, 1), (1, 11), (2, 1)]
+      PD check (k, dim, pairing rank): [(0, 1, 1), (1, 11, 11), (2, 1, 1)] -> PASS
+
+   Fano F_7: rank 3, 14 proper-flat divisors
+      graded dims A^p: [(0, 1), (1, 8), (2, 1)]
+      PD check (k, dim, pairing rank): [(0, 1, 1), (1, 8, 8), (2, 1, 1)] -> PASS
+
+   K4 graphic: rank 3, 13 proper-flat divisors
+      graded dims A^p: [(0, 1), (1, 8), (2, 1)]
+      PD check (k, dim, pairing rank): [(0, 1, 1), (1, 8, 8), (2, 1, 1)] -> PASS
+

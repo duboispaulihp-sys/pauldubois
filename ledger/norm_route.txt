@@ -1,0 +1,40 @@
+=== norm_route.py : Route C (norm / Hall-Gram formula) for live_q ===
+Theorem: live_q(k,n) = || [t^k] (Sum_{r<=q} h_r t^r)^n ||^2 ;
+DP: p-basis exponent tuples, t-degree truncated at k, L = lcm(z_lambda).
+battery q<= 1: Route C vs live_A_q, k<= 8, n in (2, 3, 5): 24 checks so far, 0 mismatches  (0.0s)
+battery q<= 2: Route C vs live_A_q, k<= 8, n in (2, 3, 5): 48 checks so far, 0 mismatches  (0.0s)
+battery q<= 3: Route C vs live_A_q, k<= 8, n in (2, 3, 5): 72 checks so far, 0 mismatches  (0.0s)
+BATTERY A: Route C vs live_A_q  ->  72/72 PASS, 0 FAIL
+BATTERY C: q=1 closed law live_1 = C(n,k)^2 k!, (k<=n<=16)  ->  152/152 PASS, 0 FAIL
+BATTERY A4: Route C vs live_A_q (q=4, k<= 10, n in (2, 3, 5))  ->  30/30 PASS, 0 FAIL  (0.2s)
+leading law q=4: live*q-fix k!/n^(2k) -> 1
+  k=2: n=2:1.250000  n=6:1.027778  n=10:1.010000  n=14:1.005102  n=18:1.003086  n=22:1.002066  n=26:1.001479  n=30:1.001111  n=34:1.000865
+  k=3: n=3:1.358025  n=7:1.062057  n=11:1.024930  n=15:1.013373  n=19:1.008326  n=23:1.005678  n=27:1.004119  n=31:1.003124  n=35:1.002450
+  k=4: n=4:1.419434  n=8:1.096458  n=12:1.042199  n=16:1.023606  n=20:1.015069  n=24:1.010450  n=28:1.007671  n=32:1.005870  n=36:1.004636
+  k=5: n=5:1.444086  n=9:1.128091  n=13:1.060268  n=17:1.034982  n=21:1.022840  n=25:1.016082  n=29:1.011936  n=33:1.009210  n=37:1.007322
+BATTERY D: leading-law window printed (values should climb to 1)
+  vsB (k,n)=(   6,  2 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(   6,  3 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(   6,  5 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(   6, 12 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(  10,  2 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(  10,  3 ) q=4: OK  routeC   0.00s  live_B     0.01s
+  vsB (k,n)=(  10,  5 ) q=4: OK  routeC   0.00s  live_B     0.07s
+  vsB (k,n)=(  10, 12 ) q=4: OK  routeC   0.00s  live_B     0.26s
+  vsB (k,n)=(  12,  2 ) q=4: OK  routeC   0.00s  live_B     0.00s
+  vsB (k,n)=(  12,  3 ) q=4: OK  routeC   0.00s  live_B     0.01s
+  vsB (k,n)=(  12,  5 ) q=4: OK  routeC   0.00s  live_B     0.23s
+  vsB (k,n)=(  12, 12 ) q=4: OK  routeC   0.01s  live_B     1.93s
+BATTERY B: Route C vs live_B_q (q=4)  ->  12/12 PASS, 0 FAIL
+TIMINGS (Route C, q = 4):
+  routeC( 12, 12,4) = 240292639238512080...  [    0.01s]
+  routeC( 16, 35,4) = 1347342679046604110882436790938496000...  [    0.06s]
+  routeC( 20, 20,4) = 6259238307581555976197476352921280...  [    0.06s]
+  routeC( 16, 16,4) = 23076787919573044122771760...  [    0.02s]
+  routeC( 20, 35,4) = 27277245818749123471218465200909528830189120...  [    0.12s]
+  routeC( 30, 30,4) = 206876378450062211230819779669955606603073162992178040000...  [    0.45s]
+  routeC( 24, 12,4) = 11313518303792952887931660600...  [    0.06s]
+TIMINGS done
+
+overall: ALL GREEN [3.6s]
+end of norm_route

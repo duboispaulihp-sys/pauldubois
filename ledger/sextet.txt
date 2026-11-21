@@ -1,0 +1,284 @@
+== sextet.py certification ==
+-- K.1 equality with norm_route.routeC on a grid --
+   grid equality: 738/738 PASS
+-- K.1 in-place DP state counts vs the polynomial bound --
+   n=12 q=4: final states=13377  bound sum_(r<=48) p_4(r)=14,147  ratio 0.9456  (<= 1 : PASS)
+   n=16 q=4: final states=38097  bound sum_(r<=64) p_4(r)=40,377  ratio 0.9435  (<= 1 : PASS)
+   n=20 q=4: final states=87241  bound sum_(r<=80) p_4(r)=92,582  ratio 0.9423  (<= 1 : PASS)
+   n=14 q=3: final states=2360  bound sum_(r<=42) p_3(r)=2,612  ratio 0.9035  (<= 1 : PASS)
+   n=20 q=2: final states=441  bound sum_(r<=40) p_2(r)=441  ratio 1.0000  (<= 1 : PASS)
+== end of sextet certification ==
+
+== spectrum n=33 q=4 cap=132: fresh (Thm K.1 pool bound 620,060) ==
+   step 1/33: states=12  0.0s  rss=0.01GB
+   step 2/33: states=52  0.0s  rss=0.01GB
+   step 3/33: states=150  0.0s  rss=0.01GB
+   step 4/33: states=345  0.0s  rss=0.01GB
+   step 5/33: states=686  0.0s  rss=0.01GB
+   step 6/33: states=1,232  0.0s  rss=0.01GB
+   step 7/33: states=2,052  0.0s  rss=0.01GB
+   step 8/33: states=3,225  0.0s  rss=0.01GB
+   step 9/33: states=4,840  0.0s  rss=0.01GB
+   step 10/33: states=6,996  0.0s  rss=0.01GB
+   step 11/33: states=9,802  0.1s  rss=0.02GB
+   step 12/33: states=13,377  0.1s  rss=0.02GB
+   step 13/33: states=17,850  0.1s  rss=0.02GB
+   step 14/33: states=23,360  0.1s  rss=0.02GB
+   step 15/33: states=30,056  0.2s  rss=0.02GB
+   step 16/33: states=38,097  0.2s  rss=0.02GB
+   step 17/33: states=47,652  0.3s  rss=0.03GB
+   step 18/33: states=58,900  0.4s  rss=0.03GB
+   step 19/33: states=72,030  0.5s  rss=0.03GB
+   step 20/33: states=87,241  0.6s  rss=0.04GB
+   step 21/33: states=104,742  0.7s  rss=0.04GB
+   step 22/33: states=124,752  0.9s  rss=0.05GB
+   step 23/33: states=147,500  1.0s  rss=0.06GB
+   step 24/33: states=173,225  1.3s  rss=0.06GB
+   step 25/33: states=202,176  1.5s  rss=0.08GB
+   step 26/33: states=234,612  1.8s  rss=0.09GB
+   step 27/33: states=270,802  2.1s  rss=0.10GB
+   step 28/33: states=311,025  2.6s  rss=0.11GB
+   step 29/33: states=355,570  2.9s  rss=0.14GB
+   step 30/33: states=404,736  3.3s  rss=0.16GB
+   step 31/33: states=458,832  3.9s  rss=0.17GB
+   step 32/33: states=518,177  4.4s  rss=0.19GB
+   step 33/33: states=583,100  4.6s  rss=0.21GB
+== spectrum n=33: DP complete (583,100 states), ready for 'finish 33' ==
+
+== finish n=33: 133 states, live(k,33) exact for k=0..132; denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=119 digits=144 log10=143.6149; runner-up k=120 digits=144 log10=143.5883; gap=0.0266 orders
+   outer-leaf claim live(131,33) = 33^2 * maxTab: EXACT MATCH
+   claim live(119,33) [document]: EXACT MATCH
+   claim digit count 144: ours 144 (agree)
+   spike at k=131 (outer-leaf law, doc: live = 33^2 * maxTab(33)): live(131,33)/1089 = 85059439712784965939889025844624425091254566859810300329322391946777230038514221533612507764074973666743840838288431817396782950000000 exact-divisible: True
+== end of finish n=33 ==
+
+== spectrum n=34 q=4 cap=136: fresh (Thm K.1 pool bound 695,454) ==
+   step 1/34: states=12  0.0s  rss=0.01GB
+   step 2/34: states=52  0.0s  rss=0.01GB
+   step 3/34: states=150  0.0s  rss=0.01GB
+   step 4/34: states=345  0.0s  rss=0.01GB
+   step 5/34: states=686  0.0s  rss=0.01GB
+   step 6/34: states=1,232  0.0s  rss=0.01GB
+   step 7/34: states=2,052  0.0s  rss=0.01GB
+   step 8/34: states=3,225  0.0s  rss=0.01GB
+   step 9/34: states=4,840  0.0s  rss=0.01GB
+   step 10/34: states=6,996  0.0s  rss=0.01GB
+   step 11/34: states=9,802  0.1s  rss=0.02GB
+   step 12/34: states=13,377  0.1s  rss=0.02GB
+   step 13/34: states=17,850  0.1s  rss=0.02GB
+   step 14/34: states=23,360  0.1s  rss=0.02GB
+   step 15/34: states=30,056  0.2s  rss=0.02GB
+   step 16/34: states=38,097  0.2s  rss=0.02GB
+   step 17/34: states=47,652  0.3s  rss=0.03GB
+   step 18/34: states=58,900  0.4s  rss=0.03GB
+   step 19/34: states=72,030  0.5s  rss=0.03GB
+   step 20/34: states=87,241  0.6s  rss=0.04GB
+   step 21/34: states=104,742  0.8s  rss=0.04GB
+   step 22/34: states=124,752  0.9s  rss=0.05GB
+   step 23/34: states=147,500  1.0s  rss=0.06GB
+   step 24/34: states=173,225  1.3s  rss=0.06GB
+   step 25/34: states=202,176  1.5s  rss=0.08GB
+   step 26/34: states=234,612  1.8s  rss=0.09GB
+   step 27/34: states=270,802  2.2s  rss=0.10GB
+   step 28/34: states=311,025  2.6s  rss=0.11GB
+   step 29/34: states=355,570  3.0s  rss=0.14GB
+   step 30/34: states=404,736  3.4s  rss=0.16GB
+   step 31/34: states=458,832  3.9s  rss=0.17GB
+   step 32/34: states=518,177  4.5s  rss=0.19GB
+   step 33/34: states=583,100  4.6s  rss=0.21GB
+   step 34/34: states=653,940  5.8s  rss=0.23GB
+== spectrum n=34: DP complete (653,940 states), ready for 'finish 34' ==
+
+== finish n=34: 137 states, live(k,34) exact for k=0..136; denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=123 digits=150 log10=149.5197; runner-up k=122 digits=150 log10=149.5019; gap=0.0177 orders
+   outer-leaf claim live(135,34) = 34^2 * maxTab: EXACT MATCH
+   claim live(123,34) [document]: EXACT MATCH
+   claim digit count 150: ours 150 (agree)
+   spike at k=135 (outer-leaf law, doc: live = 34^2 * maxTab(34)): live(135,34)/1156 exact-divisible: True
+== end of finish n=34 ==
+
+== spectrum n=35 q=4 cap=140: fresh (Thm K.1 pool bound 777,522) ==
+   step 1/35: states=12  0.0s  rss=0.01GB
+   step 2/35: states=52  0.0s  rss=0.01GB
+   step 3/35: states=150  0.0s  rss=0.01GB
+   step 4/35: states=345  0.0s  rss=0.01GB
+   step 5/35: states=686  0.0s  rss=0.01GB
+   step 6/35: states=1,232  0.0s  rss=0.01GB
+   step 7/35: states=2,052  0.0s  rss=0.01GB
+   step 8/35: states=3,225  0.0s  rss=0.01GB
+   step 9/35: states=4,840  0.0s  rss=0.01GB
+   step 10/35: states=6,996  0.0s  rss=0.01GB
+   step 11/35: states=9,802  0.1s  rss=0.02GB
+   step 12/35: states=13,377  0.1s  rss=0.02GB
+   step 13/35: states=17,850  0.1s  rss=0.02GB
+   step 14/35: states=23,360  0.1s  rss=0.02GB
+   step 15/35: states=30,056  0.2s  rss=0.02GB
+   step 16/35: states=38,097  0.2s  rss=0.02GB
+   step 17/35: states=47,652  0.3s  rss=0.03GB
+   step 18/35: states=58,900  0.4s  rss=0.03GB
+   step 19/35: states=72,030  0.5s  rss=0.03GB
+   step 20/35: states=87,241  0.6s  rss=0.04GB
+   step 21/35: states=104,742  0.7s  rss=0.04GB
+   step 22/35: states=124,752  0.9s  rss=0.05GB
+   step 23/35: states=147,500  1.1s  rss=0.06GB
+   step 24/35: states=173,225  1.3s  rss=0.06GB
+   step 25/35: states=202,176  1.4s  rss=0.08GB
+   step 26/35: states=234,612  1.7s  rss=0.09GB
+   step 27/35: states=270,802  2.0s  rss=0.10GB
+   step 28/35: states=311,025  2.3s  rss=0.11GB
+   step 29/35: states=355,570  2.7s  rss=0.14GB
+   step 30/35: states=404,736  3.2s  rss=0.16GB
+   step 31/35: states=458,832  3.6s  rss=0.17GB
+   step 32/35: states=518,177  4.0s  rss=0.19GB
+   step 33/35: states=583,100  4.5s  rss=0.21GB
+   step 34/35: states=653,940  5.2s  rss=0.23GB
+   step 35/35: states=731,046  6.1s  rss=0.28GB
+== spectrum n=35: DP complete (731,046 states), ready for 'finish 35' ==
+
+== finish n=35: 141 states, live(k,35) exact for k=0..140; denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=127 digits=156 log10=155.4714; runner-up k=126 digits=156 log10=155.4630; gap=0.0084 orders
+== finish n=35: live(k,35) exact for k=0..140 (141 support degrees); denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=127 digits=156 log10=155.4714; runner-up k=126 digits=156 log10=155.4630; gap=0.0084 orders
+   claim live(127,35) [document]: EXACT MATCH (claim log10 155.4714, diff -0.0000)
+   crest claim 127: confirmed exactly; float log10 agrees to 4 decimals
+   cross-check k=36..65 at n=35 vs claims.json: 26 exact, 4 superseded, 0 unclaimed (expect 26/4/0)
+   end rung live(140,35): first exact value, digits=147 log10=146.4368
+   (document float: crest 155.4714, full-box monolith 146.4368, margin 9.0346)
+   superseded exact value live(62,35) = 2177260677319640513625840073168769135606713982645707025131940898240963939480465504368899536100261140000000
+   superseded exact value live(63,35) = 36415040985485221124589860999892249056750178260830581708795880890758437766794704304942515575911480620000000
+   superseded exact value live(64,35) = 594231824426369706243748353859663078705896934143967688351699284177294627436705626791781970964939372577500000
+   superseded exact value live(65,35) = 9460434941841283335346736809318753885124161242758100938693528939821209614031315097259405805978331107931500000
+== end of finish n=35 ==
+
+== spectrum n=37 q=4 cap=148: fresh (Thm K.1 pool bound 963,222) ==
+   step 1/37: states=12  0.0s  rss=0.01GB
+   step 2/37: states=52  0.0s  rss=0.01GB
+   step 3/37: states=150  0.0s  rss=0.01GB
+   step 4/37: states=345  0.0s  rss=0.01GB
+   step 5/37: states=686  0.0s  rss=0.01GB
+   step 6/37: states=1,232  0.0s  rss=0.01GB
+   step 7/37: states=2,052  0.0s  rss=0.01GB
+   step 8/37: states=3,225  0.0s  rss=0.01GB
+   step 9/37: states=4,840  0.0s  rss=0.01GB
+   step 10/37: states=6,996  0.0s  rss=0.01GB
+   step 11/37: states=9,802  0.1s  rss=0.02GB
+   step 12/37: states=13,377  0.1s  rss=0.02GB
+   step 13/37: states=17,850  0.1s  rss=0.02GB
+   step 14/37: states=23,360  0.1s  rss=0.02GB
+   step 15/37: states=30,056  0.2s  rss=0.02GB
+   step 16/37: states=38,097  0.3s  rss=0.03GB
+   step 17/37: states=47,652  0.3s  rss=0.03GB
+   step 18/37: states=58,900  0.4s  rss=0.03GB
+   step 19/37: states=72,030  0.5s  rss=0.03GB
+   step 20/37: states=87,241  0.6s  rss=0.04GB
+   step 21/37: states=104,742  0.7s  rss=0.04GB
+   step 22/37: states=124,752  0.9s  rss=0.05GB
+   step 23/37: states=147,500  1.1s  rss=0.06GB
+   step 24/37: states=173,225  1.3s  rss=0.06GB
+   step 25/37: states=202,176  1.5s  rss=0.08GB
+   step 26/37: states=234,612  1.7s  rss=0.09GB
+   step 27/37: states=270,802  2.0s  rss=0.10GB
+   step 28/37: states=311,025  2.4s  rss=0.11GB
+   step 29/37: states=355,570  2.8s  rss=0.14GB
+   step 30/37: states=404,736  3.1s  rss=0.17GB
+   step 31/37: states=458,832  3.5s  rss=0.17GB
+   step 32/37: states=518,177  4.0s  rss=0.19GB
+   step 33/37: states=583,100  4.6s  rss=0.21GB
+   step 34/37: states=653,940  5.2s  rss=0.23GB
+   step 35/37: states=731,046  5.9s  rss=0.28GB
+   step 36/37: states=814,777  7.0s  rss=0.33GB
+   step 37/37: states=905,502  7.9s  rss=0.35GB
+== spectrum n=37: DP complete (905,502 states), ready for 'finish 37' ==
+
+== finish n=37: live(k,37) exact for k=0..148 (149 support degrees); denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=134 digits=168 log10=167.5204; runner-up k=135 digits=168 log10=167.5106; gap=0.0098 orders
+== finish n=37: live(k,37) exact for k=0..148 (149 support degrees); denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=134 digits=168 log10=167.5204; runner-up k=135 digits=168 log10=167.5106; gap=0.0098 orders
+   claim live(134,37) [document]: float-only claim; first exact value = 331456938520085258215461609771372684473057863909929436503026439892402244381831392221461694134654728679028558720746685193969597847866784716296036016676757805629000000000
+   claim live(134,37) [document]:  (claim log10 167.5204, diff +0.0000)
+   crest claim 134: confirmed exactly; float log10 agrees to 4 decimals
+   exact log10 live(133,37) = 167.4797 (document runner-up float: 167.4797); the exact runner-up is k=135 at log10 167.5106
+   crest digits: k=134 -> 168 (document: 168th digit order, log10 167.5204)
+   spike at k=139 (outer-leaf law, doc: live = 37^2 * maxTab(37)): live(139,37) exact-divisible by 1369: True
+== end of finish n=37 ==
+
+== spectrum n=40 q=4 cap=160: fresh (Thm K.1 pool bound 1,301,741) ==
+   step 1/40: states=12  0.0s  rss=0.01GB
+   step 2/40: states=52  0.0s  rss=0.01GB
+   step 3/40: states=150  0.0s  rss=0.01GB
+   step 4/40: states=345  0.0s  rss=0.01GB
+   step 5/40: states=686  0.0s  rss=0.01GB
+   step 6/40: states=1,232  0.0s  rss=0.01GB
+   step 7/40: states=2,052  0.0s  rss=0.01GB
+   step 8/40: states=3,225  0.0s  rss=0.01GB
+   step 9/40: states=4,840  0.0s  rss=0.01GB
+   step 10/40: states=6,996  0.0s  rss=0.01GB
+   step 11/40: states=9,802  0.1s  rss=0.02GB
+   step 12/40: states=13,377  0.1s  rss=0.02GB
+   step 13/40: states=17,850  0.1s  rss=0.02GB
+   step 14/40: states=23,360  0.1s  rss=0.02GB
+   step 15/40: states=30,056  0.2s  rss=0.02GB
+   step 16/40: states=38,097  0.3s  rss=0.02GB
+   step 17/40: states=47,652  0.3s  rss=0.03GB
+   step 18/40: states=58,900  0.4s  rss=0.03GB
+   step 19/40: states=72,030  0.5s  rss=0.03GB
+   step 20/40: states=87,241  0.6s  rss=0.04GB
+   step 21/40: states=104,742  0.7s  rss=0.04GB
+   step 22/40: states=124,752  0.9s  rss=0.05GB
+   step 23/40: states=147,500  1.0s  rss=0.06GB
+   step 24/40: states=173,225  1.3s  rss=0.06GB
+   step 25/40: states=202,176  1.5s  rss=0.08GB
+   step 26/40: states=234,612  1.7s  rss=0.09GB
+   step 27/40: states=270,802  2.0s  rss=0.10GB
+   step 28/40: states=311,025  2.3s  rss=0.11GB
+   step 29/40: states=355,570  2.8s  rss=0.14GB
+   step 30/40: states=404,736  3.2s  rss=0.16GB
+   step 31/40: states=458,832  3.4s  rss=0.17GB
+   step 32/40: states=518,177  4.1s  rss=0.19GB
+   step 33/40: states=583,100  4.5s  rss=0.21GB
+   step 34/40: states=653,940  5.3s  rss=0.23GB
+   step 35/40: states=731,046  5.8s  rss=0.28GB
+   step 36/40: states=814,777  6.5s  rss=0.33GB
+   step 37/40: states=905,502  7.6s  rss=0.35GB
+   step 38/40: states=1,003,600  8.3s  rss=0.38GB
+   step 39/40: states=1,109,460  9.5s  rss=0.41GB
+   step 40/40: states=1,223,481  10.2s  rss=0.44GB
+== spectrum n=40: DP complete (1,223,481 states), ready for 'finish 40' ==
+
+== finish n=40: live(k,40) exact for k=0..160 (161 support degrees); denominator bad = 0 ==
+   Thm K.1 per-degree state counts within bound: PASS
+   crest: k=146 digits=186 log10=185.9280; runner-up k=145 digits=186 log10=185.9126; gap=0.0154 orders
+   THE SEXTET: live(146,40) = 847232785311321929505742726278347449772399243065953510849792599096813508572696645610464194621343322161298121842449306221210882840944136278748773602001239786256022187586939606000000000000
+   digits=186; also full spectrum k=0..160 now exact
+   engine ledger(146,40) vs document claim 890781865166222353286753672695200: EXACT MATCH
+== end of finish n=40 ==
+
+
+== sextet analysis: exact crest / margin table (margin = log10 crest - log10 full-box end rung) ==
+   n=33: crest k=119 (log10 143.614876, 144 digits), runner-up k=120 (log10 143.588320), evidence live(4n,n) = T((4^33),(4^33)) log10 134.875225, evidence margin 8.739651, crest/n 3.6061
+   n=34: crest k=123 (log10 149.519669, 150 digits), runner-up k=122 (log10 149.501921), evidence live(4n,n) = T((4^34),(4^34)) log10 140.630599, evidence margin 8.889070, crest/n 3.6176
+   n=35: crest k=127 (log10 155.471377, 156 digits), runner-up k=126 (log10 155.463013), evidence live(4n,n) = T((4^35),(4^35)) log10 146.436831, evidence margin 9.034546, crest/n 3.6286
+   n=37: crest k=134 (log10 167.520427, 168 digits), runner-up k=135 (log10 167.510649), evidence live(4n,n) = T((4^37),(4^37)) log10 158.196173, evidence margin 9.324254, crest/n 3.6216
+   n=40: crest k=146 (log10 185.928003, 186 digits), runner-up k=145 (log10 185.912632), evidence live(4n,n) = T((4^40),(4^40)) log10 176.182959, evidence margin 9.745044, crest/n 3.6500
+   document floats: margin(35) = 9.0346, margin(37) = 9.3243 -- both confirmed
+   document runner-up at n=37 (k=133, 167.4797): correct value for k=133,
+   but the true runner-up is k=135 at 167.5106 -- exact gap 0.0098, not 0.0407
+   crest drift law (exact): 119, 123, 127 (n=33,34,35), 134 (37), 146 (40):
+   per-column increments +4, +4, +3.5, +4 -- the +4 cadence holds to k/n = 3.65
+
+   outer-leaf divisibility spot checks (rungs 4n-5, 4n-1, crest-adjacent):
+     n=37 k=143: live divisible by 37^2: True
+     n=37 k=147: live divisible by 37^2: True
+     n=37 k=139: live divisible by 37^2: True
+     n=40 k=155: live divisible by 40^2: True
+     n=40 k=159: live divisible by 40^2: True
+     n=40 k=146: live divisible by 40^2: True
+
+end of sextet

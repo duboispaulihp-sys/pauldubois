@@ -1,0 +1,34 @@
+== Phase 7: J.3 at q = 2 -- closed form for M(n,2) ==
+   M(n,2) = (n!)^2 sum_(m_j) prod_j c_j^{m_j} / ( (j!)^{2 m_j} m_j! ),
+   c_1 = 1,  c_j = j!(j-1)!/2 (j >= 2)   [Hamiltonian cycles of K_(j,j)]
+
+== C.1: three-route arbitration of the formula ==
+   n=1: formula 1  dfs 1  egf 1   [PASS]
+   n=2: formula 3  dfs 3  egf 3   [PASS]
+   n=3: formula 21  dfs 21  egf 21   [PASS]
+   n=4: formula 282  dfs 282  egf 282   [PASS]
+   n=5: formula 6210  dfs 6210  egf 6210   [PASS]
+   n=6: formula 202410  egf 202410   [PASS] (n=6 = A001499(6) = 202410 anchor; DFS out of budget)
+   cycle-decomposition formula vs DFS vs EGF: ALL PASS
+
+== C.2: engine identity P^2_(2n)(n) = M(n,2) - 1 (Obs H.10 triangulated) ==
+   n= 1: P^2_(2n)(n) = M(n,2) - 1: 0   PASS
+   n= 2: P^2_(2n)(n) = M(n,2) - 1: 2   PASS
+   n= 3: P^2_(2n)(n) = M(n,2) - 1: 20   PASS
+   n= 4: P^2_(2n)(n) = M(n,2) - 1: 281   PASS
+   n= 5: P^2_(2n)(n) = M(n,2) - 1: 6209   PASS
+   n= 6: P^2_(2n)(n) = M(n,2) - 1: 202409   PASS
+   n= 7: P^2_(2n)(n) = M(n,2) - 1: 9135629   PASS
+   n= 8: P^2_(2n)(n) = M(n,2) - 1: 545007959   PASS
+   n= 9: P^2_(2n)(n) = M(n,2) - 1: 41514583319   PASS
+   n=10: P^2_(2n)(n) = M(n,2) - 1: 3930730108199   PASS
+   n=11: P^2_(2n)(n) = M(n,2) - 1: 452785322266199   PASS
+   n=12: P^2_(2n)(n) = M(n,2) - 1: 62347376347779599   PASS
+   engine identity: ALL PASS (n = 1..12)
+
+== C.3: the prepaid sequence M(n,2) = A001499, n = 0..40 (formula alone) ==
+   n=0..15: 1, 1, 3, 21, 282, 6210, 202410, 9135630, 545007960, 41514583320, 3930730108200, 452785322266200, 62347376347779600, 10112899541133589200, 1908371363842760216400, 414517594539154672566000
+   M(30,2) = 12001514711790706002011718434346457316922436224855572169120000000
+   M(40,2) = 98229571763249883201337886144684406490460691888276696323371711307823654698991739863552000000000  (95 digits)
+
+end of margins2

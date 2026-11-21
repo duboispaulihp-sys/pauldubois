@@ -1,0 +1,39 @@
+== P_9(24) (md line 1266): 12 printed squares, printed total 9163574786161952640
+   shape count: printed 12 vs engine 12 (p(9)-p_4(9) = 30-18)
+   base multiset identical: True
+   sum of printed squares == engine P_9(n): True
+   printed total == engine P_9(n): True
+   (cross) live_B(9,24) - ledger(9,24) == P: True
+   (0s)
+
+== P_10(25) (md line 1278): 19 printed squares, printed total 1572793486090905341100
+   shape count: printed 19 vs engine 19 (p(10)-p_4(10) = 42-23)
+   base multiset identical: True
+   sum of printed squares == engine P_10(n): True
+   printed total == engine P_10(n): True
+   (cross) live_B(10,25) - ledger(10,25) == P: True
+   (0s)
+
+== P_11(26) (md line 1290): 29 printed squares, printed total 257337843029527585613600
+   shape count: printed 29 vs engine 29 (p(11)-p_4(11) = 56-27)
+   base multiset identical: True
+   sum of printed squares == engine P_11(n): True
+   printed total == engine P_11(n): True
+   (cross) live_B(11,26) - ledger(11,26) == P: True
+   (1s)
+
+== P_20(35) (md line 1414): 519 printed squares
+   ... 100 shapes done (261s)
+   ... 200 shapes done (638s)
+   ... 300 shapes done (1052s)
+   ... 400 shapes done (1423s)
+   ... 500 shapes done (1692s)
+   ... 600 shapes done (1812s)
+   shape count: printed 519 vs engine 519 (p(20)-p_4(20) = 627-108)
+   base multiset identical: True
+   sum of printed squares == engine P_20(n): True
+   live(20,35) engine == printed (27.277e...): True
+   ledger(20,35) engine == printed (42.185e...): True
+   live - ledger == P_20(35): True
+   (1817s)
+

@@ -1,0 +1,66 @@
+== P_6(n): degree <= 12, 2 square shapes (p(6)-p_4(6) = 11-9) ==
+   Newton coefficients c_j = Delta^j P(1) / j!:
+     j= 1: 18
+     j= 2: 583
+     j= 3: 8728/3
+     j= 4: 39111/8
+     j= 5: 448901/120
+     j= 6: 36311/24
+     j= 7: 126053/360
+     j= 8: 46259/960
+     j= 9: 6859/1728
+     j=10: 8213/43200
+     j=11: 209/43200
+     j=12: 13/259200
+   fits its own calibration points: True
+   certified against engine on n = 14..40 (fresh points): ALL PASS
+   P_6(17) = 78991075280
+   P_6(35) = 280802655699650
+   (0s)
+
+== P_7(n): degree <= 14, 4 square shapes (p(7)-p_4(7) = 15-11) ==
+   Newton coefficients c_j = Delta^j P(1) / j!:
+     j= 1: 12
+     j= 2: 2433/2
+     j= 3: 78953/6
+     j= 4: 334389/8
+     j= 5: 6786301/120
+     j= 6: 2352691/60
+     j= 7: 38984321/2520
+     j= 8: 2127469/576
+     j= 9: 4770497/8640
+     j=10: 15822731/302400
+     j=11: 94151/30240
+     j=12: 202849/1814400
+     j=13: 443/201600
+     j=14: 229/12700800
+   fits its own calibration points: True
+   certified against engine on n = 16..40 (fresh points): ALL PASS
+   P_7(17) = 7526992945232
+   P_7(35) = 118377571195388825
+   (0s)
+
+== P_8(n): degree <= 16, 7 square shapes (p(8)-p_4(8) = 22-15) ==
+   Newton coefficients c_j = Delta^j P(1) / j!:
+     j= 1: 4
+     j= 2: 3403/2
+     j= 3: 77781/2
+     j= 4: 5302369/24
+     j= 5: 59557051/120
+     j= 6: 22015987/40
+     j= 7: 35881934/105
+     j= 8: 287506181/2240
+     j= 9: 617306317/20160
+     j=10: 240823651/50400
+     j=11: 2373911/4800
+     j=12: 246196211/7257600
+     j=13: 10982927/7257600
+     j=14: 78877/1881600
+     j=15: 6613/10160640
+     j=16: 583/135475200
+   fits its own calibration points: True
+   certified against engine on n = 18..40 (fresh points): ALL PASS
+   P_8(17) = 477252466213584
+   P_8(35) = 33128194427374451475
+   (1s)
+

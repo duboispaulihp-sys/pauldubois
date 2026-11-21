@@ -1,0 +1,49 @@
+== Phase 8: J.2 diagonal census to k = 40 (Route C + batch Pieri b) ==
+   columns exactly as Note I section 4; certs = (sumB2=live, spot b_q,
+   ftot RSK identity, f_fast).
+| k | n | digits(P) | D_k(n) | cos_k(n) | n*maxErr |
+|----|----|------------------|---------|---------|-------|
+| 13 | 13 | 20 | 1.8989 | 0.6951 | 1.323 |   (0.1s)  certs TTTT
+   regression k=13: D 1.8989 vs 1.8989 cos 0.6951 vs 0.6951 maxErr 1.323 vs 1.323 -> MATCH
+| 14 | 14 | 22 | 1.7362 | 0.6695 | 0.962 |   (0.2s)  certs TTTT
+   regression k=14: D 1.7362 vs 1.7362 cos 0.6695 vs 0.6695 maxErr 0.962 vs 0.962 -> MATCH
+| 15 | 15 | 24 | 1.6222 | 0.6615 | 1.133 |   (0.2s)  certs TTTT
+   regression k=15: D 1.6222 vs 1.6222 cos 0.6615 vs 0.6615 maxErr 1.133 vs 1.133 -> MATCH
+| 16 | 16 | 26 | 1.5425 | 0.6632 | 1.113 |   (0.4s)  certs TTTT
+   regression k=16: D 1.5425 vs 1.5425 cos 0.6632 vs 0.6632 maxErr 1.113 vs 1.113 -> MATCH
+| 17 | 17 | 28 | 1.4868 | 0.6626 | 1.200 |   (0.6s)  certs TTTT
+   regression k=17: D 1.4868 vs 1.4868 cos 0.6626 vs 0.6626 maxErr 1.200 vs 1.2 -> MATCH
+| 18 | 18 | 30 | 1.4478 | 0.6566 | 0.776 |   (0.9s)  certs TTTT
+   regression k=18: D 1.4478 vs 1.4478 cos 0.6566 vs 0.6566 maxErr 0.776 vs 0.776 -> MATCH
+| 19 | 19 | 32 | 1.4201 | 0.6488 | 0.666 |   (1.3s)  certs TTTT
+   regression k=19: D 1.4201 vs 1.4201 cos 0.6488 vs 0.6488 maxErr 0.666 vs 0.666 -> MATCH
+| 20 | 20 | 34 | 1.3998 | 0.6437 | 0.517 |   (1.9s)  certs TTTT
+| 21 | 21 | 36 | 1.3842 | 0.6438 | 0.518 |   (2.9s)  certs TTTT
+| 22 | 22 | 39 | 1.3715 | 0.6482 | 0.586 |   (4.1s)  certs TTTT
+| 23 | 23 | 41 | 1.3604 | 0.6526 | 0.726 |   (6.1s)  certs TTTT
+| 24 | 24 | 43 | 1.3502 | 0.6535 | 0.534 |   (8.8s)  certs TTTT
+| 25 | 25 | 45 | 1.3406 | 0.6508 | 0.483 |   (12.4s)  certs TTTT
+| 26 | 26 | 48 | 1.3312 | 0.6465 | 0.395 |   (18.2s)  certs TTTT
+| 27 | 27 | 50 | 1.3219 | 0.6430 | 0.404 |   (25.4s)  certs TTTT
+| 28 | 28 | 52 | 1.3128 | 0.6418 | 0.303 |   (36.4s)  certs TTTT
+| 29 | 29 | 54 | 1.3036 | 0.6433 | 0.286 |   (49.5s)  certs TTTT
+| 30 | 30 | 57 | 1.2945 | 0.6464 | 0.393 |   (68.8s)  certs TTTT
+| 31 | 31 | 59 | 1.2854 | 0.6490 | 0.322 |   (94.4s)  certs TTTT
+| 32 | 32 | 62 | 1.2763 | 0.6497 | 0.309 |   (129.0s)  certs TTTT
+| 33 | 33 | 64 | 1.2673 | 0.6483 | 0.274 |   (174.8s)  certs TTTT
+| 34 | 34 | 66 | 1.2583 | 0.6457 | 0.287 |   (242.2s)  certs TTTT
+| 35 | 35 | 69 | 1.2493 | 0.6430 | 0.207 |   (325.4s)  certs TTTT
+| 36 | 36 | 71 | 1.2403 | 0.6413 | 0.162 |   (430.0s)  certs TTTT
+| 37 | 37 | 73 | 1.2314 | 0.6411 | 0.133 |   (578.1s)  certs TTTT
+# k=38 row below: background run killed by the sandbox after completion;
+# restored verbatim from the mirrored j2_run.log.
+| 38 | 38 | 76 | 1.2226 | 0.6424 | 0.184 |   (733.7s)  certs TTTT  [W=4]
+# k=38 re-certified by the staged foreground pipeline (j2_parent2), identical values:
+| 38 | 38 | 76 | 1.2226 | 0.6424 | 0.184 |   (0.5s)  certs TrueTTrueTrue  [4-way]
+# k=39: mu-slices 0-2 at 4-way, slice 3 split into two 8-way half-slices (RAM cap)
+| 39 | 39 | 78 | 1.2137 | 0.6444 | 0.167 |   (0.6s)  certs TrueTTrueTrue  [4+2-way]
+# k=40: all eight 8-way worker slices
+| 40 | 40 | 81 | 1.2049 | 0.6462 | 0.170 |   (0.8s)  certs TrueTTrueTrue  [8-way]
+
+end of j2_diagonal
+
