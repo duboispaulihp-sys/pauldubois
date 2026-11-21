@@ -6,7 +6,11 @@ complete proofs of every provable piece, an executed window-by-window verificati
 a sensitivity/threshold theorem, an analytic attempt on the open core, the bridge to the
 Alpöge–Buckmaster certificate, and (Part V) the conditional-strength comparison against the
 AB formalization plus the machine-checking of the proved chain in core Lean 4; Part VI extends
-the machine-checked portion to the threshold dichotomy at the exact budget roots (V1 package). No piece of the open core is dressed up as proved.
+the machine-checked portion to the threshold dichotomy at the exact budget roots (V1 package);
+Part VII quantifies the bridge on the AB decaying-stability rate; Part VIII constructs the
+error taxonomy and the controller with the fatal floor; Part IX assembles the model-level
+singularity; Part X closes the threshold from below with the no-side q-power instances
+(two-sided machine-checked dichotomy at all three anchors). No piece of the open core is dressed up as proved.
 
 ---
 
@@ -562,3 +566,84 @@ That conditional is the entire content of the program that can be made unconditi
 arithmetic — and it is now, fully, machine-checked. The step from cascade to fluid remains
 exactly as open as it was: the unconditionally constructed singularity is and remains
 Alpöge–Buckmaster's.
+
+## Part X — The dichotomy completed: the no-side of the threshold, machine-checked
+
+This part executes the one remaining formally-doable unit (named in the previous reply as
+option (a)): the converse side of the Part VI threshold — the q-power geometric-sum direction —
+delivered as explicit per-anchor Lean instances. File: `formal/ThresholdNo.lean` (nine theorems:
+`sumToMono`, `shiftSum`, `sumToStep`, `noSideForced`, `existsExceeds`, `noSideForced2`,
+`existsExceeds2`, `noSideForced3`, `existsExceeds3`); companion verifier
+`drift_threshold_dichotomy.py` (stdlib, exact integer and rational arithmetic).
+
+### X.1 What is proved
+
+The no-side statement, per anchor. Under the exact coupling recursion
+`30000000 * dhat(n+1) = 30000 * dhat n + 30000000 * chat n`, with the launch at its cap
+(`dhat 0 >= 1000000`), the error floor at its cap (`chat 0 >= 39000`), and the floor decaying
+**no faster** than `X0/30000000` per window, the prefix sums are forced **above** the budget
+head at an explicit window:
+
+| anchor | head M | yes-side (V1: floor contracts at mu <=) | no-side (this file: floor persists at mu >=) | K (windows) | forced prefix sum |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1541354 | 0.9277527 | 116/125 = 0.928000 | 110 | 1541531 ≥ M+1 |
+| 2 | 1744063 | 0.9474619 | 237/250 = 0.948000 | 100 | 1746590 ≥ M+1 |
+| 3 | 1928014 | 0.9578872 | 479/500 = 0.958000 | 180 | 1928177 ≥ M+1 |
+
+Reading. At each anchor the threshold now has two machine-checked sides: if the error floor
+contracts at ratio at most the V1 constant, the head is *never* reached (Parts V–VI, all K);
+if the floor persists — decays no faster than the X0 constant — the head is *crossed* by
+window K+1, with the witness window extracted constructively by `existsExceeds*`.
+
+A remark on the choices. The no-side constants were selected for exact fit and log-length of
+the certificates: anchor 1 at 116/125 reproduces the Part VI no-go request (X0 = 27840000);
+anchor 3 at 479/500 is exactly the Part VI value (X0 = 28740000); anchor 2 was widened from
+the Part VI-adjacent 0.9475867 to 237/250 = 0.948 because the wider separator lets the chain
+run 100 windows instead of 194 — a deliberate trade of band width for certificate length,
+recorded here rather than hidden. The proof route is also deliberately conservative: the
+transfer lemma `shiftSum` uses only `dhat(n+1) >= chat n` from the exact recursion and
+discards the 1000/999 feedback.
+
+### X.2 How the q-power obstacle was disposed of
+
+Core Lean's `omega` rejects generalized geometric sums: with a variable exponent the scale
+`D^n` is a nonlinear atom and the potential induction of V0/V1 cannot be mirrored. The
+disposal is the move that carried Parts V–IX, taken to its literal conclusion: per-anchor
+instantiation at a fixed certificate scale. For each anchor the proof carries (i) a chain
+`c_m : sden^K * chat m >= snum^m * sden^(K-m) * 39000` for m = 0..K (each member one `omega`
+over the previous link — itself obtained from the full-scale floor hypothesis by exact
+gcd-normalization — and the reduced recurrence `sden * chat(m+1) >= snum * chat m`), (ii) an
+accumulation `a_m : sden^K * sumTo chat (m+1) >= CUM_m` with `CUM_m` the exact folded partial
+sum (each member one `rfl`-unfold plus one `omega`), and (iii) the closed form
+`CUM_K = 39000 * (sden^(K+1) - snum^(K+1)) / (sden - snum)` resolved to exact integers and
+checked against `541355 * 125^110`, `744064 * 250^100`, `928015 * 500^180`. The largest
+numeral in the file is 492 digits (versus 1500+ at full scale); no floats occur anywhere.
+The package compiles in core Lean 4.36.0 with `#print axioms` = `[propext, Quot.sound]` on
+all nine theorems — no `sorryAx`.
+  
+### X.3 The residual band, stated honestly
+
+The transfer-only critical ratio (launch at cap + plain floor transfer) is anchor 1: 0.9279586,
+anchor 2: 0.9475852, anchor 3: 0.9579748 — each lies *inside* the corresponding certificate
+band, and with the 1000/999 feedback folded in the criticals move further inside. The
+machine-checked dichotomy therefore leaves, at each anchor, a band of width 2.5×10⁻⁴, 5.4×10⁻⁴
+and 1.1×10⁻⁴ in mu respectively in which the exact critical ratio has not been pinned by a
+Lean certificate. Pinning it would take an exact-rational q-power instance at the band's
+interior plus the feedback telescoping (the `sumToTelescope` identity of V1 wired into the
+lower bound); that — not more — is what remains of the formalization program at model level.
+
+### X.4 Scope and integrity close, restated
+
+- Every statement of `formal/ThresholdNo.lean` concerns integer sequences at fixed literal
+  scale. Nothing in it is a Navier–Stokes statement.
+- The dichotomy is machine-checked *as a band-pair* per anchor; the exact critical ratio
+  inside each band is not claimed.
+- (E1), (O2), (O3) remain open; the model singularity of Part IX remains model-level; the
+  bridge imports Alpöge–Buckmaster and cannot outrank it; the unconditionally constructed
+  singularity is and remains Alpöge–Buckmaster's. No deliverable of this program claims an
+  unconditional blow-up proof for the Navier–Stokes equations.
+
+With Part X the construction ledger stands at 33 theorems across six Lean files (V0, V1,
+Bridge, Control, ModelSingularity, ThresholdNo), each closed with printed axiom dependencies,
+plus three independent stdlib verifiers (`drift_budget_verification.py`,
+`drift_bridge_verification.py`, `drift_threshold_dichotomy.py`).
