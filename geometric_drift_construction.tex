@@ -1,0 +1,429 @@
+% geometric_drift_construction.tex
+% Linked companion to the machine-checked construction ledger (Parts I-XIV).
+% Compile with any LaTeX engine: pdflatex, xelatex, lualatex.
+% Uses only standard packages: article, hyperref, amsmath, amssymb, geometry, xcolor, booktabs-free tabulars.
+\documentclass[11pt]{article}
+\usepackage[left=1in,right=1in,top=1in,bottom=1.2in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black,citecolor=blue!60!black]{hyperref}
+\usepackage{longtable}
+
+\newcommand{\dhat}{\widehat{d}}
+\newcommand{\chat}{\widehat{c}}
+\newcommand{\sumto}{\operatorname{sumTo}}
+
+\title{The Geometric Drift --- Linked Construction Document\\
+\large A tex companion to the machine-checked ledger, Parts I--XIV}
+\author{Machine-checked companion program\\ \small in the spirit of P.~Dubois, ``The Geometric Drift --- Statement, Reduction, and the Open Core''}
+\date{Commit series on \href{https://github.com/duboispaulihp-sys/pauldubois/pull/4}{PR \#4}, branch \texttt{vibe/geometric-drift-construction-5368e9}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document \emph{links} the full construction program: the geometric framework of the
+geometric-drift mechanism, the all-options reduction to integer arithmetic, the machine-checked
+Lean 4 chain (ten self-contained files in \texttt{formal/}, $112$ theorems, $60$ printed axiom
+profiles, axiom-clean at
+$[\mathrm{propext},\mathrm{Quot.sound}]$ throughout with the single
+$\mathrm{Classical.choice}$ exception \texttt{compareMono}, \texttt{sorryAx} never), the
+integral
+constructed singularity of Part~XIII in which the per-window error is explicit and bounded by
+$999$, and the adversarial error-tolerance bracket of Part~XIV. Full proof bodies for every
+layer live in the master document \texttt{geometric\_drift\_master.tex}; the prose ledger
+\texttt{geometric\_drift\_construction.md} carries Parts I--XIV. Every numeric certificate
+quoted here is computed by exact integer arithmetic and, since
+Part~V, checked by the Lean kernel. No piece is dressed up as more than it is: the boundary
+of the proved program is stated precisely in Section~\ref{sec:integrity} and
+Section~\ref{sec:map} links each layer to its carrier file and its delivery record.
+\end{abstract}
+
+\section{How to read this document}\label{sec:readme}
+
+\begin{itemize}
+\item \textbf{The ledger.} \texttt{geometric\_drift\_construction.md} carries Parts I--XIV in
+prose; Parts XII--XIV additionally carry their own docstring ledgers inside
+\hyperref[sec:sharp]{\texttt{formal/DriftSharpNo.lean}},
+\hyperref[sec:witness]{\texttt{formal/DriftWitness.lean}} and the Part~XIV carrier
+\hyperref[sec:bracket]{\texttt{formal/DriftError.lean}}.
+\item \textbf{The full proof document.} \texttt{geometric\_drift\_master.tex} is the master
+document of the program: it collects Parts I--XIV with the \emph{proof bodies} written out
+in full (accounting core, exact critical point, sharp squeeze, constructed witnesses,
+error bracket), carries its own delivery anchors, and ends with the complete hyperlinked
+formal index of all $112$ theorems (its Appendix~B).
+\item \textbf{The formal layer.} Each file in \texttt{formal/} is a \emph{self-contained}
+Lean~4 file: no imports beyond core, its own namespace and its own \texttt{sumTo},
+\texttt{\#print axioms} at the bottom of every deliverable theorem. The only external
+dependency is the \texttt{omega} tactic.
+\item \textbf{The papers.} The framework follows the geometric-drift mechanism of
+\cite{dubois}; the drive rate used in Part~VII is the AB decaying-stability certificate of
+\cite{blowup}; see Section~\ref{sec:bib}.
+\item \textbf{Delivery.} All work lands on
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4}{PR \#4} of
+\href{https://github.com/duboispaulihp-sys/pauldubois}{\texttt{duboispaulihp-sys/pauldubois}}.
+\item \textbf{Delivery anchors.} Each layer was delivered with a PR-\#4 summary comment
+pinning its commit and compile record: Part~XII
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7063578517}{(comment)},
+Part~XIII
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064107266}{(comment)},
+the first edition of this companion
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064375359}{(comment)},
+Part~XIV
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7064852773}{(comment)},
+the master document
+\href{https://github.com/duboispaulihp-sys/pauldubois/pull/4#issuecomment-7065062543}{(comment)}.
+\end{itemize}
+
+\section{The layer map}\label{sec:map}
+
+Table~\ref{tab:map} is the master link table: every layer of the program, its carrier file,
+its principal theorems, and its machine-checked status.
+
+\begin{longtable}{p{0.10\textwidth} p{0.24\textwidth} p{0.38\textwidth} p{0.20\textwidth}}
+\hline
+\textbf{Layer} & \textbf{Carrier file} & \textbf{Principal exports} & \textbf{Axiom profile}\\
+\hline
+\endhead
+I--II (framework) & \texttt{geometric\_drift\_construction.md} & self-similar profile, cascade, budget band & prose\\
+\hline
+III--IV (all options) & model-level scripts & window-by-window verification; ledger & executed\\
+\hline
+V--VI (V0/V1) & \texttt{formal/DriftReduction.lean}, \texttt{formal/DriftReductionV1.lean} &
+\texttt{phiMono}, \texttt{driftBound1..3}, \texttt{constantSourceDiverges},
+\texttt{sumToTelescope}, \texttt{chatUpperBound}/\texttt{chatLowerBound} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+VII (bridge) & \texttt{formal/DriftBridge.lean} & \texttt{geometricEnvelope},
+\texttt{bridgeInstance} & $[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+VIII (control) & \texttt{formal/DriftControl.lean} & \texttt{phiMonoAll},
+\texttt{controlTheorem}, \texttt{linearGrowth}, \texttt{fatalFloor} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+IX (model singularity) & \texttt{formal/ModelSingularity.lean} & \texttt{powTwoGe},
+\texttt{powFourGe}, \texttt{gradDiverges}, \texttt{gapVanishes} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+X (no side) & \texttt{formal/ThresholdNo.lean} & \texttt{noSideForced1..3},
+\texttt{existsExceeds1..3} & $[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+XI (exact critical) & \texttt{formal/DriftCritical.lean} & \texttt{telescope},
+\texttt{criticalNever1..3} & $[\mathrm{propext},\mathrm{Quot.sound}]$\\
+\hline
+XII (sharp squeeze) & \texttt{formal/DriftSharpNo.lean} & \texttt{noSideForcedSharp1..3},
+\texttt{existsSharp1..3} & $[\mathrm{propext},\mathrm{Quot.sound}]$\newline
+(\texttt{compareMono}: $+\,\mathrm{Classical.choice}$)\\
+\hline
+XIII (witnesses) & \texttt{formal/DriftWitness.lean} & \texttt{constructedWitness1..3},
+\texttt{lawW1..3}, \texttt{invariantsW1..3}, \texttt{sharpForced1..3} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\newline
+(choice-free)\\
+\hline
+XIV (error bracket) & \texttt{formal/DriftError.lean} & \texttt{forcingUnderError1..3},
+\texttt{lawW1..3P}, \texttt{simExact1..3}, \texttt{perturbedWitness1..3} &
+$[\mathrm{propext},\mathrm{Quot.sound}]$\newline
+(choice-free)\\
+\hline
+\caption{The layer map: layers I--XIV, carrier files, exports, machine-checked status.
+Totals: ten Lean files, $112$ theorems, $60$ printed axiom dependencies.}
+\label{tab:map}
+\end{longtable}
+
+\section{The geometric framework}\label{sec:framework}
+
+\subsection{Self-similar profile}
+With blow-up time $1$, set
+\[
+\sigma=\log\tfrac{1}{1-t},\qquad
+y=\frac{x}{\sqrt{1-t}},\qquad
+u(t,x)=(1-t)^{-1/2}\,U(\sigma,y),
+\]
+so that $U$ satisfies the forced profile equation
+\[
+\bigl(\partial_\sigma+\tfrac12+\tfrac12\,y\cdot\nabla-\Delta\bigr)U+(U\cdot\nabla)U
+= -\nabla p,\qquad \operatorname{div}U=0 .
+\]
+
+\subsection{The cascade}
+Windows have width $S=\log 2$ (scale ratio $\lambda=\tfrac12$ per stage); the window-$n$
+reference packet $W_n$ reproduces under the discrete symmetry
+$W_{n+1}(\sigma,y)=R\,W_n(\sigma-S,R^{-1}y)$. The per-window excess is
+\[
+\delta_n=(\text{closure ratio in window } n)-\varepsilon_{\mathrm{prof}},
+\qquad \varepsilon_{\mathrm{prof}}=\tfrac1{30},
+\qquad \varepsilon_{\mathrm{drift}}=\sum_{n\ge n_0}\delta_n,
+\]
+and the total misfit is $\varepsilon_0=\varepsilon_{\mathrm{prof}}+\varepsilon_{\mathrm{drift}}$.
+The certificate tilt constant is $\sin^2\theta\le 5.51\,D^2$.
+
+\subsection{The budget}
+On the band
+\[
+\sigma\in(7.3303,\,7.8240)
+=\bigl(4\log\tfrac{25}{4},\;4\bigl(\tfrac52\log 2+\log\tfrac54\bigr)\bigr)
+\]
+the drift must obey $\sum_n\delta_n\le D_{\max}(\sigma)$, where $D_{\max}$ is the root of
+\[
+\bigl(\tfrac14-5.51\,D^2\bigr)\sigma
+=\log 4+2\log\frac{1+\varepsilon_{\mathrm{prof}}+D}{1-\varepsilon_{\mathrm{prof}}-D}.
+\]
+
+\section{The integer reduction and the coupling recursion}\label{sec:reduction}
+
+The mechanism's macroscopic content is carried by two integer sequences: the response
+$\dhat n$ and the source floor $\chat n$. The coupled recursion at the fixed literal scale
+$D=30{,}000{,}000$ with damping $Q=30{,}000$ (ratio $1000:1$, feedback $1000/999$) is
+\begin{equation}\label{eq:coupling}
+30000000\cdot \dhat(n+1)=30000\cdot \dhat n+30000000\cdot \chat n .
+\end{equation}
+A trajectory is admissible when the launch is at its cap ($\dhat 0\le 10^6$), the source at
+its cap ($\chat 0\le 39000$), and the source decays no faster than a contraction ratio
+$c/d$ per window. The certificate identity validated at every anchor (Part~XI,
+\texttt{telescope}) is
+\begin{equation}\label{eq:telescope}
+999\cdot 1000^{K-1}\sum_{i<K}\dhat i
+=(1000^{K}-1)\,\dhat 0+\sum_{j<K}\chat j\,\bigl(1000^{K}-1000^{j+1}\bigr),
+\end{equation}
+with chain recurrences $XB_{n+1}=XB_n+1000^{\,n+1}L_n$ ($XB_0=10^6$) and
+$CUM_{n+1}=1000\cdot CUM_n+999\cdot XB_n$.
+
+\subsection{The three anchors}\label{sec:anchors}
+
+Each anchor fixes a budget head $M$, a floor law $a/b$ (exact critical ratio $\mu^\ast=a/b$
+in lowest terms), the constant $A=a\cdot 30000000/b$ (integrality of the multiplier is
+exact: $b\mid 30000000$), and a certified crossing window $K$.
+
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\textbf{anchor} & $M$ & $\mu^\ast=a/b$ & $A$ & $K$ & $30000000/b$\\
+\hline
+1 & $1541354$ & $11597/12500$ ($\approx 0.92776$) & $27832800$ & $93$ & $2400$\\
+2 & $1744063$ & $94747/100000$ ($\approx 0.94747$) & $28424100$ & $123$ & $300$\\
+3 & $1928014$ & $95789/100000$ ($\approx 0.95789$) & $28736700$ & $149$ & $300$\\
+\hline
+\end{tabular}
+\end{center}
+
+The closed-form exact criticals from the ledger, in lowest terms:
+\[
+\mu^\ast_1=\frac{250406323}{269906323}=0.927753\ldots,\quad
+\mu^\ast_2=\frac{703318937}{742318937}=0.947462\ldots,\quad
+\mu^\ast_3=\frac{443542993}{463042993}=0.957887\ldots
+\]
+satisfying the boundary identity $(999M-10^9)(d-c)=\chat_0\cdot 1000\cdot d$ exactly at all
+three anchors. Geometric-infimum crossings: $123/163/225$ (ceiling-iterate minima
+$92/122/148$); the certified windows straddle them with one-window slacks
+$(+47.35,-1.70)$, $(+32.03,-35.04)$, $(+81.01,-1.07)$ response units.
+
+\section{Machine-checked statement catalogue}\label{sec:catalogue}
+
+The burden pattern shared by all anchors is: under
+\eqref{eq:coupling}, the launch and source caps, and a source floor law, force the response
+above the head by window $K$.
+
+\paragraph{Yes side (Parts V--VII).}
+\texttt{constantSourceDiverges}: a constant positive source forces escape;
+\texttt{geometricEnvelope}: the response envelope under the decaying rate;
+\texttt{bridgeInstance}: the AB rate of \cite{blowup} at $\kappa=\tfrac14$, $C=C_{\max}$
+satisfies the envelope hypotheses with the bridge budget $\varepsilon_0=\varepsilon_{\mathrm{prof}}+\varepsilon_{\mathrm{drift}}$.
+
+\paragraph{Control layer (Part VIII).}
+\texttt{controlTheorem}: the controller keeps the drift in budget;
+\texttt{linearGrowth}: unconstrained drift grows at least linearly in the window count;
+\texttt{fatalFloor}: below the fatal floor the budget is violated---the ``no control
+without cost'' lemma that drives the singularity.
+
+\paragraph{Model singularity (Part IX).}
+\texttt{gradDiverges}: along the constructed model trajectory the gradient diverges;
+\texttt{gapVanishes}: the closure gap vanishes in the scaling limit;
+\texttt{powTwoGe}, \texttt{powFourGe}: the elementary growth lemmas
+$2^k\ge k+1$, $4^k\ge k+1$ carrying the cascade.
+
+\paragraph{Two-sided threshold (Parts X--XI).}
+\texttt{noSideForced1..3}/\texttt{existsExceeds1..3} (ratios
+$\rho_i\in\{116/125,\,237/250,\,479/500\}$): the no-side q-power obstacle is disposed of,
+giving a machine-checked dichotomy yes on $[\,\cdot\,,\nu_i]$, no on $[\rho_i,\cdot]$;
+\texttt{criticalNever1..3}: at contraction at most the \emph{exact} critical $\mu^\ast_i$,
+the head is never breached at any window --- the boundary is saturated, not crossed.
+
+\section{Part XII: the sharp no-side squeeze}\label{sec:sharp}
+
+Part XII (\texttt{formal/DriftSharpNo.lean}, $483{,}052$ bytes) proves the
+\emph{exact-critical-ratio attainment} direction: at $\mu^\ast=a/b$ exactly, every
+admissible integer trajectory is forced above the head by the certified window. The proof
+device is a \textbf{sliding-window certificate}: the chain links are consumed per window
+(\texttt{clear} per emitted window) so each \texttt{omega} call sees a bounded slice of at
+most ${\sim}10$ atoms; the monolithic encoding did not elaborate, and kernel bisection
+bounded the workable widths between $60$ and $120$. Each window emits the floor step
+(literal verification of $b(L_n-1)<a\,L_{n-1}$), the coupling step, the potential
+$1000^j\,\dhat j\ge XB_j$, the prefix bound, then clears its consumed links; the final
+window ends in the weighted identity \eqref{eq:telescope} at $LSC=999\cdot1000^{K-1}$.
+
+Six squeeze theorems (\texttt{noSideForcedSharp1..3}, \texttt{existsSharp1..3}) compile at
+full scale $K\in\{93,123,149\}$ with profile $[\mathrm{propext},\mathrm{Quot.sound}]$
+($\mathrm{Classical.choice}$ enters only via \texttt{compareMono}), plus a $447$-digit exact
+division witness at the anchor-3 scale. The layer left one marked debt: the four trajectory
+hypotheses were \emph{assumed}, not derived.
+
+\section{Part XIII: constructed singularities and controlled errors}\label{sec:witness}
+
+\texttt{formal/DriftWitness.lean} ($495{,}658$ bytes) discharges that debt. For each anchor
+a state row $(\mathrm{bnd},\mathrm{tval},\chat,\mathrm{dval})$ is \emph{constructed} by
+exact integer recursion, launch row $(39000,\,1000,\,\mathrm{patch}\,39000\,(0-1000),\,10^6)$:
+\begin{align}
+\mathrm{bnd}'&=\frac{a\,\chat+(b-1)}{b} &&\text{(ceiling iterate of the floor law)},\\
+\mathrm{tval}'&=\frac{\mathrm{tval}+\chat}{1000} &&\text{(integer part of the growth)},\\
+\chat'&=\mathrm{patch}\;\mathrm{bnd}'\;(0-\mathrm{tval}') &&\text{(the constructed error)},\\
+\mathrm{dval}'&=\mathrm{tval}+\chat .
+\end{align}
+The patch
+\[
+\mathrm{patch}\; b\; p
+= b+\bigl((p-b)\bmod 1000+1000\bigr)\bmod 1000
+\]
+is the least integer $\ge b$ in the residue class $p\pmod{1000}$, with machine-checked
+properties \texttt{patchDeltaRange} ($0\le$ lift $\le 999$), \texttt{patchGe}
+($b\le \mathrm{patch}\,b\,p$), \texttt{patchCongr} (residue transfer). This residual lift is
+\emph{the} error the mechanism must control, and it is bounded by $999$ per window --- and it
+only ever moves the law bound \emph{up}, so the geometric floor costs nothing:
+\[
+b\cdot\mathrm{bnd}'\ge a\cdot\chat \quad\Longrightarrow\quad
+30000000\cdot \chat'(n)\ge A\cdot \chat(n-1).
+\]
+
+The \textbf{1000-adic filtration} keeps the trajectory integral: the six-part induction
+\texttt{invariantsW$i$} maintains $\mathrm{dval}\,n=1000\cdot\mathrm{tval}\,n$ (making the
+coupling division exact) together with the residue pinning
+$(\mathrm{tval}\,n+\chat\,n)\equiv 0\pmod{1000}$, propagated by \texttt{patchCongr}.
+
+The close-out per anchor is
+\texttt{constructedWitness$i$}:
+$\exists\, d\; c:\mathbb{N}\to\mathbb{Z}$, coupling \eqref{eq:coupling} exact, floor law at
+$A$, $d\,0\ge 10^6$, $c\,0\ge 39000$, and $\sumto d\,K\ge M+1$ --- a seven-component
+anonymous constructor ending in \texttt{sharpForced$i$}, the Part XII squeeze applied to the
+Part XIII construction with \emph{no hypothesis assumed}:
+
+\begin{center}
+\begin{tabular}{c c c l}
+\hline
+\textbf{arm} & $\mu^\ast$ & $K$ & \textbf{crossing}\\
+\hline
+1 & $11597/12500$ & $93$ & $\sumto d\,93\ge 1541355$\\
+2 & $94747/100000$ & $123$ & $\sumto d\,123\ge 1744064$\\
+3 & $95789/100000$ & $149$ & $\sumto d\,149\ge 1928015$\\
+\hline
+\end{tabular}
+\end{center}
+
+All six exports print axiom profile exactly $[\mathrm{propext},\mathrm{Quot.sound}]$: the
+witness layer is entirely choice-free. Two prover facts discovered here are recorded in the
+file's docstring ledger: (i) \texttt{omega} closing a \emph{conjunction} goal containing
+modular atoms pulls $\mathrm{Classical.choice}$ into its internal certificate, while the
+same facts as separate single-atom goals are choice-free; (ii) \texttt{omega} does not fire
+function congruence between $\mathrm{patch}\langle\text{atom args}\rangle$ and
+$\mathrm{patch}\langle\text{literal args}\rangle$, so the induction's zero case is
+manualized with \texttt{rfl}-evaluation lemmas and rewrite chains.
+
+\section{Part XIV: the adversarial error bracket}\label{sec:bracket}
+
+\texttt{formal/DriftError.lean} ($11\,828$ lines, $753{,}976$ bytes) asks how much error the
+geometric mechanism can absorb, and answers with a \emph{two-sided, boundary-exact bracket}
+at each anchor. The perturbed model replaces the exact floor law by an iterate tolerated up
+to a per-window error budget: two boundary constants matter, the lattice-scale tolerance
+$\mathsf{Em}$ and its coupling-scale image $\mathsf{ME}=\mathrm{mult}\cdot\mathsf{Em}$;
+likewise $\mathsf{Ens}$ and $\mathsf{ED}=\mathrm{mult}\cdot\mathsf{Ens}$ on the far side
+($\mathrm{mult}=2400/300/300$).
+
+\paragraph{Yes side.} \texttt{forcingUnderError$i$}: every trajectory satisfying the coupling
+\eqref{eq:coupling}, launched at both caps ($\dhat 0\ge 10^6$, $\chat 0\ge 39000$), whose
+floor law may fall short by at most $\mathsf{ME}$ per window in coupling units,
+\[
+30000000\cdot \chat(n+1)+\mathsf{ME}\ \ge\ A\cdot \chat n,
+\qquad\text{equivalently}\quad b\cdot \chat(n+1)\ \ge\ a\cdot \chat n-\mathsf{Em},
+\]
+is still forced above the head: $\sumto d K \ge M+1$ at the certified window $K$.
+
+\paragraph{No side.} \texttt{perturbedWitness$i$}: at tolerance $\mathsf{Ens}$ (coupling
+units: $\mathsf{ED}=\mathrm{mult}\cdot\mathsf{Ens}$) the forcing \emph{fails}. An explicit
+integral trajectory of the perturbed law, built by the launch row and \texttt{patch}
+machinery of Part~XIII, launches at both caps ($\dhat 0\le 10^6$, $\chat 0\le 39000$), keeps
+the invariant apparatus of Part~XIII (the \texttt{patch} definition, residue pinning,
+coupling-exactness $\mathrm{dval}=1000\cdot\mathrm{tval}$), obeys the perturbed floor law
+with literal deficit $\mathsf{ED}$ at every window, and yet $\sumto d K\le M$: the head is
+never reached. Forcing has a \emph{finite} error tolerance, and the lattice knows it.
+
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\textbf{arm} & $\mathsf{Em}$ & $\mathsf{ME}$ & $\mathsf{Ens}$ & $\mathsf{ED}$ &
+\textbf{no-side sum} ($\le M$)\\
+\hline
+1 & $710$ & $1704000$ & $10402299$ & $24965517600$ & $1526000\le 1541354$\\
+2 & $1543$ & $462900$ & $84162012$ & $25248603600$ & $1696000\le 1744063$\\
+3 & $4779$ & $1433700$ & $86225119$ & $25867535700$ & $1908000\le 1928014$\\
+\hline
+\end{tabular}
+\end{center}
+
+The bracket is disjoint, $\mathsf{Em}<\mathsf{Ens}$, at every anchor, and both bisection
+boundaries are exact. Nine exports (\texttt{forcingUnderError1..3}, \texttt{lawW1..3P},
+\texttt{perturbedWitness1..3}) print axiom profile exactly
+$[\mathrm{propext},\mathrm{Quot.sound}]$: the bracket layer is entirely choice-free. The
+full proof bodies --- the scale equivalence (F1), the sliding-clear forcing chain (F2), and
+the complete construction of the no-side counterexamples --- are written out in
+\texttt{geometric\_drift\_master.tex}, Section~9.
+
+\section{Integrity boundaries}\label{sec:integrity}
+
+\begin{itemize}
+\item Every Lean statement concerns integer sequences at fixed literal scale. Nothing in
+\texttt{formal/} is a Navier--Stokes statement.
+\item The boundary theorems are saturation-exact, not divergence claims.
+\item The model singularity of Part IX is model-level; the bridge imports Alp\"oge--Buckmaster
+\cite{blowup} and cannot outrank it; the unconditionally constructed singularity remains
+theirs. No deliverable claims an unconditional blow-up proof for Navier--Stokes.
+\item \texttt{sorryAx} never appears in any printed axiom profile. The error-tolerance
+question \emph{at the anchors} is settled two-sidedly by Part~XIV; the residual formal unit
+named in Part XI (monotone response in the source channel, to squeeze the open bands of
+widths $2.47\times10^{-4}$, $5.38\times10^{-4}$, $1.13\times10^{-4}$) is the successor task.
+\end{itemize}
+
+\section{Verification record}\label{sec:record}
+
+\begin{itemize}
+\item Lean 4.36.0, standalone; every file compiled clean in a single process, zero errors;
+heavy theorems carry \texttt{maxHeartbeats} headroom.
+\item $112$ theorems across ten files; $60$ printed axiom dependencies, all
+$[\mathrm{propext},\mathrm{Quot.sound}]$ except \texttt{compareMono}
+(plus $\mathrm{Classical.choice}$, Part XII).
+\item Part XIV carrier: \texttt{formal/DriftError.lean}, $11\,828$ lines, $753{,}976$ bytes,
+single-process compile EXIT $=0$, zero errors, zero warnings, all nine printed profiles
+exactly $[\mathrm{propext},\mathrm{Quot.sound}]$.
+\item Four independent stdlib verifiers re-derive the numeric certificates
+(\texttt{drift\_budget\_verification.py}, \texttt{drift\_bridge\_verification.py},
+\texttt{drift\_threshold\_dichotomy.py}, \texttt{drift\_critical\_point.py}).
+\item Honest recount: earlier records stated $113$ theorems because the census pattern
+also matched a column-0 prose line of \texttt{DriftSharpNo.lean}; the declarative count is
+$112$ (file-by-file in Appendix~B of \texttt{geometric\_drift\_master.tex}).
+\item Design pickles cross-check every anchor tuple $(M,a,b,A,K)$ against the emitted
+literals, windows, and slacks.
+\end{itemize}
+
+\begin{thebibliography}{9}\label{sec:bib}
+
+\bibitem{dubois}
+P.~Dubois,
+\emph{The Geometric Drift --- Statement, Reduction, and the Open Core}.
+(Construction source for the framework of Section~\ref{sec:framework}.)
+
+\bibitem{blowup}
+P.~Dubois,
+\emph{Finite-Time Blow-Up for the Navier--Stokes Equations}.
+(Bridge drive certificate; source of the decaying-stability rate used in
+Sections~\ref{sec:catalogue} and~\ref{sec:reduction}.)
+
+\end{thebibliography}
+
+\end{document}
