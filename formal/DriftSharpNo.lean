@@ -4206,12 +4206,14 @@ one-window slacks straddle zero: `cert_K - (M+1) > 0` and
 - the 447-digit exact division witness at the anchor-3 scale is included as an
   `example` and is machine-checked by `omega`.
 
-### todo_marker
+### Layer-13 status: resolved
 
-Remaining Layer-13 work, marked by this single token: the response-trajectory
-hypotheses must be derived from the validated forcing bridge of Parts VIII and
-VIIIb rather than assumed; the ledger's other entries are byte-identified in
-full in the earlier parts.
+The remaining Layer-13 work marked here — deriving the response-trajectory
+hypotheses from a constructed trajectory rather than assuming them — is
+discharged in Part XIII (`formal/DriftWitness.lean`): the constructed integer
+state row with residue-patched errors satisfies all four sharp hypotheses at
+each exact critical ratio, and `constructedWitness1..3` close the ledger with
+axiom profile exactly `propext`, `Quot.sound`.
 -/
 
 example : True := trivial
