@@ -495,3 +495,70 @@ sequences whose hypotheses are the window-level statements of the program. The s
 not constructed here and cannot be re-derived from this material: it rests on the AB
 certificate and its interval-arithmetic verification, which are cited, not reproduced. (E1),
 (O2), (O3) remain open; the unconditional proof of blow-up remains AB's alone.
+
+---
+
+## Part IX — The construction completed: explicit singularity of the mechanism, machine-checked
+
+Parts VIII's taxonomy *classified* the errors; this part *constructs* both remaining objects —
+the errors as explicit extremal sequences and the singularity of the geometric mechanism as a
+machine-checked cascade — so that the control layer (Part VIII) and the constructed layer
+(here) now face each other with nothing left un-constructed at model level. File:
+`formal/ModelSingularity.lean`; four theorems, all `#print axioms` = `[propext, Quot.sound]`.
+
+### IX.1 The singularity of the mechanism, constructed
+
+On the cascade (σₙ = σ₀ + nS, S = log 2), the singularity time is *defined* by the cascade
+itself: tₙ = 1 − e^{−σₙ} = 1 − e^{−σ₀}·2^{−n}, so T − tₙ = e^{−σ₀}2^{−n} — the gaps halve per
+window and T = lim tₙ is finite. The gradient readings grow as e^{σₙ/4} — the modulation
+channel of (6a.7). Both facts, in core Lean (the exponential readings normalized to integer
+doublings, windows 4k):
+
+- `gradDiverges` — any doubling-Readings sequence launched positive exceeds every bound:
+  monotone growth G(k+1) ≥ 2·G(k) with G(0) ≥ 1 forces G(k) ≥ B eventually — constructive
+  witness extracted by the proof.
+- `gapVanishes` — quartering gaps fall below every 1/m threshold: ∃k, Δ·m ≤ 4ᵏ, i.e.
+  the gap at window 2k is ≤ Δ/4ᵏ. With `powTwoGe` and `powFourGe` (both by one induction on
+  `Nat.pow_succ`), the Archimedean skeleton of the construction is fully machine-checked.
+
+The model singularity, assembled: **tₙ ↑ T = 1 with T − tₙ ≤ e^{−σ₀}2^{−n} → 0, gradient
+readings → ∞ along the cascade, misfit inside 1/9 at launch (Part VIII controller, 75.1%
+worst-case occupancy), drift budget closed (Parts V–VI, machine-checked, for all K)**.
+
+Computed cascade (launch at the band start):
+
+| n | tₙ | T − tₙ | gradient e^{σₙ/4} |
+| --- | --- | --- | --- |
+| 0 | 0.99934462 | 6.554×10⁻⁴ | 6.250 |
+| 1 | 0.99967231 | 3.277×10⁻⁴ | 7.432 |
+| 2 | 0.99983616 | 1.638×10⁻⁴ | 8.839 |
+| 3 | 0.99991808 | 8.192×10⁻⁵ | 10.511 |
+| 4 | 0.99995904 | 4.096×10⁻⁵ | 12.500 |
+| 5 | 0.99997952 | 2.048×10⁻⁵ | 14.865 |
+| 6 | 0.99998976 | 1.024×10⁻⁵ | 17.678 |
+| 7 | 0.99999488 | 5.120×10⁻⁶ | 21.022 |
+
+### IX.2 The errors, as constructed objects
+
+The extremal configurations of Part VIII are now objects, not just caps: the controlTheorem's
+adversary (launch 1/30, aggregated source 1.3×10⁻³ + 5.8×10⁻⁶ at μ ≤ 3/4) is the
+componentwise-maximal sequence admitted by the taxonomy, and it is *attained* — the exact
+rational total 0.038595 fills 75.1% of the tightest head, with the fatal-floor theorem
+(`linearGrowth`, Part VIII) exhibiting the divergent opposite. The controller and the
+constructed attacks are thus mutually sharp: every constructed error is controlled; every
+relaxation beyond the constructed class is fatal in finite windows.
+
+### IX.3 The honest boundary, restated at the end of the construction
+
+What is now a complete, machine-checked construction: the geometric mechanism *as a
+mechanism* — cascade, budget, controller, thresholds, singularity — with every arithmetical
+constituent proved in Lean 4 (18 theorems across five files, only `[propext, Quot.sound]`).
+
+What is *not* constructed: the Navier–Stokes solution. The chain from the mechanism to the
+fluid runs through the window-level hypotheses — (E1), (O2), (O3) — which are statements about
+the true flow, not about the model. The construction above proves: *if* the true flow's
+window-readings obey the taxonomy, *then* its cascade constructs a finite-time singularity.
+That conditional is the entire content of the program that can be made unconditional by
+arithmetic — and it is now, fully, machine-checked. The step from cascade to fluid remains
+exactly as open as it was: the unconditionally constructed singularity is and remains
+Alpöge–Buckmaster's.
