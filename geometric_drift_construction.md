@@ -5,7 +5,8 @@
 complete proofs of every provable piece, an executed window-by-window verification at model level,
 a sensitivity/threshold theorem, an analytic attempt on the open core, the bridge to the
 Alpöge–Buckmaster certificate, and (Part V) the conditional-strength comparison against the
-AB formalization plus the machine-checking of the proved chain in core Lean 4. No piece of the open core is dressed up as proved.
+AB formalization plus the machine-checking of the proved chain in core Lean 4; Part VI extends
+the machine-checked portion to the threshold dichotomy at the exact budget roots (V1 package). No piece of the open core is dressed up as proved.
 
 ---
 
@@ -237,3 +238,79 @@ content of the profile equation, and the interval arithmetic of any certificate.
 formalizes exactly level 4 of V.3 and nothing more — which is precisely its honest value: the
 arithmetic of the reduction is now as certain as the rest of the program's proved chain, and the
 open core remains exactly as open as it was.
+
+---
+
+## Part VI — Full machine-checked threshold package (V1)
+
+The deliverable-1 package widens the machine-checked portion of the proved chain from the single
+χ = 3/4 instance of Part V to a *threshold dichotomy at the exact budget roots*. File:
+`formal/DriftReductionV1.lean` (core Lean 4, v4.36.0, no Mathlib; same integer scaling
+D = 30 000 000, Q = 30 000, caps δ̂₀ ≤ 10⁶, ĉ₀ ≤ 39 000). Eleven theorems, all closed,
+`#print axioms` on each returns `[propext, Quot.sound]` (no `sorryAx`).
+
+### VI.1 The budget heads, computed exactly
+
+The bisection of `drift_budget_verification.py` gives the precise roots of (6a.7); the machine
+heads are their floors:
+
+| anchor | σ | precise root D_max(σ) | machine head M | |
+| --- | --- | --- | --- | --- |
+| lower | 7.3303 | 0.05137848 | 1 541 354 | floor(0.05137848·D) |
+| mid | 7.5772 | 0.05813545 | 1 744 063 | floor(0.05813545·D) |
+| upper | 7.8240 | 0.06426717 | 1 928 014 | floor(0.06426717·D) |
+
+### VI.2 The threshold theorems (yes-side, machine-checked)
+
+For each anchor, a `phiMono` potential-instance plus a `decide`-closed ground inequality give
+`driftBound_i`: **for every K (no limit on the window count), Σ_{k<K} δ̂ₖ ≤ M_i** under the
+coupling recursion D·δ̂(n+1) ≤ Q·δ̂ₙ + D·ĉₙ, launch caps, and the source decay
+D·ĉ(n+1) ≤ X_i·ĉₙ, with the *exact* per-instance constants:
+
+| instance | X_i | (1 − μ_i)·D | μ_i ≤ | α_i = −log₂ μ_i | recorded real α_min | agreement |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 27 832 580 | 2 167 420 | 0.927753 | 0.10819 | 0.1082 | exact to 4 digits |
+| 2 | 28 423 857 | 1 576 143 | 0.947462 | 0.07786 | 0.0779 | exact to 4 digits |
+| 3 | 28 736 617 | 1 263 383 | 0.957887 | 0.06207 | 0.0621 | exact to 4 digits |
+
+The instance thresholds are the exact rational versions of the α_min dichotomy of WP3: each
+(1 − μ_i) is the ceiling of the adder needed to place the source term
+D²·ĉ₀/(D − μD) inside the head M_i(D − Q), plus one unit of kernel padding, and the ground
+inequality (D − X)·D·δ̂₀ + D²·ĉ₀ ≤ M·(D − Q)·(D − X) closes with positive slack in each case.
+
+**Sharpness (not vacuous).** Simulating the *exact* rational recursion at each instance's own
+decay constant, the total converges to 0.05137846 / 0.05813542 / 0.06426710 — within 2×10⁻⁸ of
+the corresponding precise budget root. The three instances sit exactly at the dichotomy points:
+any further relaxation of μ at a fixed budget would break the applicable bound.
+
+### VI.3 The no-go companion (recorded honestly: one Lean lemma, the rest computed)
+
+- **Machine-checked:** `chatLowerBound` — the from-below source potential. Under the *lower*
+  decay D·ĉ(n+1) ≥ 28 770 000·ĉₙ (μ ≥ 0.959, i.e. α ≤ 0.06027 — the no-go regime), the released
+  source satisfies 1 230 000·Σ_{k<K} ĉₖ + D·ĉ_K ≥ D·ĉ₀ for every K. Paired with its mirror
+  `chatUpperBound`, the source channel is bracketed from both sides by pure potential
+  monotonicity.
+- **Machine-checked:** `sumToTelescope` — the exact resolved identity
+  D·Σ_{k<K+1} δ̂ₖ = Q·Σ_{k<K} δ̂ₖ + D·δ̂₀ + D·Σ_{k<K} ĉₖ under the equality recursion: the prefix
+  sums are driven by the launch defect and the accumulated source, nothing else.
+- **Computed (exact rational arithmetic, `Fractions`):** at α = 0.060 the exact recursion
+  δ(n+1) = qδₙ + ĉ₀μⁿ with the recorded caps releases Σ_∞ = 0.065312, which **exceeds the
+  budget at every anchor** (0.05137848, 0.05813545, 0.06426717); at α = 0.062 it is 0.064302 vs
+  0.064267 — still over. The Lean no-go *instance* (fixed K, prefix sums forced above M under
+  the equality recursion) requires the q-power geometric-sum lemma, which is named as the next
+  formalization unit rather than asserted here.
+
+### VI.4 What this package does and does not prove
+
+Machine-checked, scale-free, for all K: the coupling recursion + caps + decay at α ≥ α_i ⇒
+Σδ ≤ the anchor budget. Together with Part V this completes the machine-checking of every
+arithmetical constituent of the proved chain: Lemma B (yes and no readings), Lemma C's envelope
+shape (via the potentials), the Reduction Theorem's numeric content at the χ = 3/4 relaxation,
+and now the threshold dichotomy at the exact α_min points.
+
+**Still not proved, still open, unchanged:** (E1) as a statement about the true Navier–Stokes
+flow; (O2); (O3). The formalizations evolve hypotheses about integers, not theorems about
+fluids. The singularity remains unconditionally proved by Alpöge–Buckmaster alone.
+
+`#print axioms` output for all eleven theorems: `[propext, Quot.sound]`; `sorryAx` absent
+(verified at compile time, Lean v4.36.0, exit 0).
